@@ -2,21 +2,20 @@ import { Worker } from "bullmq";
 import { orchestrate } from "@repo/agents";
 import { redisConnection } from "../connection.js";
 import { QUEUES, type AgentJobData } from "../jobs.js";
+import { logger } from "../logger.js";
 
 export function startAgentWorker() {
   const worker = new Worker<AgentJobData>(
     QUEUES.AGENT,
     async (job) => {
       const { triggerEvent, payload, tenantId } = job.data;
-      console.log(
-        `[AgentWorker] Processing: ${triggerEvent} for tenant ${tenantId}`,
-      );
+      logger.info("AgentWorker", "Processing job", { triggerEvent, tenantId });
 
       const results = await orchestrate(triggerEvent, payload, tenantId);
 
-      console.log(
-        `[AgentWorker] Completed: ${results.length} agent(s) executed`,
-      );
+      logger.info("AgentWorker", "Job completed", {
+        agentsExecuted: results.length,
+      });
       return results;
     },
     {
@@ -26,7 +25,10 @@ export function startAgentWorker() {
   );
 
   worker.on("failed", (job, err) => {
-    console.error(`[AgentWorker] Job ${job?.id} failed:`, err.message);
+    logger.error("AgentWorker", "Job failed", {
+      jobId: job?.id,
+      error: err.message,
+    });
   });
 
   return worker;

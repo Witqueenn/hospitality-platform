@@ -3,6 +3,7 @@ import type { Prisma } from "@prisma/client";
 import { db } from "@repo/db";
 import { redisConnection } from "../connection.js";
 import { QUEUES, type NotificationJobData } from "../jobs.js";
+import { logger } from "../logger.js";
 
 export function startNotificationWorker() {
   const worker = new Worker<NotificationJobData>(
@@ -25,9 +26,10 @@ export function startNotificationWorker() {
         },
       });
 
-      console.log(
-        `[NotificationWorker] Sent notification ${notification.id} to ${recipientId}`,
-      );
+      logger.info("NotificationWorker", "Notification sent", {
+        notificationId: notification.id,
+        recipientId,
+      });
       return { notificationId: notification.id };
     },
     {
@@ -37,7 +39,10 @@ export function startNotificationWorker() {
   );
 
   worker.on("failed", (job, err) => {
-    console.error(`[NotificationWorker] Job ${job?.id} failed:`, err.message);
+    logger.error("NotificationWorker", "Job failed", {
+      jobId: job?.id,
+      error: err.message,
+    });
   });
 
   return worker;

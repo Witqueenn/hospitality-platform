@@ -1,31 +1,31 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-20T12:38:30.388Z",
+    "generatedAt": "2026-03-20T17:28:51.419Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-20T12:38:30.387Z"]
+    "runHistory": ["2026-03-20T17:28:51.419Z"]
   },
   "metrics": {
-    "totalFiles": 267,
-    "totalLines": 48347,
+    "totalFiles": 276,
+    "totalLines": 49355,
     "largestFile": {
       "path": "pnpm-lock.yaml",
-      "lines": 10102
+      "lines": 10108
     },
     "byExtension": {
       ".md": 75,
-      ".json": 45,
+      ".json": 47,
       ".mjs": 7,
       ".example": 1,
       ".local": 1,
       ".yml": 3,
       "(none)": 22,
       ".sh": 1,
-      ".ts": 79,
+      ".ts": 82,
       ".js": 3,
-      ".tsx": 24,
+      ".tsx": 28,
       ".css": 1,
       ".tsbuildinfo": 1,
       ".sql": 1,
@@ -33,8 +33,8 @@
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 103,
-      "percentage": 39
+      "tsFiles": 110,
+      "percentage": 40
     }
   },
   "detectedPatterns": {
@@ -128,10 +128,16 @@
     "summary": {
       "total": 4,
       "errors": 0,
-      "warnings": 3,
-      "info": 1
+      "warnings": 4,
+      "info": 0
     },
     "items": [
+      {
+        "file": "apps/web/src/instrumentation.ts",
+        "rule": "no-direct-env",
+        "message": "Direct process.env access — centralize env vars in a typed env module",
+        "severity": "warn"
+      },
       {
         "file": "packages/queue/src/workers/agentWorker.ts",
         "rule": "no-console",
@@ -149,12 +155,6 @@
         "rule": "no-console",
         "message": "console.log() found — use a structured logger instead",
         "severity": "warn"
-      },
-      {
-        "file": "packages/agents/src/index.ts",
-        "rule": "barrel-completeness",
-        "message": "Barrel may be missing exports: llm.ts",
-        "severity": "info"
       }
     ]
   },

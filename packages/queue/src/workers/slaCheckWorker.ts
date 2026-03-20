@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { db } from "@repo/db";
 import { redisConnection } from "../connection.js";
 import { QUEUES, type SLACheckJobData } from "../jobs.js";
+import { logger } from "../logger.js";
 
 export function startSLACheckWorker() {
   const worker = new Worker<SLACheckJobData>(
@@ -40,7 +41,9 @@ export function startSLACheckWorker() {
           },
         });
 
-        console.log(`[SLACheckWorker] Case ${caseId} escalated - SLA breached`);
+        logger.info("SLACheckWorker", "Case escalated - SLA breached", {
+          caseId,
+        });
       }
     },
     {
@@ -50,7 +53,10 @@ export function startSLACheckWorker() {
   );
 
   worker.on("failed", (job, err) => {
-    console.error(`[SLACheckWorker] Job ${job?.id} failed:`, err.message);
+    logger.error("SLACheckWorker", "Job failed", {
+      jobId: job?.id,
+      error: err.message,
+    });
   });
 
   return worker;
