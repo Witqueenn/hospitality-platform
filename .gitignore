@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build
+.next
+dist
+out
+build
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Turbo
+.turbo
+
+# Misc
+.DS_Store
+*.pem
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Prisma
+packages/db/src/generated
+
+# Uploads
+uploads/
+
+# Testing
+coverage
+playwright-report
+test-results
+
+# TypeScript incremental build cache
+*.tsbuildinfo

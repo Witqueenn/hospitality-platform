@@ -1,0 +1,183 @@
+{
+  "$schema": "./quality-rules.schema.json",
+  "meta": {
+    "generatedAt": "2026-03-20T05:36:24.307Z",
+    "generatedBy": "scripts/analyze-project.mjs",
+    "version": "1.0.0",
+    "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
+    "runHistory": ["2026-03-20T05:36:24.303Z"]
+  },
+  "metrics": {
+    "totalFiles": 147,
+    "totalLines": 17095,
+    "largestFile": {
+      "path": "pnpm-lock.yaml",
+      "lines": 6889
+    },
+    "byExtension": {
+      ".mjs": 7,
+      ".example": 1,
+      ".local": 1,
+      "(none)": 21,
+      ".sh": 1,
+      ".md": 1,
+      ".ts": 66,
+      ".json": 23,
+      ".js": 3,
+      ".tsx": 17,
+      ".css": 1,
+      ".tsbuildinfo": 1,
+      ".yml": 1,
+      ".prisma": 1,
+      ".yaml": 2
+    },
+    "typeScriptCoverage": {
+      "tsFiles": 83,
+      "percentage": 56
+    }
+  },
+  "detectedPatterns": {
+    "description": "Patterns consistently used in this codebase",
+    "patterns": [
+      {
+        "id": "PAT-001",
+        "name": "Type-safe API layer",
+        "detected": false,
+        "description": "tRPC procedures used for all API communication"
+      },
+      {
+        "id": "PAT-002",
+        "name": "Zod runtime validation",
+        "detected": true,
+        "description": "Zod schemas used for input validation"
+      },
+      {
+        "id": "PAT-003",
+        "name": "Prisma ORM",
+        "detected": true,
+        "description": "Prisma used for all database access"
+      },
+      {
+        "id": "PAT-004",
+        "name": "Consistent type imports",
+        "detected": true,
+        "description": "'import type' used for type-only imports"
+      },
+      {
+        "id": "PAT-005",
+        "name": "Monorepo package boundaries",
+        "detected": true,
+        "description": "Code organized into discrete workspace packages with clear ownership"
+      }
+    ]
+  },
+  "activeRules": {
+    "eslint": {
+      "configLocation": "tooling/eslint-config/base.js",
+      "extends": [
+        "eslint:recommended",
+        "@typescript-eslint/recommended-type-checked",
+        "@typescript-eslint/stylistic-type-checked"
+      ],
+      "keyRules": [
+        "no-unused-vars (error) — vars matching ^_ are exempt",
+        "consistent-type-imports (warn) — prefer separate type imports",
+        "no-misused-promises (error) — catches async in void contexts",
+        "import/consistent-type-specifier-style (error) — top-level type imports"
+      ]
+    },
+    "prettier": {
+      "configLocation": "tooling/prettier-config/index.js",
+      "settings": {
+        "printWidth": 100,
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all"
+      }
+    },
+    "typescript": {
+      "strict": true,
+      "configLocations": [
+        "tooling/tsconfig/base.json",
+        "tooling/tsconfig/library.json",
+        "tooling/tsconfig/nextjs.json"
+      ]
+    },
+    "commitlint": {
+      "configLocation": ".commitlintrc.mjs",
+      "format": "<type>(<scope>): <subject>",
+      "enforces": "Conventional Commits"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "check-secrets + lint-staged",
+        "commit-msg": "commitlint",
+        "pre-push": "full check suite"
+      }
+    },
+    "lintStaged": {
+      "configLocation": "lint-staged.config.mjs",
+      "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
+      "*.{js,mjs,cjs}": ["prettier --write"],
+      "*.{json,md,yaml}": ["prettier --write"]
+    }
+  },
+  "violations": {
+    "summary": {
+      "total": 3,
+      "errors": 0,
+      "warnings": 3,
+      "info": 0
+    },
+    "items": [
+      {
+        "file": "packages/queue/src/workers/agentWorker.ts",
+        "rule": "no-console",
+        "message": "console.log() found — use a structured logger instead",
+        "severity": "warn"
+      },
+      {
+        "file": "packages/queue/src/workers/notificationWorker.ts",
+        "rule": "no-console",
+        "message": "console.log() found — use a structured logger instead",
+        "severity": "warn"
+      },
+      {
+        "file": "packages/queue/src/workers/slaCheckWorker.ts",
+        "rule": "no-console",
+        "message": "console.log() found — use a structured logger instead",
+        "severity": "warn"
+      }
+    ]
+  },
+  "codeQualitySignals": {
+    "todos": {
+      "count": 0,
+      "items": []
+    },
+    "fixmes": {
+      "count": 0,
+      "items": []
+    },
+    "anyTypeUsage": 0,
+    "nonNullAssertions": 3,
+    "consoleLogUsage": 3
+  },
+  "recommendations": [
+    {
+      "id": "REC-006",
+      "priority": "high",
+      "title": "Add test infrastructure",
+      "description": "No test runner config detected (vitest or jest). Testing is critical for a production platform.",
+      "action": "Set up Vitest for unit tests and Playwright for E2E tests."
+    },
+    {
+      "id": "REC-007",
+      "priority": "high",
+      "title": "Add CI/CD pipeline",
+      "description": "No GitHub Actions workflows found. Automate lint, typecheck, and tests on PRs.",
+      "action": "Create .github/workflows/ci.yml with lint + typecheck + test jobs."
+    }
+  ]
+}

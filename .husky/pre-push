@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+# ─────────────────────────────────────────────────────────────
+# PRE-PUSH HOOK
+# Full suite of checks before pushing to remote.
+# This is the last line of defence before code reaches GitHub.
+#
+# Checks performed (via scripts/pre-push-checks.mjs):
+#   1. Full secrets scan (entire repo)
+#   2. Dependency consistency across workspace packages
+#   3. TypeScript type-check (all packages via turbo)
+#   4. ESLint (all packages via turbo)
+#   5. Prisma schema validation
+#   6. Project structure analysis + quality-rules.json update
+# ─────────────────────────────────────────────────────────────
+
+echo ""
+echo "🚀 [pre-push] Running full quality checks before push..."
+echo "   This may take 30–90 seconds for a cold run (turbo caches subsequent runs)."
+echo ""
+
+node scripts/pre-push-checks.mjs
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+  echo ""
+  echo "❌ [pre-push] Push blocked. Fix the issues above and try again."
+  echo "   Tip: run 'pnpm lint' and 'pnpm typecheck' locally to iterate faster."
+  exit 1
+fi
+
+echo ""
+echo "✅ [pre-push] All checks passed. Pushing to remote..."

@@ -1,0 +1,23 @@
+{
+  "name": "@repo/queue",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@repo/agents": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/shared": "workspace:*",
+    "@prisma/client": "^5.22.0",
+    "bullmq": "^5.8.0"
+  },
+  "devDependencies": {
+    "@repo/tsconfig": "workspace:*",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}
