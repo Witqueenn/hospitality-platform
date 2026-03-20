@@ -35,14 +35,17 @@ export default function NewSupportCasePage() {
   });
   const [error, setError] = useState<string | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createCase = (trpc.supportCase.create as any).useMutation({
+  const createCase = (
+    trpc.supportCase.create as unknown as {
+      useMutation: (opts: unknown) => {
+        mutate: (input: Record<string, unknown>) => void;
+        isPending: boolean;
+      };
+    }
+  ).useMutation({
     onSuccess: (data: { id: string }) => router.push(`/support/${data.id}`),
     onError: (e: { message: string }) => setError(e.message),
-  }) as {
-    mutate: (input: Record<string, unknown>) => void;
-    isPending: boolean;
-  };
+  });
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
