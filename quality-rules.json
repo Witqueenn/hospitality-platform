@@ -1,39 +1,40 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-20T05:36:24.307Z",
+    "generatedAt": "2026-03-20T12:28:21.107Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-20T05:36:24.303Z"]
+    "runHistory": ["2026-03-20T12:28:21.102Z"]
   },
   "metrics": {
-    "totalFiles": 147,
-    "totalLines": 17095,
+    "totalFiles": 266,
+    "totalLines": 48448,
     "largestFile": {
       "path": "pnpm-lock.yaml",
-      "lines": 6889
+      "lines": 10102
     },
     "byExtension": {
+      ".md": 75,
+      ".json": 44,
       ".mjs": 7,
       ".example": 1,
       ".local": 1,
-      "(none)": 21,
+      ".yml": 3,
+      "(none)": 22,
       ".sh": 1,
-      ".md": 1,
-      ".ts": 66,
-      ".json": 23,
+      ".ts": 79,
       ".js": 3,
-      ".tsx": 17,
+      ".tsx": 24,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".yml": 1,
+      ".sql": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 83,
-      "percentage": 56
+      "tsFiles": 103,
+      "percentage": 39
     }
   },
   "detectedPatterns": {
@@ -125,10 +126,10 @@
   },
   "violations": {
     "summary": {
-      "total": 3,
+      "total": 4,
       "errors": 0,
       "warnings": 3,
-      "info": 0
+      "info": 1
     },
     "items": [
       {
@@ -148,6 +149,12 @@
         "rule": "no-console",
         "message": "console.log() found — use a structured logger instead",
         "severity": "warn"
+      },
+      {
+        "file": "packages/agents/src/index.ts",
+        "rule": "barrel-completeness",
+        "message": "Barrel may be missing exports: llm.ts",
+        "severity": "info"
       }
     ]
   },
@@ -171,13 +178,6 @@
       "title": "Add test infrastructure",
       "description": "No test runner config detected (vitest or jest). Testing is critical for a production platform.",
       "action": "Set up Vitest for unit tests and Playwright for E2E tests."
-    },
-    {
-      "id": "REC-007",
-      "priority": "high",
-      "title": "Add CI/CD pipeline",
-      "description": "No GitHub Actions workflows found. Automate lint, typecheck, and tests on PRs.",
-      "action": "Create .github/workflows/ci.yml with lint + typecheck + test jobs."
     }
   ]
 }

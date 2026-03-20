@@ -137,6 +137,12 @@ if (!earlyExit) {
     const r = run(
       "Validating Prisma schema",
       "pnpm --filter @repo/db exec prisma validate",
+      {
+        env: {
+          DATABASE_URL:
+            "postgresql://dev:devpass@localhost:5432/hospitality_platform",
+        },
+      },
     );
     results.push({ name: "Prisma validate", ...r });
     if (!r.ok) {
