@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "description": "Context7 — pulls up-to-date docs for Next.js, Prisma, tRPC, Tailwind, etc. into agent context"
+    }
+  }
+}

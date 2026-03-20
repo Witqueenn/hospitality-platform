@@ -50,9 +50,13 @@ Respond with JSON only:
             policies: hotel.policies,
           },
           booking: {
-            checkIn: (booking as Record<string, unknown>)["checkIn"],
-            checkOut: (booking as Record<string, unknown>)["checkOut"],
-            guestCount: (booking as Record<string, unknown>)["guestCount"],
+            checkIn: (booking as unknown as Record<string, unknown>)["checkIn"],
+            checkOut: (booking as unknown as Record<string, unknown>)[
+              "checkOut"
+            ],
+            guestCount: (booking as unknown as Record<string, unknown>)[
+              "guestCount"
+            ],
           },
         }),
       },
