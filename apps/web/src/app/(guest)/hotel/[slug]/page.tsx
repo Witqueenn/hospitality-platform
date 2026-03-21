@@ -72,14 +72,59 @@ export default function HotelDetailPage() {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const addr = (hotel as any).address as Record<string, string>;
+  // Narrow the deeply nested Prisma return type to avoid TS2589
+  type HotelDetail = {
+    id: string;
+    name: string;
+    slug: string;
+    description: string | null;
+    shortDescription: string | null;
+    starRating: number | null;
+    address: Record<string, string>;
+    wifiQuality: string | null;
+    noiseNotes: string | null;
+    amenities: unknown;
+    roomTypes: {
+      id: string;
+      name: string;
+      bedType: string;
+      capacity: number;
+      sizeSqm: number | null;
+      description: string | null;
+      features: unknown;
+    }[];
+    diningExperiences: {
+      id: string;
+      name: string;
+      diningType: string;
+      description: string | null;
+      capacity: number | null;
+      priceRange: string | null;
+    }[];
+    nightExperiences: {
+      id: string;
+      name: string;
+      experienceType: string;
+      description: string | null;
+      priceCents: number | null;
+    }[];
+    reviews: {
+      id: string;
+      overallScore: number;
+      title: string | null;
+      text: string | null;
+      sentiment: string | null;
+      hotelResponse: string | null;
+      guest: { name: string | null; avatarUrl: string | null } | null;
+    }[];
+  };
+  const hotelData = hotel as unknown as HotelDetail;
+
+  const addr = hotelData.address;
+  const scores: number[] = hotelData.reviews.map((r) => r.overallScore);
   const avgScore =
-    hotel.reviews.length > 0
-      ? (
-          hotel.reviews.reduce((s, r) => s + r.overallScore, 0) /
-          hotel.reviews.length
-        ).toFixed(1)
+    scores.length > 0
+      ? (scores.reduce((s, v) => s + v, 0) / scores.length).toFixed(1)
       : null;
 
   const handleBookRoom = (roomTypeId: string, pricePerNight: number) => {
@@ -88,7 +133,7 @@ export default function HotelDetailPage() {
       return;
     }
     router.push(
-      `/booking/new?hotelId=${hotel.id}&roomTypeId=${roomTypeId}&checkIn=${checkIn}&checkOut=${checkOut}&guestCount=${guestCount}&price=${pricePerNight}`,
+      `/booking/new?hotelId=${hotelData.id}&roomTypeId=${roomTypeId}&checkIn=${checkIn}&checkOut=${checkOut}&guestCount=${guestCount}&price=${pricePerNight}`,
     );
   };
 
@@ -112,13 +157,15 @@ export default function HotelDetailPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-3xl font-bold text-gray-900">
-                  {hotel.name}
+                  {hotelData.name}
                 </h1>
-                {hotel.starRating && (
+                {hotelData.starRating && (
                   <div className="flex text-amber-400">
-                    {Array.from({ length: hotel.starRating }).map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-current" />
-                    ))}
+                    {Array.from({ length: hotelData.starRating }).map(
+                      (_, i) => (
+                        <Star key={i} className="h-5 w-5 fill-current" />
+                      ),
+                    )}
                   </div>
                 )}
               </div>
@@ -128,39 +175,41 @@ export default function HotelDetailPage() {
               </p>
               {avgScore && (
                 <p className="mt-2 text-sm text-gray-600">
-                  ⭐ {avgScore}/10 · {hotel.reviews.length} reviews
+                  ⭐ {avgScore}/10 · {hotelData.reviews.length} reviews
                 </p>
               )}
             </div>
             <Button
               variant="outline"
-              onClick={() => router.push(`/support/new?hotelId=${hotel.id}`)}
+              onClick={() =>
+                router.push(`/support/new?hotelId=${hotelData.id}`)
+              }
             >
               <MessageSquare className="mr-2 h-4 w-4" /> Report Issue
             </Button>
           </div>
 
-          {hotel.shortDescription && (
-            <p className="mt-4 text-gray-600">{hotel.shortDescription}</p>
+          {hotelData.shortDescription && (
+            <p className="mt-4 text-gray-600">{hotelData.shortDescription}</p>
           )}
 
           {/* Transparency Panel */}
           <div className="mt-5 flex flex-wrap gap-3 rounded-xl bg-gray-50 p-4">
-            {hotel.wifiQuality && (
+            {hotelData.wifiQuality && (
               <span
-                className={`rounded-full px-3 py-1 text-sm font-medium ${WIFI_BADGE[hotel.wifiQuality] ?? "bg-gray-100 text-gray-600"}`}
+                className={`rounded-full px-3 py-1 text-sm font-medium ${WIFI_BADGE[hotelData.wifiQuality] ?? "bg-gray-100 text-gray-600"}`}
               >
                 <Wifi className="mr-1 inline h-3.5 w-3.5" />
-                WiFi: {hotel.wifiQuality}
+                WiFi: {hotelData.wifiQuality}
               </span>
             )}
-            {hotel.noiseNotes && (
+            {hotelData.noiseNotes && (
               <span className="rounded-full bg-yellow-50 px-3 py-1 text-sm text-yellow-700">
-                🔊 {hotel.noiseNotes}
+                🔊 {hotelData.noiseNotes}
               </span>
             )}
-            {Array.isArray(hotel.amenities) &&
-              (hotel.amenities as string[]).slice(0, 5).map((a) => (
+            {Array.isArray(hotelData.amenities) &&
+              (hotelData.amenities as string[]).slice(0, 5).map((a) => (
                 <Badge key={a} variant="secondary">
                   {a}
                 </Badge>
@@ -217,28 +266,28 @@ export default function HotelDetailPage() {
       <Tabs defaultValue="rooms">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="rooms">
-            Rooms ({hotel.roomTypes.length})
+            Rooms ({hotelData.roomTypes.length})
           </TabsTrigger>
           <TabsTrigger value="dining">
-            Dining ({hotel.diningExperiences.length})
+            Dining ({hotelData.diningExperiences.length})
           </TabsTrigger>
           <TabsTrigger value="nightlife">
-            Nightlife ({hotel.nightExperiences.length})
+            Nightlife ({hotelData.nightExperiences.length})
           </TabsTrigger>
           <TabsTrigger value="reviews">
-            Reviews ({hotel.reviews.length})
+            Reviews ({hotelData.reviews.length})
           </TabsTrigger>
         </TabsList>
 
         {/* Rooms */}
         <TabsContent value="rooms" className="mt-4">
-          {hotel.roomTypes.length === 0 ? (
+          {hotelData.roomTypes.length === 0 ? (
             <p className="py-8 text-center text-gray-400">
               No rooms available.
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {hotel.roomTypes.map((room) => (
+              {hotelData.roomTypes.map((room) => (
                 <div
                   key={room.id}
                   className="rounded-xl border bg-white p-5 shadow-sm"
@@ -301,13 +350,13 @@ export default function HotelDetailPage() {
 
         {/* Dining */}
         <TabsContent value="dining" className="mt-4">
-          {hotel.diningExperiences.length === 0 ? (
+          {hotelData.diningExperiences.length === 0 ? (
             <p className="py-8 text-center text-gray-400">
               No dining experiences listed.
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {hotel.diningExperiences.map((d) => (
+              {hotelData.diningExperiences.map((d) => (
                 <div key={d.id} className="rounded-xl border bg-white p-5">
                   <div className="flex items-start justify-between">
                     <h3 className="font-semibold text-gray-900">{d.name}</h3>
@@ -330,13 +379,13 @@ export default function HotelDetailPage() {
 
         {/* Nightlife */}
         <TabsContent value="nightlife" className="mt-4">
-          {hotel.nightExperiences.length === 0 ? (
+          {hotelData.nightExperiences.length === 0 ? (
             <p className="py-8 text-center text-gray-400">
               No nightlife experiences listed.
             </p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
-              {hotel.nightExperiences.map((n) => (
+              {hotelData.nightExperiences.map((n) => (
                 <div key={n.id} className="rounded-xl border bg-white p-5">
                   <div className="flex items-start justify-between">
                     <h3 className="font-semibold text-gray-900">{n.name}</h3>
@@ -360,11 +409,11 @@ export default function HotelDetailPage() {
 
         {/* Reviews */}
         <TabsContent value="reviews" className="mt-4">
-          {hotel.reviews.length === 0 ? (
+          {hotelData.reviews.length === 0 ? (
             <p className="py-8 text-center text-gray-400">No reviews yet.</p>
           ) : (
             <div className="space-y-4">
-              {hotel.reviews.map((r) => (
+              {hotelData.reviews.map((r) => (
                 <div key={r.id} className="rounded-xl border bg-white p-5">
                   <div className="flex items-start justify-between">
                     <div>
@@ -410,10 +459,10 @@ export default function HotelDetailPage() {
         </TabsContent>
       </Tabs>
 
-      {hotel.description && (
+      {hotelData.description && (
         <div className="rounded-xl border bg-white p-6">
           <h2 className="mb-3 text-lg font-semibold text-gray-900">About</h2>
-          <p className="text-gray-600">{hotel.description}</p>
+          <p className="text-gray-600">{hotelData.description}</p>
         </div>
       )}
     </div>

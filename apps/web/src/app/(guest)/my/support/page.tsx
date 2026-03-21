@@ -10,6 +10,17 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MessageSquare, Plus, ChevronRight } from "lucide-react";
 
+interface SupportCaseItem {
+  id: string;
+  severity: string;
+  status: string;
+  category: string;
+  title: string;
+  createdAt: string;
+  caseRef?: string;
+  hotel?: { name: string };
+}
+
 const SEVERITY_STYLE: Record<string, string> = {
   CRITICAL: "bg-red-100 text-red-700",
   HIGH: "bg-orange-100 text-orange-700",
@@ -74,8 +85,7 @@ export default function MySupportPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {(data.items as any[]).map((c) => (
+          {(data.items as SupportCaseItem[]).map((c) => (
             <button
               key={c.id}
               onClick={() => router.push(`/support/${c.id}`)}

@@ -80,9 +80,8 @@ export default function BookingNewPage() {
     { enabled: !!hotelId && !!checkIn && !!checkOut },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const selectedRoom = availability?.find(
-    (a: any) => (a.roomType as { id: string }).id === roomTypeId,
+    (a: { roomType: { id: string } }) => a.roomType.id === roomTypeId,
   );
 
   const nights =
@@ -96,8 +95,7 @@ export default function BookingNewPage() {
   const taxCents = Math.floor(subtotalCents * 0.1);
   const totalCents = subtotalCents + taxCents;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createBooking = (trpc.booking.create as any).useMutation({
+  const createBooking = trpc.booking.create.useMutation({
     onSuccess: (data: { bookingRef: string; id: string }) => {
       toast.success("Booking confirmed!");
       setConfirmedBooking({ bookingRef: data.bookingRef, id: data.id });

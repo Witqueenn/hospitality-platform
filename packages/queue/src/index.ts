@@ -10,6 +10,7 @@ export type {
 export { startAgentWorker } from "./workers/agentWorker.js";
 export { startNotificationWorker } from "./workers/notificationWorker.js";
 export { startSLACheckWorker } from "./workers/slaCheckWorker.js";
+export { logger } from "./logger.js";
 
 // Queue factory helpers
 import { Queue } from "bullmq";

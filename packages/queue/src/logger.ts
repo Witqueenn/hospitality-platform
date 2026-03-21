@@ -13,10 +13,11 @@ function log(
     message,
     ...(meta && { meta }),
   };
+  const line = JSON.stringify(entry) + "\n";
   if (level === "error") {
-    console.error(JSON.stringify(entry));
+    process.stderr.write(line);
   } else {
-    console.log(JSON.stringify(entry));
+    process.stdout.write(line);
   }
 }
 

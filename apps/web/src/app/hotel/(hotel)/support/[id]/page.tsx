@@ -38,6 +38,15 @@ const STATUS_STYLE: Record<string, string> = {
   ESCALATED: "bg-red-200 text-red-800",
 };
 
+interface TimelineEntry {
+  id: string;
+  actorType: string;
+  actorId: string;
+  actorName: string;
+  content: string;
+  createdAt: string;
+}
+
 const NEXT_STATUS: Record<string, string | null> = {
   OPEN: "IN_PROGRESS",
   IN_PROGRESS: "AWAITING_GUEST",
@@ -64,8 +73,7 @@ export default function HotelSupportCaseDetailPage() {
     refetch,
   } = trpc.supportCase.getById.useQuery({ id }, { enabled: !!id });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const addEntry = (trpc.supportCase.addTimelineEntry as any).useMutation({
+  const addEntry = trpc.supportCase.addTimelineEntry.useMutation({
     onSuccess: () => {
       setMessage("");
       void refetch();
@@ -77,8 +85,7 @@ export default function HotelSupportCaseDetailPage() {
     onError: (err: { message: string }) => toast.error(err.message),
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updateStatus = (trpc.supportCase.updateStatus as any).useMutation({
+  const updateStatus = trpc.supportCase.updateStatus.useMutation({
     onSuccess: () => {
       toast.success("Status updated!");
       void refetch();
@@ -404,8 +411,7 @@ export default function HotelSupportCaseDetailPage() {
           <h2 className="font-semibold text-gray-900">Conversation</h2>
         </div>
         <div className="max-h-96 space-y-3 overflow-y-auto p-5">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {(supportCase.timeline as any[]).map((entry) => {
+          {(supportCase.timeline as TimelineEntry[]).map((entry) => {
             const isGuestMsg = entry.actorType === "guest";
             const isMe = entry.actorId === user?.id;
             return (
