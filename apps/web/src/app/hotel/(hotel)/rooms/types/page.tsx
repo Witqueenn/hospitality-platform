@@ -86,9 +86,8 @@ export default function RoomTypesPage() {
     onError: (e) => toast.error(e.message),
   });
 
-  const handleOpen = (
-    roomType?: typeof roomTypes extends (infer T)[] | undefined ? T : never,
-  ) => {
+  type RoomTypeItem = NonNullable<typeof roomTypes>[number];
+  const handleOpen = (roomType?: RoomTypeItem) => {
     if (roomType) {
       setEditId(roomType.id);
       setForm({
