@@ -235,7 +235,7 @@ export default function HomePage() {
                 "AI-powered operations",
                 "Real-time guest insights",
                 "Automated support & recovery",
-              ].map((item) => (
+              ].map((item: any) => (
                 <li
                   key={item}
                   className="flex items-center gap-3 text-sm text-slate-300"
@@ -273,7 +273,7 @@ export default function HomePage() {
                 "Personalized recommendations",
                 "Seamless booking",
                 "24/7 AI concierge",
-              ].map((item) => (
+              ].map((item: any) => (
                 <li
                   key={item}
                   className="flex items-center gap-3 text-sm text-slate-300"

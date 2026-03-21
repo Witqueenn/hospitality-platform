@@ -85,7 +85,7 @@ export default function MySupportPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {(data.items as SupportCaseItem[]).map((c) => (
+          {(data.items as SupportCaseItem[]).map((c: any) => (
             <button
               key={c.id}
               onClick={() => router.push(`/support/${c.id}`)}

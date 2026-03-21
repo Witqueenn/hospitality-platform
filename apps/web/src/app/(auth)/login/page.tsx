@@ -7,7 +7,9 @@ import { trpc } from "@/lib/trpc";
 import { useAuthStore } from "@/stores/authStore";
 import { isHotelStaff, isPlatformAdmin } from "@/lib/auth";
 
-export default function LoginPage() {
+import { Suspense } from "react";
+
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const registered = searchParams.get("registered") === "1";
@@ -105,5 +107,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-[#1a1a2e] to-[#16213e]" />
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }

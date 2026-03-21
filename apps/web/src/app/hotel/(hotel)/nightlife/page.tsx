@@ -215,7 +215,7 @@ export default function NightlifePage() {
       features: form.features
         ? form.features
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
     };
@@ -312,7 +312,7 @@ export default function NightlifePage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {(nights as unknown as NightItem[]).map((item) => {
+          {(nights as unknown as NightItem[]).map((item: any) => {
             const isExpanded = expandedId === item.id;
             const photo = coverPhoto(item);
             const photoCount = parseNightPhotos(item.photos).length;

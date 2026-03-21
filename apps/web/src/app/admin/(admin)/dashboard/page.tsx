@@ -32,7 +32,7 @@ export default function AdminDashboard() {
           <h2 className="font-semibold">Tenants</h2>
         </div>
         <div className="divide-y">
-          {tenants?.map((t) => (
+          {tenants?.map((t: any) => (
             <div
               key={t.id}
               className="flex items-center justify-between px-5 py-3"

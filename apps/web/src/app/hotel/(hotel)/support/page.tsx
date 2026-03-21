@@ -81,7 +81,7 @@ export default function SupportCasesPage() {
               "AWAITING_APPROVAL",
               "RESOLVED",
               "ESCALATED",
-            ].map((s) => (
+            ].map((s: any) => (
               <option key={s} value={s}>
                 {s.replace(/_/g, " ")}
               </option>
@@ -93,7 +93,7 @@ export default function SupportCasesPage() {
             className="rounded-lg border px-3 py-2 text-sm"
           >
             <option value="">All Severity</option>
-            {["CRITICAL", "HIGH", "MEDIUM", "LOW"].map((s) => (
+            {["CRITICAL", "HIGH", "MEDIUM", "LOW"].map((s: any) => (
               <option key={s} value={s}>
                 {s}
               </option>
@@ -133,7 +133,7 @@ export default function SupportCasesPage() {
               </tr>
             </thead>
             <tbody className="divide-y">
-              {data.items.map((c) => (
+              {data.items.map((c: any) => (
                 <tr key={c.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3">
                     <p className="font-medium text-gray-900">{c.caseRef}</p>

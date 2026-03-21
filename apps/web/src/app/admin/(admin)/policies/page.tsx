@@ -54,7 +54,7 @@ export default function PoliciesPage() {
       setForm({ policyKey: "", policyValue: "", description: "" });
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -120,7 +120,7 @@ export default function PoliciesPage() {
             className="w-full rounded-lg border px-3 py-2 text-sm"
           >
             <option value="">— Choose a tenant —</option>
-            {tenants?.map((t) => (
+            {tenants?.map((t: any) => (
               <option key={t.id} value={t.id}>
                 {t.name} ({t.slug})
               </option>
@@ -153,7 +153,7 @@ export default function PoliciesPage() {
       ) : (
         <div className="overflow-hidden rounded-xl border bg-white">
           <div className="divide-y">
-            {policies.map((p) => (
+            {policies.map((p: any) => (
               <div
                 key={p.policyKey}
                 className="flex items-center justify-between px-5 py-4"

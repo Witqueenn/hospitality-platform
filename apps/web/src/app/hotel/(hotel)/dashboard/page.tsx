@@ -128,7 +128,7 @@ export default function HotelDashboard() {
             <h2 className="font-semibold text-gray-900">Upcoming Events</h2>
           </div>
           <div className="divide-y">
-            {data!.upcomingEvents.map((event) => (
+            {data!.upcomingEvents.map((event: any) => (
               <div
                 key={event.id}
                 className="flex items-center justify-between px-5 py-3"

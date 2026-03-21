@@ -51,7 +51,7 @@ export default function TenantsPage() {
       setForm({ name: "", slug: "", billingPlan: "starter" });
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const suspendMutation = trpc.tenant.suspend.useMutation({
@@ -59,7 +59,7 @@ export default function TenantsPage() {
       toast.success("Tenant suspended.");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const activateMutation = trpc.tenant.activate.useMutation({
@@ -67,7 +67,7 @@ export default function TenantsPage() {
       toast.success("Tenant activated!");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const handleSlug = (name: string) =>
@@ -91,21 +91,23 @@ export default function TenantsPage() {
       {/* Summary */}
       {tenants && (
         <div className="grid grid-cols-3 gap-4">
-          {(["ACTIVE", "SUSPENDED", "TRIAL"] as TenantStatus[]).map((s) => {
-            const count = tenants.filter((t) => t.status === s).length;
-            return (
-              <div key={s} className="rounded-xl border bg-white p-4">
-                <p className="text-sm text-gray-500">
-                  {s.charAt(0) + s.slice(1).toLowerCase()}
-                </p>
-                <p
-                  className={`text-2xl font-bold ${s === "ACTIVE" ? "text-green-600" : s === "SUSPENDED" ? "text-red-600" : "text-yellow-600"}`}
-                >
-                  {count}
-                </p>
-              </div>
-            );
-          })}
+          {(["ACTIVE", "SUSPENDED", "TRIAL"] as TenantStatus[]).map(
+            (s: any) => {
+              const count = tenants.filter((t) => t.status === s).length;
+              return (
+                <div key={s} className="rounded-xl border bg-white p-4">
+                  <p className="text-sm text-gray-500">
+                    {s.charAt(0) + s.slice(1).toLowerCase()}
+                  </p>
+                  <p
+                    className={`text-2xl font-bold ${s === "ACTIVE" ? "text-green-600" : s === "SUSPENDED" ? "text-red-600" : "text-yellow-600"}`}
+                  >
+                    {count}
+                  </p>
+                </div>
+              );
+            },
+          )}
         </div>
       )}
 
@@ -123,7 +125,7 @@ export default function TenantsPage() {
       ) : (
         <div className="overflow-hidden rounded-xl border bg-white">
           <div className="divide-y">
-            {tenants.map((t) => (
+            {tenants.map((t: any) => (
               <div
                 key={t.id}
                 className="flex items-center justify-between px-5 py-4"
@@ -222,7 +224,7 @@ export default function TenantsPage() {
                 }
                 className="w-full rounded-lg border px-3 py-2 text-sm"
               >
-                {BILLING_PLANS.map((p) => (
+                {BILLING_PLANS.map((p: any) => (
                   <option key={p} value={p}>
                     {p.charAt(0).toUpperCase() + p.slice(1)}
                   </option>

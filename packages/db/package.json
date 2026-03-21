@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "ts-node --esm prisma/seed.ts",
+    "db:seed:sup": "ts-node --esm prisma/seed-supplementary.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {

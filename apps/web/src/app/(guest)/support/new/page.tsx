@@ -90,7 +90,7 @@ export default function NewSupportCasePage() {
             }
             className="w-full rounded-lg border px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]"
           >
-            {CATEGORIES.map((c) => (
+            {CATEGORIES.map((c: any) => (
               <option key={c} value={c}>
                 {c.replace(/_/g, " ")}
               </option>

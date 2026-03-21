@@ -107,7 +107,7 @@ export default function SearchPage() {
         ) : (
           <div className="space-y-4">
             <p className="text-sm text-gray-500">{data.total} hotels found</p>
-            {data.items.map((hotel) => {
+            {data.items.map((hotel: any) => {
               const reviews = hotel.reviews as { overallScore: number }[];
               const avgScore =
                 reviews.length > 0

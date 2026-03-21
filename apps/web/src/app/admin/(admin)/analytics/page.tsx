@@ -60,7 +60,7 @@ export default function AdminAnalyticsPage() {
                 <SelectValue placeholder="Select a hotel..." />
               </SelectTrigger>
               <SelectContent>
-                {hotelsData?.items.map((h) => (
+                {hotelsData?.items.map((h: { id: string; name: string }) => (
                   <SelectItem key={h.id} value={h.id}>
                     {h.name}
                   </SelectItem>

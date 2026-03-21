@@ -293,7 +293,7 @@ export default function DiningDetailPage() {
                   Cuisine
                 </h2>
                 <div className="flex flex-wrap gap-2">
-                  {cuisine.map((c) => (
+                  {cuisine.map((c: any) => (
                     <Badge key={c} variant="secondary" className="text-sm">
                       {c}
                     </Badge>
@@ -309,7 +309,7 @@ export default function DiningDetailPage() {
                   Menu Highlights
                 </h2>
                 <ul className="space-y-2">
-                  {menuHighlights.map((h) => (
+                  {menuHighlights.map((h: any) => (
                     <li
                       key={h}
                       className="flex items-center gap-2 text-gray-700"

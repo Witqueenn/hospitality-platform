@@ -64,7 +64,7 @@ export default function AdminUsersPage() {
       setForm({ email: "", name: "", role: "FRONT_DESK" });
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   return (
@@ -95,7 +95,7 @@ export default function AdminUsersPage() {
             className="w-full rounded-lg border px-3 py-2 text-sm"
           >
             <option value="">— Choose a hotel —</option>
-            {hotelsData?.items.map((h) => (
+            {hotelsData?.items.map((h: any) => (
               <option key={h.id} value={h.id}>
                 {h.name} (
                 {typeof h.address === "object" && h.address !== null
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
       ) : (
         <div className="overflow-hidden rounded-xl border bg-white">
           <div className="divide-y">
-            {staff.map((s) => (
+            {staff.map((s: any) => (
               <div
                 key={s.id}
                 className="flex items-center justify-between px-5 py-3"

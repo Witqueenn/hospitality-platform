@@ -43,7 +43,7 @@ export default function ApprovalsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {cases.items.map((c) => (
+          {cases.items.map((c: any) => (
             <div key={c.id} className="rounded-xl border bg-white p-5">
               <div className="flex items-start justify-between">
                 <div>

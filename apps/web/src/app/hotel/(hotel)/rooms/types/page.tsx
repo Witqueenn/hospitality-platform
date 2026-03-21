@@ -160,7 +160,7 @@ export default function RoomTypesPage() {
       features: form.features
         ? form.features
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
       noiseNotes: form.noiseNotes || undefined,

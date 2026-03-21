@@ -1,18 +1,18 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-21T09:41:25.717Z",
+    "generatedAt": "2026-03-21T10:43:49.731Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-21T09:41:25.716Z"]
+    "runHistory": ["2026-03-21T10:43:49.728Z"]
   },
   "metrics": {
-    "totalFiles": 320,
-    "totalLines": 85148,
+    "totalFiles": 328,
+    "totalLines": 71573,
     "largestFile": {
-      "path": "quality-rules.json",
-      "lines": 18176
+      "path": "pnpm-lock.yaml",
+      "lines": 12795
     },
     "byExtension": {
       "(none)": 24,
@@ -23,17 +23,18 @@
       ".yml": 3,
       ".sh": 1,
       ".local": 1,
-      ".ts": 89,
+      ".ts": 91,
       ".js": 3,
-      ".tsx": 60,
+      ".tsx": 64,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".sql": 1,
+      ".sql": 2,
+      ".toml": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 149,
+      "tsFiles": 155,
       "percentage": 47
     }
   },
@@ -126,10 +127,10 @@
   },
   "violations": {
     "summary": {
-      "total": 3,
+      "total": 1,
       "errors": 0,
-      "warnings": 2,
-      "info": 1
+      "warnings": 1,
+      "info": 0
     },
     "items": [
       {
@@ -137,18 +138,6 @@
         "rule": "no-direct-env",
         "message": "Direct process.env access — centralize env vars in a typed env module",
         "severity": "warn"
-      },
-      {
-        "file": "packages/queue/src/logger.ts",
-        "rule": "no-console",
-        "message": "console.log() found — use a structured logger instead",
-        "severity": "warn"
-      },
-      {
-        "file": "packages/queue/src/index.ts",
-        "rule": "barrel-completeness",
-        "message": "Barrel may be missing exports: logger.ts",
-        "severity": "info"
       }
     ]
   },
@@ -163,7 +152,7 @@
     },
     "anyTypeUsage": 0,
     "nonNullAssertions": 4,
-    "consoleLogUsage": 1
+    "consoleLogUsage": 0
   },
   "recommendations": [
     {

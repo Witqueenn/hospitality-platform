@@ -262,7 +262,7 @@ export default function SupportCaseDetailPage() {
         </div>
 
         <div className="max-h-96 space-y-3 overflow-y-auto p-5">
-          {sc.timeline.map((entry) => {
+          {sc.timeline.map((entry: any) => {
             const isGuestMsg = entry.actorType === "guest";
             const isMe = entry.actorId === user?.id;
 

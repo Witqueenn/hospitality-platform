@@ -182,7 +182,7 @@ export default function DiningPage() {
       cuisine: form.cuisine
         ? form.cuisine
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
       capacity: form.capacity ? Number(form.capacity) : undefined,
@@ -190,7 +190,7 @@ export default function DiningPage() {
       menuHighlights: form.menuHighlights
         ? form.menuHighlights
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
     };
@@ -286,7 +286,7 @@ export default function DiningPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {dining.map((item) => {
+          {dining.map((item: any) => {
             const isExpanded = expandedId === item.id;
             const photo = coverPhoto(item);
             const photoCount = parseDiningPhotos(item.photos).length;
@@ -413,7 +413,7 @@ export default function DiningPage() {
                             Menu Highlights
                           </p>
                           <ul className="space-y-0.5">
-                            {highlights.map((h) => (
+                            {highlights.map((h: any) => (
                               <li
                                 key={h}
                                 className="flex items-center gap-1.5 text-sm text-gray-600"
@@ -430,7 +430,7 @@ export default function DiningPage() {
                             Cuisine
                           </p>
                           <div className="flex flex-wrap gap-1">
-                            {cuisines.map((c) => (
+                            {cuisines.map((c: any) => (
                               <span
                                 key={c}
                                 className="rounded-full bg-white px-2 py-0.5 text-xs text-gray-600 ring-1 ring-gray-200"
@@ -557,7 +557,7 @@ export default function DiningPage() {
                     className="w-full rounded-lg border px-3 py-2 text-sm"
                   >
                     <option value="">— Not set —</option>
-                    {PRICE_RANGES.map((p) => (
+                    {PRICE_RANGES.map((p: any) => (
                       <option key={p.value} value={p.value}>
                         {p.label}
                       </option>

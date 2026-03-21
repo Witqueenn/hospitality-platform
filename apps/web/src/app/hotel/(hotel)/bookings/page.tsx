@@ -103,7 +103,7 @@ export default function HotelBookingsPage() {
             "CHECKED_OUT",
             "CANCELLED",
             "NO_SHOW",
-          ].map((s) => (
+          ].map((s: any) => (
             <option key={s} value={s}>
               {s.replace(/_/g, " ")}
             </option>
@@ -258,7 +258,7 @@ export default function HotelBookingsPage() {
                                   Room(s)
                                 </p>
                                 <div className="space-y-1">
-                                  {b.items.map((item) =>
+                                  {b.items.map((item: any) =>
                                     item.roomType ? (
                                       <div
                                         key={item.id}

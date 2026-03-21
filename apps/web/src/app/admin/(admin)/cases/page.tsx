@@ -64,7 +64,7 @@ export default function AdminCasesPage() {
       toast.success("Status updated!");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   return (
@@ -84,7 +84,7 @@ export default function AdminCasesPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">All Severities</SelectItem>
-              {ALL_SEVERITIES.map((s) => (
+              {ALL_SEVERITIES.map((s: any) => (
                 <SelectItem key={s} value={s}>
                   {s}
                 </SelectItem>
@@ -103,7 +103,7 @@ export default function AdminCasesPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">All Statuses</SelectItem>
-              {ALL_STATUSES.map((s) => (
+              {ALL_STATUSES.map((s: any) => (
                 <SelectItem key={s} value={s}>
                   {s.replace(/_/g, " ")}
                 </SelectItem>
@@ -126,7 +126,7 @@ export default function AdminCasesPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {data.items.map((c) => {
+          {data.items.map((c: any) => {
             const isExpanded = expandedId === c.id;
             return (
               <div

@@ -70,7 +70,7 @@ export default function VenuesPage() {
       setOpen(false);
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const updateMutation = trpc.venue.update.useMutation({
@@ -79,15 +79,15 @@ export default function VenuesPage() {
       setOpen(false);
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const handleOpen = (
     venue?: typeof venues extends (infer T)[] | undefined ? T : never,
   ) => {
     if (venue) {
-      setEditId(venue.id);
-      const caps = (venue.capacities ?? {}) as Record<string, number>;
+      setEditId((venue as any).id);
+      const caps = ((venue as any).capacities ?? {}) as Record<string, number>;
       setForm({
         name: venue.name,
         description: venue.description ?? "",
@@ -95,11 +95,11 @@ export default function VenuesPage() {
         sizeSquareMeters: venue.sizeSquareMeters
           ? String(venue.sizeSquareMeters)
           : "",
-        features: Array.isArray(venue.features)
-          ? (venue.features as string[]).join(", ")
+        features: Array.isArray((venue as any).features)
+          ? ((venue as any).features as string[]).join(", ")
           : "",
-        avEquipment: Array.isArray(venue.avEquipment)
-          ? (venue.avEquipment as string[]).join(", ")
+        avEquipment: Array.isArray((venue as any).avEquipment)
+          ? ((venue as any).avEquipment as string[]).join(", ")
           : "",
         ratePerHour: venue.ratePerHour ? String(venue.ratePerHour) : "",
         ratePerDay: venue.ratePerDay ? String(venue.ratePerDay) : "",
@@ -132,13 +132,13 @@ export default function VenuesPage() {
       features: form.features
         ? form.features
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
       avEquipment: form.avEquipment
         ? form.avEquipment
             .split(",")
-            .map((s) => s.trim())
+            .map((s: any) => s.trim())
             .filter(Boolean)
         : [],
       ratePerHour: form.ratePerHour
@@ -190,7 +190,7 @@ export default function VenuesPage() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {venues.map((venue) => {
+          {venues.map((venue: any) => {
             const caps = (venue.capacities ?? {}) as Record<string, number>;
             const maxCap = Math.max(0, ...Object.values(caps));
             return (

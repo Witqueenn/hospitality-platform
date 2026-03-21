@@ -72,7 +72,7 @@ export default function EventsPage() {
       toast.success("Status updated!");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   if (!hotelId) {
@@ -95,7 +95,7 @@ export default function EventsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">All Statuses</SelectItem>
-              {ALL_STATUSES.map((s) => (
+              {ALL_STATUSES.map((s: any) => (
                 <SelectItem key={s} value={s}>
                   {s.replace("_", " ")}
                 </SelectItem>
@@ -107,7 +107,7 @@ export default function EventsPage() {
 
       {/* Status summary tabs */}
       <div className="flex flex-wrap gap-2">
-        {(["ALL", ...ALL_STATUSES] as const).map((s) => (
+        {(["ALL", ...ALL_STATUSES] as const).map((s: any) => (
           <button
             key={s}
             onClick={() => setFilterStatus(s as EventStatus | "ALL")}
@@ -135,7 +135,7 @@ export default function EventsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {data.items.map((event) => {
+          {data.items.map((event: any) => {
             const status = event.status as EventStatus;
             const isExpanded = expandedId === event.id;
             const nextStatus = NEXT_STATUS[status];

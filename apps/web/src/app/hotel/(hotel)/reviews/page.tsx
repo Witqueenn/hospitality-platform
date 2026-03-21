@@ -36,7 +36,7 @@ const STATUS_STYLE: Record<ModerationStatus, string> = {
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((s) => (
+      {[1, 2, 3, 4, 5].map((s: any) => (
         <Star
           key={s}
           className={`h-3.5 w-3.5 ${s <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"}`}
@@ -80,7 +80,7 @@ export default function ReviewsPage() {
       setReplyText("");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const moderateMutation = trpc.review.moderate.useMutation({
@@ -88,7 +88,7 @@ export default function ReviewsPage() {
       toast.success("Review updated!");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   if (!hotelId)
@@ -173,7 +173,7 @@ export default function ReviewsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {data.items.map((review) => {
+          {data.items.map((review: any) => {
             const status = review.moderationStatus as ModerationStatus;
             const isReplying = replyId === review.id;
 

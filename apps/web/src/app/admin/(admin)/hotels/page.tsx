@@ -20,7 +20,7 @@ export default function AdminHotelsPage() {
       toast.success("Status updated!");
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const STATUS_STYLE: Record<string, string> = {
@@ -53,7 +53,7 @@ export default function AdminHotelsPage() {
       ) : (
         <div className="overflow-hidden rounded-xl border bg-white">
           <div className="divide-y">
-            {data.items.map((hotel) => (
+            {data.items.map((hotel: any) => (
               <div
                 key={hotel.id}
                 className="flex flex-wrap items-center justify-between gap-4 px-5 py-4"

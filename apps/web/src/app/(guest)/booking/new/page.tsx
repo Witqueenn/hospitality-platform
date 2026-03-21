@@ -48,7 +48,9 @@ function StepIndicator({ current }: { current: number }) {
   );
 }
 
-export default function BookingNewPage() {
+import { Suspense } from "react";
+
+function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, isAuthenticated } = useAuthStore();
@@ -339,5 +341,13 @@ export default function BookingNewPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function BookingNewPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingContent />
+    </Suspense>
   );
 }

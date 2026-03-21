@@ -338,7 +338,7 @@ export default function HotelSupportCaseDetailPage() {
                     "EVENT_DISCOUNT",
                     "FREE_NIGHT",
                     "OTHER",
-                  ].map((t) => (
+                  ].map((t: any) => (
                     <option key={t} value={t}>
                       {t.replace(/_/g, " ")}
                     </option>
@@ -411,7 +411,7 @@ export default function HotelSupportCaseDetailPage() {
           <h2 className="font-semibold text-gray-900">Conversation</h2>
         </div>
         <div className="max-h-96 space-y-3 overflow-y-auto p-5">
-          {(supportCase.timeline as TimelineEntry[]).map((entry) => {
+          {(supportCase.timeline as TimelineEntry[]).map((entry: any) => {
             const isGuestMsg = entry.actorType === "guest";
             const isMe = entry.actorId === user?.id;
             return (

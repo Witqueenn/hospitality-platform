@@ -58,10 +58,10 @@ export default function HotelSettingsPage() {
 
   useEffect(() => {
     if (hotel) {
-      const addr = (hotel.address ?? {}) as AddressJson;
+      const addr = ((hotel as any).address ?? {}) as AddressJson;
       setForm({
-        name: hotel.name ?? "",
-        description: hotel.description ?? "",
+        name: (hotel as any).name ?? "",
+        description: (hotel as any).description ?? "",
         shortDescription: hotel.shortDescription ?? "",
         starRating: hotel.starRating ?? 3,
         timezone: hotel.timezone ?? "UTC",
@@ -81,7 +81,7 @@ export default function HotelSettingsPage() {
       toast.success("Hotel settings saved!");
       setDirty(false);
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: any) => toast.error(e.message || "An error occurred"),
   });
 
   const handleChange = <K extends keyof HotelForm>(
@@ -187,7 +187,7 @@ export default function HotelSettingsPage() {
                 }
                 className="w-full rounded-lg border px-3 py-2 text-sm"
               >
-                {[1, 2, 3, 4, 5].map((s) => (
+                {[1, 2, 3, 4, 5].map((s: any) => (
                   <option key={s} value={s}>
                     {s} Star{s !== 1 ? "s" : ""}
                   </option>

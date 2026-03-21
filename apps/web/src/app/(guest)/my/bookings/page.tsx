@@ -141,7 +141,7 @@ export default function MyBookingsPage() {
       {/* Bookings list */}
       {!isLoading && data?.items && data.items.length > 0 && (
         <div className="space-y-4">
-          {(data.items as unknown as BookingItem[]).map((booking) => {
+          {(data.items as unknown as BookingItem[]).map((booking: any) => {
             const status = booking.status as BookingStatus;
             const badge = STATUS_BADGE[status] ?? {
               label: status,
