@@ -166,6 +166,11 @@ export const bookingRouter = router({
           include: {
             hotel: { select: { id: true, name: true, slug: true } },
             guest: { select: { id: true, name: true, email: true } },
+            items: {
+              include: {
+                roomType: { select: { id: true, name: true, bedType: true } },
+              },
+            },
           },
           orderBy: { createdAt: "desc" },
           skip,

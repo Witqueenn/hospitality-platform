@@ -8,6 +8,11 @@ export const roomTypeRouter = router({
   getPublic: publicProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const inThirtyDays = new Date(today);
+      inThirtyDays.setDate(inThirtyDays.getDate() + 30);
+
       const roomType = await ctx.db.roomType.findFirst({
         where: { id: input.id, isActive: true },
         include: {
@@ -20,21 +25,52 @@ export const roomTypeRouter = router({
               address: true,
               wifiQuality: true,
               noiseNotes: true,
+              amenities: true,
             },
+          },
+          inventory: {
+            where: {
+              date: { gte: today, lt: inThirtyDays },
+              availableCount: { gt: 0 },
+            },
+            orderBy: { pricePerNight: "asc" },
+            take: 1,
           },
         },
       });
       if (!roomType) throw new TRPCError({ code: "NOT_FOUND" });
-      return roomType;
+
+      const baseRateCents = roomType.inventory[0]?.pricePerNight ?? null;
+      return { ...roomType, baseRateCents };
     }),
 
   list: protectedProcedure
     .input(z.object({ hotelId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.roomType.findMany({
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const in30 = new Date(today);
+      in30.setDate(in30.getDate() + 30);
+
+      const roomTypes = await ctx.db.roomType.findMany({
         where: { hotelId: input.hotelId, tenantId: ctx.tenantId },
         orderBy: { sortOrder: "asc" },
+        include: {
+          inventory: {
+            where: {
+              date: { gte: today, lt: in30 },
+              availableCount: { gt: 0 },
+            },
+            orderBy: { pricePerNight: "asc" },
+            take: 1,
+          },
+        },
       });
+
+      return roomTypes.map((rt) => ({
+        ...rt,
+        baseRateCents: rt.inventory[0]?.pricePerNight ?? null,
+      }));
     }),
 
   create: protectedProcedure

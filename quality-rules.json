@@ -1,41 +1,40 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-21T06:41:35.660Z",
+    "generatedAt": "2026-03-21T09:41:25.717Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-21T06:41:35.657Z"]
+    "runHistory": ["2026-03-21T09:41:25.716Z"]
   },
   "metrics": {
-    "totalFiles": 317,
-    "totalLines": 54757,
+    "totalFiles": 320,
+    "totalLines": 85148,
     "largestFile": {
-      "path": "pnpm-lock.yaml",
-      "lines": 7940
+      "path": "quality-rules.json",
+      "lines": 18176
     },
     "byExtension": {
-      ".md": 75,
-      ".json": 48,
+      "(none)": 24,
+      ".md": 76,
+      ".json": 49,
       ".mjs": 7,
       ".example": 1,
-      ".local": 2,
       ".yml": 3,
-      "(none)": 23,
       ".sh": 1,
-      ".ts": 84,
+      ".local": 1,
+      ".ts": 89,
       ".js": 3,
-      ".tsx": 62,
+      ".tsx": 60,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".sql": 2,
-      ".toml": 1,
+      ".sql": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 146,
-      "percentage": 46
+      "tsFiles": 149,
+      "percentage": 47
     }
   },
   "detectedPatterns": {
@@ -127,10 +126,10 @@
   },
   "violations": {
     "summary": {
-      "total": 1,
+      "total": 3,
       "errors": 0,
-      "warnings": 1,
-      "info": 0
+      "warnings": 2,
+      "info": 1
     },
     "items": [
       {
@@ -138,6 +137,18 @@
         "rule": "no-direct-env",
         "message": "Direct process.env access — centralize env vars in a typed env module",
         "severity": "warn"
+      },
+      {
+        "file": "packages/queue/src/logger.ts",
+        "rule": "no-console",
+        "message": "console.log() found — use a structured logger instead",
+        "severity": "warn"
+      },
+      {
+        "file": "packages/queue/src/index.ts",
+        "rule": "barrel-completeness",
+        "message": "Barrel may be missing exports: logger.ts",
+        "severity": "info"
       }
     ]
   },
@@ -151,8 +162,8 @@
       "items": []
     },
     "anyTypeUsage": 0,
-    "nonNullAssertions": 3,
-    "consoleLogUsage": 0
+    "nonNullAssertions": 4,
+    "consoleLogUsage": 1
   },
   "recommendations": [
     {

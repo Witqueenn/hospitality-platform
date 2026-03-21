@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Plus, Pencil, Bed, Users, Maximize2 } from "lucide-react";
+import { Plus, Pencil, Bed, Users, Maximize2, DollarSign } from "lucide-react";
 
 type RoomTypeForm = {
   name: string;
@@ -86,7 +86,9 @@ export default function RoomTypesPage() {
     onError: (e) => toast.error(e.message),
   });
 
-  type RoomTypeItem = NonNullable<typeof roomTypes>[number];
+  type RoomTypeItem = NonNullable<typeof roomTypes>[number] & {
+    baseRateCents?: number | null;
+  };
   const handleOpen = (roomType?: RoomTypeItem) => {
     if (roomType) {
       setEditId(roomType.id);
@@ -179,6 +181,7 @@ export default function RoomTypesPage() {
                 <TableHead>Capacity</TableHead>
                 <TableHead>Size</TableHead>
                 <TableHead>Features</TableHead>
+                <TableHead>Rate/night</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -252,6 +255,18 @@ export default function RoomTypesPage() {
                             </Badge>
                           )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {(rt as RoomTypeItem).baseRateCents ? (
+                        <span className="flex items-center gap-0.5 text-sm font-semibold text-gray-800">
+                          <DollarSign className="h-3.5 w-3.5 text-gray-400" />
+                          {((rt as RoomTypeItem).baseRateCents! / 100).toFixed(
+                            0,
+                          )}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <button

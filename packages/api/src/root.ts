@@ -14,6 +14,7 @@ import { supportCaseRouter } from "./routers/supportCase.router.js";
 import { reviewRouter } from "./routers/review.router.js";
 import { analyticsRouter } from "./routers/analytics.router.js";
 import { notificationRouter } from "./routers/notification.router.js";
+import { diningRouter } from "./routers/dining.router.js";
 
 export const appRouter = router({
   auth: authRouter,
@@ -29,6 +30,7 @@ export const appRouter = router({
   review: reviewRouter,
   analytics: analyticsRouter,
   notification: notificationRouter,
+  dining: diningRouter,
 });
 
 export type AppRouter = typeof appRouter;
