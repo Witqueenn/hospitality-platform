@@ -103,6 +103,27 @@ export const roomTypeRouter = router({
         data: { isActive: false },
       });
     }),
+
+  updatePhotos: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        photos: z.array(
+          z.object({
+            url: z.string().url(),
+            thumb: z.string().url(),
+            alt: z.string(),
+            credit: z.string(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.roomType.update({
+        where: { id: input.id, tenantId: ctx.tenantId },
+        data: { photos: input.photos },
+      });
+    }),
 });
 
 export const roomInventoryRouter = router({

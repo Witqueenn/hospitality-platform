@@ -79,4 +79,29 @@ export const diningRouter = router({
         data: { isActive: false },
       });
     }),
+
+  updatePhotos: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        photos: z.array(
+          z.object({
+            url: z.string().url(),
+            thumb: z.string().url(),
+            alt: z.string(),
+            credit: z.string(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await ctx.db.diningExperience.findFirst({
+        where: { id: input.id, tenantId: ctx.tenantId },
+      });
+      if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
+      return ctx.db.diningExperience.update({
+        where: { id: input.id },
+        data: { photos: input.photos },
+      });
+    }),
 });

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuthStore } from "@/stores/authStore";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -12,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PhotoManager, type Photo } from "@/components/ui/PhotoManager";
 import { toast } from "sonner";
 import {
   Plus,
@@ -20,6 +20,7 @@ import {
   Users,
   ChevronDown,
   ChevronUp,
+  ImageIcon,
 } from "lucide-react";
 
 type DiningType =
@@ -91,12 +92,21 @@ type DiningItem = {
   isActive: boolean;
 };
 
+function parseDiningPhotos(raw: unknown): Photo[] {
+  if (!Array.isArray(raw)) return [];
+  return (raw as Record<string, unknown>[]).filter(
+    (p) => typeof p.url === "string",
+  ) as unknown as Photo[];
+}
+
 export default function DiningPage() {
   const { user } = useAuthStore();
   const hotelId = user?.hotelId ?? "";
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<DiningForm>(EMPTY_FORM);
+  const [activeTab, setActiveTab] = useState<"info" | "photos">("info");
+  const [diningPhotos, setDiningPhotos] = useState<Photo[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const {
@@ -129,6 +139,14 @@ export default function DiningPage() {
     onError: (e: { message: string }) => toast.error(e.message),
   });
 
+  const updatePhotosMutation = trpc.dining.updatePhotos.useMutation({
+    onSuccess: () => {
+      toast.success("Photos saved!");
+      void refetch();
+    },
+    onError: (e: { message: string }) => toast.error(e.message),
+  });
+
   const handleOpen = (item?: DiningItem) => {
     if (item) {
       setEditId(item.id);
@@ -145,10 +163,13 @@ export default function DiningPage() {
           ? (item.menuHighlights as string[]).join(", ")
           : "",
       });
+      setDiningPhotos(parseDiningPhotos(item.photos));
     } else {
       setEditId(null);
       setForm(EMPTY_FORM);
+      setDiningPhotos([]);
     }
+    setActiveTab("info");
     setOpen(true);
   };
 
@@ -181,10 +202,15 @@ export default function DiningPage() {
     }
   };
 
-  const photos = (item: DiningItem) =>
-    Array.isArray(item.photos)
-      ? (item.photos as { thumb: string; alt: string }[])
-      : [];
+  const handleSavePhotos = () => {
+    if (!editId) return;
+    updatePhotosMutation.mutate({ id: editId, photos: diningPhotos });
+  };
+
+  const coverPhoto = (item: DiningItem) => {
+    const arr = parseDiningPhotos(item.photos);
+    return arr[0] ?? null;
+  };
 
   if (!hotelId) {
     return (
@@ -262,7 +288,8 @@ export default function DiningPage() {
         <div className="space-y-3">
           {dining.map((item) => {
             const isExpanded = expandedId === item.id;
-            const photo = photos(item)[0];
+            const photo = coverPhoto(item);
+            const photoCount = parseDiningPhotos(item.photos).length;
             const cuisines = Array.isArray(item.cuisine)
               ? (item.cuisine as string[])
               : [];
@@ -305,6 +332,11 @@ export default function DiningPage() {
                       {item.priceRange && (
                         <span className="font-mono text-sm font-bold text-gray-500">
                           {item.priceRange}
+                        </span>
+                      )}
+                      {photoCount > 0 && (
+                        <span className="flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
+                          <ImageIcon className="h-3 w-3" /> {photoCount}
                         </span>
                       )}
                       {!item.isActive && (
@@ -409,6 +441,24 @@ export default function DiningPage() {
                           </div>
                         </div>
                       )}
+                      {/* Photo strip */}
+                      {parseDiningPhotos(item.photos).length > 0 && (
+                        <div className="sm:col-span-2">
+                          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                            Photos
+                          </p>
+                          <div className="flex gap-2 overflow-x-auto pb-1">
+                            {parseDiningPhotos(item.photos).map((p, idx) => (
+                              <img
+                                key={idx}
+                                src={p.thumb || p.url}
+                                alt={p.alt}
+                                className="h-20 w-28 shrink-0 rounded-lg object-cover"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -420,135 +470,214 @@ export default function DiningPage() {
 
       {/* Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               {editId ? "Edit Dining Experience" : "Add Dining Experience"}
             </DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="mb-1 block text-sm font-medium">Name *</label>
-                <input
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+
+          {/* Tabs */}
+          <div className="flex gap-1 border-b">
+            <button
+              type="button"
+              onClick={() => setActiveTab("info")}
+              className={`px-4 py-2 text-sm font-medium transition ${
+                activeTab === "info"
+                  ? "border-b-2 border-[#1a1a2e] text-[#1a1a2e]"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Info
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("photos")}
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition ${
+                activeTab === "photos"
+                  ? "border-b-2 border-[#1a1a2e] text-[#1a1a2e]"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Photos
+              {diningPhotos.length > 0 && (
+                <span className="rounded-full bg-[#1a1a2e] px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                  {diningPhotos.length}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Info tab */}
+          {activeTab === "info" && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="mb-1 block text-sm font-medium">
+                    Name *
+                  </label>
+                  <input
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                    placeholder="e.g. Bosphorus Rooftop Restaurant"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">
+                    Type *
+                  </label>
+                  <select
+                    value={form.diningType}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        diningType: e.target.value as DiningType,
+                      })
+                    }
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                  >
+                    {Object.entries(DINING_TYPE_LABELS).map(([val, label]) => (
+                      <option key={val} value={val}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">
+                    Price Range
+                  </label>
+                  <select
+                    value={form.priceRange}
+                    onChange={(e) =>
+                      setForm({ ...form, priceRange: e.target.value })
+                    }
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                  >
+                    <option value="">— Not set —</option>
+                    {PRICE_RANGES.map((p) => (
+                      <option key={p.value} value={p.value}>
+                        {p.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">
+                    Capacity (covers)
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={form.capacity}
+                    onChange={(e) =>
+                      setForm({ ...form, capacity: e.target.value })
+                    }
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                    placeholder="e.g. 60"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">
+                    Cuisine (comma-separated)
+                  </label>
+                  <input
+                    value={form.cuisine}
+                    onChange={(e) =>
+                      setForm({ ...form, cuisine: e.target.value })
+                    }
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                    placeholder="Turkish, Mediterranean"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium">
+                  Description
+                </label>
+                <textarea
+                  rows={2}
+                  value={form.description}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
                   className="w-full rounded-lg border px-3 py-2 text-sm"
-                  placeholder="e.g. Bosphorus Rooftop Restaurant"
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium">Type *</label>
-                <select
-                  value={form.diningType}
+                <label className="mb-1 block text-sm font-medium">
+                  Menu Highlights (comma-separated)
+                </label>
+                <input
+                  value={form.menuHighlights}
                   onChange={(e) =>
-                    setForm({
-                      ...form,
-                      diningType: e.target.value as DiningType,
-                    })
+                    setForm({ ...form, menuHighlights: e.target.value })
                   }
                   className="w-full rounded-lg border px-3 py-2 text-sm"
+                  placeholder="Grilled sea bass, Truffle risotto, Tasting menu"
+                />
+              </div>
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setOpen(false)}
                 >
-                  {Object.entries(DINING_TYPE_LABELS).map(([val, label]) => (
-                    <option key={val} value={val}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Price Range
-                </label>
-                <select
-                  value={form.priceRange}
-                  onChange={(e) =>
-                    setForm({ ...form, priceRange: e.target.value })
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-[#1a1a2e]"
+                  disabled={
+                    createMutation.isPending || updateMutation.isPending
                   }
-                  className="w-full rounded-lg border px-3 py-2 text-sm"
                 >
-                  <option value="">— Not set —</option>
-                  {PRICE_RANGES.map((p) => (
-                    <option key={p.value} value={p.value}>
-                      {p.label}
-                    </option>
-                  ))}
-                </select>
+                  {editId ? "Update" : "Create"}
+                </Button>
               </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Capacity (covers)
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  value={form.capacity}
-                  onChange={(e) =>
-                    setForm({ ...form, capacity: e.target.value })
-                  }
-                  className="w-full rounded-lg border px-3 py-2 text-sm"
-                  placeholder="e.g. 60"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Cuisine (comma-separated)
-                </label>
-                <input
-                  value={form.cuisine}
-                  onChange={(e) =>
-                    setForm({ ...form, cuisine: e.target.value })
-                  }
-                  className="w-full rounded-lg border px-3 py-2 text-sm"
-                  placeholder="Turkish, Mediterranean"
-                />
-              </div>
+            </form>
+          )}
+
+          {/* Photos tab */}
+          {activeTab === "photos" && (
+            <div className="space-y-4">
+              {!editId && (
+                <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
+                  Save the dining experience first, then add photos.
+                </p>
+              )}
+              {editId && (
+                <>
+                  <PhotoManager
+                    photos={diningPhotos}
+                    onChange={setDiningPhotos}
+                    saving={updatePhotosMutation.isPending}
+                  />
+                  <div className="flex gap-3 pt-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => setOpen(false)}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      type="button"
+                      className="flex-1 bg-[#1a1a2e]"
+                      onClick={handleSavePhotos}
+                      disabled={updatePhotosMutation.isPending}
+                    >
+                      Save Photos
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
-            <div>
-              <label className="mb-1 block text-sm font-medium">
-                Description
-              </label>
-              <textarea
-                rows={2}
-                value={form.description}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-                className="w-full rounded-lg border px-3 py-2 text-sm"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm font-medium">
-                Menu Highlights (comma-separated)
-              </label>
-              <input
-                value={form.menuHighlights}
-                onChange={(e) =>
-                  setForm({ ...form, menuHighlights: e.target.value })
-                }
-                className="w-full rounded-lg border px-3 py-2 text-sm"
-                placeholder="Grilled sea bass, Truffle risotto, Tasting menu"
-              />
-            </div>
-            <div className="flex gap-3 pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="flex-1 bg-[#1a1a2e]"
-                disabled={createMutation.isPending || updateMutation.isPending}
-              >
-                {editId ? "Update" : "Create"}
-              </Button>
-            </div>
-          </form>
+          )}
         </DialogContent>
       </Dialog>
     </div>
