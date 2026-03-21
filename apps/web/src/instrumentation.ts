@@ -2,6 +2,8 @@
 // https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation
 
 export async function register() {
+  // NEXT_RUNTIME is a Next.js internal env var — direct access is correct here
+  // (it is not a user-configurable env var and is unavailable in typed env modules)
   if (process.env.NEXT_RUNTIME === "nodejs") {
     try {
       const { setLLMClient, createLLMClient } = await import("@repo/agents");

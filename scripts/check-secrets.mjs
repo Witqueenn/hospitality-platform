@@ -143,8 +143,8 @@ const SKIP_PATTERNS = [
   /\.github\/workflows\//, // CI env vars are intentionally mock values
   /\.(test|spec)\.(ts|tsx|js|mjs)$/, // test files use fake credentials by design
   /__tests__\//, // test directories
-  /\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|pdf|zip|tar|gz)$/i,
   /HOSPITALITY_PLATFORM_SPEC\.md$/, // spec doc with intentional placeholder examples
+  /\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|pdf|zip|tar|gz)$/i,
 ];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

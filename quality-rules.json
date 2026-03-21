@@ -1,40 +1,41 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-20T17:34:08.128Z",
+    "generatedAt": "2026-03-21T06:41:35.660Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-20T17:34:08.128Z"]
+    "runHistory": ["2026-03-21T06:41:35.657Z"]
   },
   "metrics": {
-    "totalFiles": 278,
-    "totalLines": 49396,
+    "totalFiles": 317,
+    "totalLines": 54757,
     "largestFile": {
       "path": "pnpm-lock.yaml",
-      "lines": 10108
+      "lines": 7940
     },
     "byExtension": {
       ".md": 75,
-      ".json": 47,
+      ".json": 48,
       ".mjs": 7,
       ".example": 1,
-      ".local": 1,
+      ".local": 2,
       ".yml": 3,
-      "(none)": 22,
+      "(none)": 23,
       ".sh": 1,
       ".ts": 84,
       ".js": 3,
-      ".tsx": 28,
+      ".tsx": 62,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".sql": 1,
+      ".sql": 2,
+      ".toml": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 112,
-      "percentage": 40
+      "tsFiles": 146,
+      "percentage": 46
     }
   },
   "detectedPatterns": {
@@ -126,23 +127,17 @@
   },
   "violations": {
     "summary": {
-      "total": 2,
+      "total": 1,
       "errors": 0,
       "warnings": 1,
-      "info": 1
+      "info": 0
     },
     "items": [
       {
-        "file": "packages/queue/src/logger.ts",
-        "rule": "no-console",
-        "message": "console.log() found — use a structured logger instead",
+        "file": "apps/web/src/instrumentation.ts",
+        "rule": "no-direct-env",
+        "message": "Direct process.env access — centralize env vars in a typed env module",
         "severity": "warn"
-      },
-      {
-        "file": "packages/queue/src/index.ts",
-        "rule": "barrel-completeness",
-        "message": "Barrel may be missing exports: logger.ts",
-        "severity": "info"
       }
     ]
   },
@@ -157,7 +152,7 @@
     },
     "anyTypeUsage": 0,
     "nonNullAssertions": 3,
-    "consoleLogUsage": 1
+    "consoleLogUsage": 0
   },
   "recommendations": [
     {

@@ -2281,15 +2281,15 @@ volumes:
 
 ```env
 # .env.local
-DATABASE_URL="postgresql://<user>:<pass>@localhost:5432/hospitality_platform"
-REDIS_URL="redis://localhost:6379"  # no credentials
+DATABASE_URL="postgresql://<user>:<password>@localhost:5432/hospitality_platform"
+REDIS_URL="redis://localhost:6379"
 
 # Auth
 NEXTAUTH_SECRET="<generate-with-openssl-rand-base64-32>"
 NEXTAUTH_URL="http://localhost:3000"
 
 # Encryption
-ENCRYPTION_KEY="32-byte-hex-key-here"
+ENCRYPTION_KEY="<32-byte-hex-key>"
 
 # Email (local MailHog)
 SMTP_HOST="localhost"
