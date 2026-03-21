@@ -80,7 +80,7 @@ export default function HomesDetailPage({
               {u.ratingAggregate != null && (
                 <div className="flex items-center gap-1 text-lg font-semibold">
                   <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                  {u.ratingAggregate.toFixed(1)}
+                  {Number(u.ratingAggregate).toFixed(1)}
                 </div>
               )}
             </div>

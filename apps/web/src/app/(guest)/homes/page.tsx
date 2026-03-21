@@ -125,7 +125,7 @@ export default function HomesPage() {
                   {unit.ratingAggregate != null && (
                     <div className="flex items-center gap-1 text-sm font-semibold text-gray-700">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      {unit.ratingAggregate.toFixed(1)}
+                      {Number(unit.ratingAggregate).toFixed(1)}
                     </div>
                   )}
                 </div>

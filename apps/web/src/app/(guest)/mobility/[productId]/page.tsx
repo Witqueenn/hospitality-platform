@@ -255,7 +255,7 @@ export default function MobilityDetailPage({
                   <div className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-semibold">
-                      {p.mobilityProvider.ratingAggregate.toFixed(1)}
+                      {Number(p.mobilityProvider.ratingAggregate).toFixed(1)}
                     </span>
                   </div>
                 )}

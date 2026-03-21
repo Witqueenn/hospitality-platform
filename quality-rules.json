@@ -1,15 +1,15 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-21T10:43:49.731Z",
+    "generatedAt": "2026-03-21T15:25:50.095Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-21T10:43:49.728Z"]
+    "runHistory": ["2026-03-21T15:25:50.095Z"]
   },
   "metrics": {
-    "totalFiles": 328,
-    "totalLines": 71573,
+    "totalFiles": 366,
+    "totalLines": 85047,
     "largestFile": {
       "path": "pnpm-lock.yaml",
       "lines": 12795
@@ -23,19 +23,19 @@
       ".yml": 3,
       ".sh": 1,
       ".local": 1,
-      ".ts": 91,
+      ".ts": 101,
       ".js": 3,
-      ".tsx": 64,
+      ".tsx": 91,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".sql": 2,
+      ".sql": 3,
       ".toml": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 155,
-      "percentage": 47
+      "tsFiles": 192,
+      "percentage": 52
     }
   },
   "detectedPatterns": {
@@ -127,12 +127,312 @@
   },
   "violations": {
     "summary": {
-      "total": 1,
+      "total": 51,
       "errors": 0,
-      "warnings": 1,
+      "warnings": 51,
       "info": 0
     },
     "items": [
+      {
+        "file": "apps/web/src/app/(guest)/account/preferences/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/amenities/[slug]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/amenities/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/experiences/[slug]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/experiences/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/guides/[city]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/homes/[slug]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/homes/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/hotel/[slug]/dining/[diningId]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/mobility/[productId]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/mobility/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/my/bookings/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/my/support/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/offers/[id]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/offers/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/search/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/support/[id]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/support/new/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/vip/benefits/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/cases/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/dashboard/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/hotels/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/marketplace-moderation/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/partner-verification/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/partners/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/policies/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/settlements/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/tenants/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/trusted-stays/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/admin/(admin)/users/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/amenities/[id]/pricing/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/amenities/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/approvals/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/bookings/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/dashboard/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/dining/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/events/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/finance/settlements/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/local-experiences/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/nightlife/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/partners/mobility/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/revenue/flash-rules/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/reviews/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/rooms/types/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/settings/hotel/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/support/[id]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/support/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/venues/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/hotel/(hotel)/vip-offers/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
       {
         "file": "apps/web/src/instrumentation.ts",
         "rule": "no-direct-env",
@@ -150,11 +450,18 @@
       "count": 0,
       "items": []
     },
-    "anyTypeUsage": 0,
+    "anyTypeUsage": 50,
     "nonNullAssertions": 4,
     "consoleLogUsage": 0
   },
   "recommendations": [
+    {
+      "id": "REC-001",
+      "priority": "high",
+      "title": "Reduce 'any' type usage",
+      "description": "Found 50 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
+      "action": "Add 'no-explicit-any: error' to tooling/eslint-config/base.js"
+    },
     {
       "id": "REC-006",
       "priority": "high",

@@ -89,8 +89,11 @@ export default function MobilityPage() {
                 {product.mobilityProvider && (
                   <div className="mt-1 flex items-center gap-1 text-xs text-gray-500">
                     <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                    {product.mobilityProvider.ratingAggregate?.toFixed(1) ??
-                      "—"}
+                    {product.mobilityProvider.ratingAggregate != null
+                      ? Number(
+                          product.mobilityProvider.ratingAggregate,
+                        ).toFixed(1)
+                      : "—"}
                     <span className="ml-1">
                       {product.mobilityProvider.name}
                     </span>

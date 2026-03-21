@@ -94,7 +94,7 @@ export default function ExperienceDetailPage({
               <div className="rounded-xl border bg-white p-3 text-center">
                 <Star className="mx-auto mb-1 h-5 w-5 fill-yellow-400 text-yellow-400" />
                 <p className="text-lg font-bold text-gray-900">
-                  {exp.ratingAggregate.toFixed(1)}
+                  {Number(exp.ratingAggregate).toFixed(1)}
                 </p>
                 <p className="text-xs text-gray-400">Rating</p>
               </div>
