@@ -19,6 +19,16 @@ type BookingStatus =
   | "CANCELLED"
   | "NO_SHOW";
 
+type BookingItem = {
+  id: string;
+  bookingRef: string;
+  status: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  totalCents: number;
+  hotel?: { name: string } | null;
+};
+
 const STATUS_BADGE: Record<
   BookingStatus,
   { label: string; className: string }
@@ -64,7 +74,7 @@ export default function MyBookingsPage() {
       setCancellingId(null);
       void refetch();
     },
-    onError: (err) => {
+    onError: (err: { message: string }) => {
       toast.error(err.message);
       setCancellingId(null);
     },
@@ -131,7 +141,7 @@ export default function MyBookingsPage() {
       {/* Bookings list */}
       {!isLoading && data?.items && data.items.length > 0 && (
         <div className="space-y-4">
-          {data.items.map((booking) => {
+          {(data.items as unknown as BookingItem[]).map((booking) => {
             const status = booking.status as BookingStatus;
             const badge = STATUS_BADGE[status] ?? {
               label: status,
