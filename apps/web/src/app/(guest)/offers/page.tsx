@@ -3,7 +3,8 @@
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { Package, Tag, Clock, CheckCircle } from "lucide-react";
+import Link from "next/link";
+import { Package, Tag, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 export default function OffersPage() {
   const { data: bundles, isLoading } = trpc.bundle.listActive.useQuery({
@@ -38,9 +39,10 @@ export default function OffersPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {list.map((bundle: any) => (
-            <div
+            <Link
               key={bundle.id}
-              className="overflow-hidden rounded-2xl border bg-white shadow-sm"
+              href={`/offers/${bundle.id}`}
+              className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md"
             >
               {/* Header gradient */}
               <div className="bg-gradient-to-r from-[#1a1a2e] to-[#16213e] p-5 text-white">
@@ -51,10 +53,23 @@ export default function OffersPage() {
                     </p>
                     <h2 className="mt-1 text-lg font-bold">{bundle.name}</h2>
                   </div>
-                  <div className="text-right">
-                    {bundle.discountPercent && (
+                  <div className="flex flex-col items-end gap-1 text-right">
+                    {bundle.subtotalCents &&
+                      bundle.totalCents &&
+                      bundle.subtotalCents > bundle.totalCents && (
+                        <span className="rounded-full bg-emerald-400 px-2 py-0.5 text-xs font-bold text-gray-900">
+                          -
+                          {Math.round(
+                            ((bundle.subtotalCents - bundle.totalCents) /
+                              bundle.subtotalCents) *
+                              100,
+                          )}
+                          %
+                        </span>
+                      )}
+                    {bundle.isVipOnly && (
                       <span className="rounded-full bg-yellow-400 px-2 py-0.5 text-xs font-bold text-gray-900">
-                        -{bundle.discountPercent}%
+                        VIP
                       </span>
                     )}
                   </div>
@@ -76,25 +91,43 @@ export default function OffersPage() {
                         className="flex items-center gap-2 text-sm text-gray-600"
                       >
                         <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
-                        {item.itemLabel ?? item.itemType}
+                        {item.metadata?.itemLabel ??
+                          item.itemLabel ??
+                          item.itemType}
                       </div>
                     ))}
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
-                  {bundle.validUntil && (
-                    <span className="flex items-center gap-1 text-xs text-gray-400">
-                      <Clock className="h-3 w-3" />
-                      Until {new Date(bundle.validUntil).toLocaleDateString()}
-                    </span>
-                  )}
-                  <Button size="sm" className="bg-[#1a1a2e] hover:bg-[#16213e]">
-                    Claim Offer
-                  </Button>
+                  <div>
+                    {bundle.totalCents && (
+                      <p className="font-bold text-gray-900">
+                        {bundle.currency === "EUR" ? "€" : "$"}
+                        {(bundle.totalCents / 100).toFixed(0)}
+                        {bundle.subtotalCents &&
+                          bundle.subtotalCents > bundle.totalCents && (
+                            <span className="ml-1.5 text-xs font-normal text-gray-400 line-through">
+                              {bundle.currency === "EUR" ? "€" : "$"}
+                              {(bundle.subtotalCents / 100).toFixed(0)}
+                            </span>
+                          )}
+                      </p>
+                    )}
+                    {bundle.endsAt && (
+                      <span className="flex items-center gap-1 text-xs text-gray-400">
+                        <Clock className="h-3 w-3" />
+                        Until {new Date(bundle.endsAt).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#1a1a2e] transition-all group-hover:gap-2">
+                    View offer
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

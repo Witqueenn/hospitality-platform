@@ -1005,6 +1005,652 @@ async function main() {
   console.log("✓ City guide: Istanbul + 5 experiences + slots");
 
   // ═══════════════════════════════════════════════════════════════
+  // 5b. CITY GUIDE — ATHENS + MORE EXPERIENCES
+  // ═══════════════════════════════════════════════════════════════
+  const athensGuide = await db.cityGuide.upsert({
+    where: {
+      tenantId_cityCode_languageCode: {
+        tenantId: tenant.id,
+        cityCode: "ATH",
+        languageCode: "en",
+      },
+    },
+    create: {
+      tenantId: tenant.id,
+      cityCode: "ATH",
+      cityName: "Athens",
+      countryCode: "GR",
+      languageCode: "en",
+      summary:
+        "Athens — the cradle of Western civilisation. Ancient ruins meet vibrant street art, rooftop bars, and some of the best seafood in the Mediterranean.",
+      safetyNotes:
+        "Athens is generally safe for tourists. Exercise normal caution in Omonia Square and keep valuables secure on public transport.",
+      transportTips:
+        "The Athens Metro is clean, fast, and affordable. Taxis should use the meter. Uber and Beat are available. The port of Piraeus is a short metro ride away.",
+      emergencyInfo: {
+        police: "100",
+        ambulance: "166",
+        tourist_police: "+30 210 920 0724",
+      } as any,
+      usefulApps: ["Beat", "Google Maps", "TheFork", "Wolt"] as any,
+    },
+    update: {},
+  });
+
+  const athSections = [
+    {
+      sectionKey: "must_see",
+      title: "Must-See Sights",
+      body: "The Acropolis and Parthenon are unmissable — go at sunrise to beat the crowds. The Ancient Agora, Temple of Hephaestus, and the Panathenaic Stadium (venue of the first modern Olympics) are within easy walking distance. Spend an afternoon in the National Archaeological Museum.",
+      sortOrder: 1,
+    },
+    {
+      sectionKey: "food_scene",
+      title: "Food & Dining",
+      body: "Athens has undergone a culinary renaissance. Monastiraki and Psyrri are packed with tavernas serving fresh mezedes. For upscale dining, try the rooftop restaurants around Lycabettus Hill. Don't miss spanakopita from a street bakery, or fresh loukoumades (Greek doughnuts) drizzled with honey.",
+      sortOrder: 2,
+    },
+    {
+      sectionKey: "day_trips",
+      title: "Day Trips",
+      body: "Cape Sounion (70 km south) has the dramatic Temple of Poseidon overlooking the Aegean — spectacular at sunset. The island of Aegina is a 40-minute ferry ride and famous for pistachio nuts and Byzantine churches.",
+      sortOrder: 3,
+    },
+  ];
+
+  for (const s of athSections) {
+    const existing = await db.cityGuideSection.findFirst({
+      where: {
+        tenantId: tenant.id,
+        cityGuideId: athensGuide.id,
+        sectionKey: s.sectionKey,
+        persona: null,
+      },
+    });
+    if (!existing) {
+      await db.cityGuideSection.create({
+        data: { tenantId: tenant.id, cityGuideId: athensGuide.id, ...s },
+      });
+    }
+  }
+
+  // Athens experiences
+  const athExperiences = [
+    {
+      slug: "acropolis-sunrise-walk",
+      name: "Acropolis Sunrise Walk",
+      category: "CULTURAL" as const,
+      description:
+        "Beat the heat and the crowds with an exclusive early-morning guided walk of the Acropolis. Watch the sun rise over the Parthenon while your expert archaeologist guide brings 2,500 years of history to life.",
+      durationMinutes: 120,
+      city: "Athens",
+      meetingPoint: {
+        address: "Acropolis South Entrance, Dionysiou Areopagitou",
+      },
+      priceCents: 7500,
+      maxGuests: 8,
+      languages: ["en", "gr"],
+      tags: ["acropolis", "history", "sunrise", "culture"],
+    },
+    {
+      slug: "athens-street-food-tour",
+      name: "Athens Street Food Tour",
+      category: "FOOD_TOUR" as const,
+      description:
+        "Wander through Monastiraki, Psyrri, and the Central Market with a local foodie guide. Sample spanakopita, loukoumades, souvlaki, fresh olives, and local cheeses. Finish with Greek coffee and a sweet baklava at a century-old pastry shop.",
+      durationMinutes: 180,
+      city: "Athens",
+      meetingPoint: { address: "Monastiraki Metro Station, Exit 1" },
+      priceCents: 5500,
+      maxGuests: 10,
+      languages: ["en", "gr"],
+      tags: ["food", "street_food", "culture", "monastiraki"],
+    },
+    {
+      slug: "aegean-sailing-day-trip",
+      name: "Aegean Sailing Day Trip",
+      category: "OTHER" as const,
+      description:
+        "Set sail on a private catamaran from the Athens Riviera for a full-day Aegean adventure. Snorkel in crystal waters, visit a secluded beach, enjoy a fresh seafood lunch on board, and watch the sun dip toward the horizon as you return to port.",
+      durationMinutes: 480,
+      city: "Athens",
+      meetingPoint: { address: "Alimos Marina, Gate 3, Athens Riviera" },
+      priceCents: 19500,
+      maxGuests: 10,
+      languages: ["en"],
+      tags: ["sailing", "beach", "sea", "adventure"],
+    },
+    {
+      slug: "greek-cooking-class",
+      name: "Greek Cooking Masterclass",
+      category: "FOOD_TOUR" as const,
+      description:
+        "Learn to cook five classic Greek dishes in a beautiful Athenian kitchen. Hands-on session covering moussaka, tzatziki, tiropita, slow-roasted lamb, and galaktoboureko dessert. Enjoy what you cook over a communal lunch with local wine.",
+      durationMinutes: 210,
+      city: "Athens",
+      meetingPoint: {
+        address: "Kolonaki Quarter — address confirmed on booking",
+      },
+      priceCents: 9500,
+      maxGuests: 8,
+      languages: ["en", "gr"],
+      tags: ["cooking", "food", "culture", "hands-on"],
+    },
+    {
+      slug: "cape-sounion-sunset",
+      name: "Cape Sounion Sunset Experience",
+      category: "CULTURAL" as const,
+      description:
+        "Private minibus transfer to the dramatic Cape Sounion headland, home of the Temple of Poseidon. Arrive before sunset to explore the ancient site with a guide, then watch the sun sink into the Aegean — one of Greece's most iconic views. Wine and mezedes included.",
+      durationMinutes: 300,
+      city: "Athens",
+      meetingPoint: { address: "Hotel lobby, Boutique Athens" },
+      priceCents: 12500,
+      maxGuests: 12,
+      languages: ["en"],
+      tags: ["sunset", "ancient", "temple", "scenic"],
+    },
+  ];
+
+  for (const exp of athExperiences) {
+    const e = await db.localExperience.upsert({
+      where: { tenantId_slug: { tenantId: tenant.id, slug: exp.slug } },
+      create: {
+        tenantId: tenant.id,
+        hotelId: hotel2.id,
+        cityGuideId: athensGuide.id,
+        ...exp,
+        meetingPoint: exp.meetingPoint as any,
+        languages: exp.languages as any,
+        tags: exp.tags as any,
+      },
+      update: {},
+    });
+
+    // Slots for next 14 days
+    for (let i = 1; i <= 14; i++) {
+      if (i % 4 === 0) continue;
+      const startsAt = days(i);
+      startsAt.setHours(
+        exp.slug.includes("sunset") || exp.slug.includes("sailing") ? 16 : 9,
+        0,
+        0,
+        0,
+      );
+      const endsAt = new Date(
+        startsAt.getTime() + (exp.durationMinutes ?? 120) * 60_000,
+      );
+      const existing = await db.localExperienceSlot.findFirst({
+        where: { localExperienceId: e.id, startsAt },
+      });
+      if (!existing) {
+        await db.localExperienceSlot.create({
+          data: {
+            tenantId: tenant.id,
+            localExperienceId: e.id,
+            startsAt,
+            endsAt,
+            capacity: exp.maxGuests,
+            availableCount: exp.maxGuests,
+          },
+        });
+      }
+    }
+  }
+
+  // Istanbul extra experiences
+  const istExtraExperiences = [
+    {
+      slug: "turkish-cooking-class",
+      name: "Turkish Cooking Masterclass",
+      category: "FOOD_TOUR" as const,
+      description:
+        "Join a professional Turkish chef in her family kitchen in Beyoğlu for a 3-hour cooking experience. Learn to make meze, slow-cooked lamb, and classic baklava from scratch. Includes a full meal with Turkish tea and wine.",
+      durationMinutes: 180,
+      city: "Istanbul",
+      meetingPoint: { address: "Beyoğlu — confirmed address sent on booking" },
+      priceCents: 8500,
+      maxGuests: 6,
+      languages: ["en", "tr"],
+      tags: ["cooking", "food", "culture", "beyoglu"],
+    },
+    {
+      slug: "princes-island-bicycle-tour",
+      name: "Princes Island Bicycle Tour",
+      category: "OTHER" as const,
+      description:
+        "Take the ferry from Kabataş to car-free Büyükada — the largest of Istanbul's Princes' Islands. Rent bicycles and pedal past Victorian villas, pine forests, and monasteries. Enjoy a seafood lunch by the water before returning to the city.",
+      durationMinutes: 360,
+      city: "Istanbul",
+      meetingPoint: { address: "Kabataş Ferry Terminal, Istanbul" },
+      priceCents: 6500,
+      maxGuests: 10,
+      languages: ["en", "tr", "de"],
+      tags: ["cycling", "island", "nature", "day_trip"],
+    },
+  ];
+
+  for (const exp of istExtraExperiences) {
+    const e = await db.localExperience.upsert({
+      where: { tenantId_slug: { tenantId: tenant.id, slug: exp.slug } },
+      create: {
+        tenantId: tenant.id,
+        hotelId: hotel1.id,
+        cityGuideId: istanbulGuide.id,
+        ...exp,
+        meetingPoint: exp.meetingPoint as any,
+        languages: exp.languages as any,
+        tags: exp.tags as any,
+      },
+      update: {},
+    });
+
+    for (let i = 1; i <= 14; i++) {
+      if (i % 3 === 0) continue;
+      const startsAt = days(i);
+      startsAt.setHours(9, 0, 0, 0);
+      const endsAt = new Date(
+        startsAt.getTime() + (exp.durationMinutes ?? 120) * 60_000,
+      );
+      const existing = await db.localExperienceSlot.findFirst({
+        where: { localExperienceId: e.id, startsAt },
+      });
+      if (!existing) {
+        await db.localExperienceSlot.create({
+          data: {
+            tenantId: tenant.id,
+            localExperienceId: e.id,
+            startsAt,
+            endsAt,
+            capacity: exp.maxGuests,
+            availableCount: exp.maxGuests,
+          },
+        });
+      }
+    }
+  }
+
+  console.log(
+    "✓ City guide: Athens + 5 experiences + 2 extra Istanbul experiences",
+  );
+
+  // ═══════════════════════════════════════════════════════════════
+  // 4b. MORE TRUSTED STAY UNITS
+  // ═══════════════════════════════════════════════════════════════
+  const host3 = await db.trustedStayHost.upsert({
+    where: { id: "00000000-0000-0000-0010-000000000003" },
+    create: {
+      id: "00000000-0000-0000-0010-000000000003",
+      tenantId: tenant.id,
+      displayName: "Elena Stavros",
+      legalName: "Stavros Premium Rentals",
+      email: "elena@stavrosrentals.gr",
+      phone: "+30 694 333 4455",
+      hostType: "PROFESSIONAL" as const,
+      verificationStatus: "VERIFIED" as const,
+    },
+    update: {},
+  });
+
+  const extraUnits = [
+    {
+      id: "00000000-0000-0000-0011-000000000004",
+      hostId: host2.id,
+      hotelId: hotel2.id,
+      slug: "athens-stone-villa",
+      name: "Athens Stone Villa",
+      trustedStayType: "VILLA" as const,
+      stayTerm: "WEEKLY" as const,
+      description:
+        "Stunning traditional stone villa in the Athens foothills with panoramic city views, private pool, and olive grove garden. Sleeps 8 in 4 spacious bedrooms — perfect for group getaways.",
+      address: {
+        street: "Kifisias Avenue 42",
+        city: "Athens",
+        country: "Greece",
+      },
+      geo: { lat: 38.0034, lng: 23.7534 },
+      roomCount: 4,
+      guestCapacity: 8,
+      bathroomCount: 4,
+      amenities: [
+        "Private Pool",
+        "WiFi",
+        "Kitchen",
+        "Garden",
+        "Parking",
+        "BBQ",
+        "Air Conditioning",
+      ],
+      photos: [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
+        "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800",
+        "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800",
+      ],
+      verificationStatus: "VERIFIED" as const,
+      nightlyRate: 48000,
+    },
+    {
+      id: "00000000-0000-0000-0011-000000000005",
+      hostId: host3.id,
+      hotelId: hotel2.id,
+      slug: "aegean-sea-view-apartment",
+      name: "Aegean Sea View Apartment",
+      trustedStayType: "APARTMENT" as const,
+      stayTerm: "DAILY" as const,
+      description:
+        "Beautifully designed 2-bedroom apartment perched on the Athens Riviera with breathtaking Aegean sea views. Modern interiors, private balcony, and direct access to Glyfada beach.",
+      address: { street: "Poseidonos 15", city: "Glyfada", country: "Greece" },
+      geo: { lat: 37.8687, lng: 23.7503 },
+      roomCount: 2,
+      guestCapacity: 4,
+      bathroomCount: 2,
+      amenities: [
+        "Sea View",
+        "WiFi",
+        "Kitchen",
+        "Balcony",
+        "Air Conditioning",
+        "Beach Access",
+      ],
+      photos: [
+        "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800",
+        "https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=800",
+      ],
+      verificationStatus: "VERIFIED" as const,
+      nightlyRate: 22000,
+    },
+    {
+      id: "00000000-0000-0000-0011-000000000006",
+      hostId: host1.id,
+      hotelId: hotel1.id,
+      slug: "sultanahmet-historic-apartment",
+      name: "Sultanahmet Historic Apartment",
+      trustedStayType: "APARTMENT" as const,
+      stayTerm: "DAILY" as const,
+      description:
+        "Charming 1-bedroom apartment in a lovingly restored 19th-century Ottoman building in the heart of Sultanahmet. Steps from the Blue Mosque, Hagia Sophia, and the Grand Bazaar. Original wooden ceilings, kilim rugs, and modern comforts.",
+      address: {
+        street: "Akbıyık Caddesi 12",
+        city: "Istanbul",
+        country: "Turkey",
+      },
+      geo: { lat: 41.0048, lng: 28.9781 },
+      roomCount: 1,
+      guestCapacity: 2,
+      bathroomCount: 1,
+      amenities: [
+        "WiFi",
+        "Kitchen",
+        "Air Conditioning",
+        "Ottoman Decor",
+        "Rooftop Terrace",
+      ],
+      photos: [
+        "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
+        "https://images.unsplash.com/photo-1586105251261-72a756497a11?w=800",
+      ],
+      verificationStatus: "VERIFIED" as const,
+      nightlyRate: 13500,
+    },
+    {
+      id: "00000000-0000-0000-0011-000000000007",
+      hostId: host1.id,
+      hotelId: hotel1.id,
+      slug: "karakoy-design-loft",
+      name: "Karaköy Design Loft",
+      trustedStayType: "OTHER" as const,
+      stayTerm: "DAILY" as const,
+      description:
+        "A curated studio loft in Karaköy — Istanbul's most stylish neighbourhood. Industrial-chic interiors with exposed brick, art prints, and floor-to-ceiling windows overlooking the Golden Horn. Walking distance to the best coffee shops, galleries, and restaurants in the city.",
+      address: {
+        street: "Kemeraltı Caddesi 5",
+        city: "Istanbul",
+        country: "Turkey",
+      },
+      geo: { lat: 41.0251, lng: 28.9742 },
+      roomCount: 1,
+      guestCapacity: 2,
+      bathroomCount: 1,
+      amenities: [
+        "WiFi",
+        "Espresso Machine",
+        "Smart TV",
+        "Air Conditioning",
+        "Rooftop Access",
+        "Concierge",
+      ],
+      photos: [
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+        "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+      ],
+      verificationStatus: "VERIFIED" as const,
+      nightlyRate: 16500,
+    },
+  ] as const;
+
+  for (const u of extraUnits) {
+    const unit = await db.trustedStayUnit.upsert({
+      where: { tenantId_slug: { tenantId: tenant.id, slug: u.slug } },
+      create: {
+        id: u.id,
+        tenantId: tenant.id,
+        hostId: u.hostId,
+        hotelId: u.hotelId,
+        slug: u.slug,
+        name: u.name,
+        trustedStayType: u.trustedStayType as any,
+        stayTerm: u.stayTerm as any,
+        description: u.description,
+        address: u.address as any,
+        geo: u.geo as any,
+        roomCount: u.roomCount,
+        guestCapacity: u.guestCapacity,
+        bathroomCount: u.bathroomCount,
+        amenities: u.amenities as any,
+        photos: u.photos as any,
+        verificationStatus: u.verificationStatus as any,
+      },
+      update: {},
+    });
+
+    const nr = (u as any).nightlyRate as number;
+    await db.trustedStayRatePlan.upsert({
+      where: {
+        tenantId_trustedStayUnitId_code: {
+          tenantId: tenant.id,
+          trustedStayUnitId: unit.id,
+          code: "STANDARD",
+        },
+      },
+      create: {
+        tenantId: tenant.id,
+        trustedStayUnitId: unit.id,
+        code: "STANDARD",
+        name: "Standard Rate",
+        stayTerm: u.stayTerm as any,
+        nightlyPriceCents: nr,
+        weeklyPriceCents: nr * 6,
+        monthlyPriceCents: nr * 25,
+        depositCents: nr * 2,
+        cancellationPolicy: { freeCancelBefore: "48h", penaltyPercent: 50 },
+      },
+      update: {},
+    });
+
+    for (let i = 0; i < 60; i++) {
+      const date = days(i);
+      date.setHours(0, 0, 0, 0);
+      await db.trustedStayAvailability.upsert({
+        where: { trustedStayUnitId_date: { trustedStayUnitId: unit.id, date } },
+        create: {
+          tenantId: tenant.id,
+          trustedStayUnitId: unit.id,
+          date,
+          isAvailable: i % 7 !== 0,
+          minNights: 2,
+          maxNights: 30,
+          priceCents: nr,
+          cleaningFeeCents: 5000,
+        },
+        update: {},
+      });
+    }
+  }
+
+  console.log("✓ 4 extra Trusted Stay units");
+
+  // ═══════════════════════════════════════════════════════════════
+  // 4c. MORE MOBILITY PRODUCTS
+  // ═══════════════════════════════════════════════════════════════
+  const mobilityProvider3 = await db.mobilityProvider.upsert({
+    where: { id: "00000000-0000-0000-0020-000000000003" },
+    create: {
+      id: "00000000-0000-0000-0020-000000000003",
+      tenantId: tenant.id,
+      name: "Athens Drive Co.",
+      mobilityType: "RENTAL_CAR",
+      cities: ["Athens"] as any,
+      serviceAreas: [
+        "ATH Airport",
+        "City Center",
+        "Piraeus",
+        "Athens Riviera",
+      ] as any,
+      contactInfo: {
+        email: "info@athensdrive.gr",
+        phone: "+30 210 777 8899",
+      } as any,
+      verificationStatus: "VERIFIED" as const,
+      ratingAggregate: 4.6,
+    },
+    update: {},
+  });
+
+  const extraMobilityProducts = [
+    {
+      code: "ATH_AIRPORT_FULL_TRANSFER",
+      name: "Athens Airport — Full-Size Transfer",
+      mobilityProviderId: mobilityProvider2.id,
+      hotelId: hotel2.id,
+      mobilityType: "AIRPORT_TRANSFER" as const,
+      vehicleClass: "Mercedes V-Class",
+      capacity: 6,
+      baggageCapacity: 6,
+      city: "Athens",
+      description:
+        "Spacious V-Class van transfer for families and groups between Athens International Airport (ATH) and your accommodation. Meet & greet included.",
+      pricingConfig: { flatRate: 9500, currency: "EUR" },
+    },
+    {
+      code: "ATH_CITY_CHAUFFEUR",
+      name: "Athens City Tour Chauffeur",
+      mobilityProviderId: mobilityProvider2.id,
+      hotelId: hotel2.id,
+      mobilityType: "HOURLY_DRIVER" as const,
+      vehicleClass: "BMW 5 Series",
+      capacity: 4,
+      baggageCapacity: 4,
+      city: "Athens",
+      description:
+        "Hire a professional chauffeur by the hour to explore Athens at your own pace — Acropolis, Plaka, Piraeus port, and beyond.",
+      pricingConfig: { hourlyRate: 8500, minimumHours: 3, currency: "EUR" },
+    },
+    {
+      code: "IST_BOSPHORUS_DRIVE",
+      name: "Istanbul Bosphorus Scenic Drive",
+      mobilityProviderId: mobilityProvider1.id,
+      hotelId: hotel1.id,
+      mobilityType: "CITY_TRANSFER" as const,
+      vehicleClass: "Luxury Sedan",
+      capacity: 4,
+      baggageCapacity: 2,
+      city: "Istanbul",
+      description:
+        "A scenic point-to-point transfer along the entire European Bosphorus shore — from Sultanahmet through Beşiktaş, Ortaköy, Bebek, and up to Sarıyer. Breathtaking views throughout.",
+      pricingConfig: { flatRate: 8500, currency: "USD" },
+    },
+    {
+      code: "IST_VIP_SUV",
+      name: "Istanbul VIP SUV — Hourly",
+      mobilityProviderId: mobilityProvider1.id,
+      hotelId: hotel1.id,
+      mobilityType: "HOURLY_DRIVER" as const,
+      vehicleClass: "Range Rover Sport",
+      capacity: 5,
+      baggageCapacity: 4,
+      city: "Istanbul",
+      description:
+        "Travel Istanbul in style with our flagship Range Rover Sport and uniformed chauffeur. Complimentary water, WiFi hotspot, and daily newspapers on board.",
+      pricingConfig: { hourlyRate: 22000, minimumHours: 2, currency: "USD" },
+    },
+    {
+      code: "ATH_RENTAL_ECONOMY",
+      name: "Athens Rental Car — Economy",
+      mobilityProviderId: mobilityProvider3.id,
+      hotelId: hotel2.id,
+      mobilityType: "RENTAL_CAR" as const,
+      vehicleClass: "Economy (Toyota Yaris or similar)",
+      capacity: 4,
+      baggageCapacity: 2,
+      city: "Athens",
+      description:
+        "Flexible daily car rental from our Athens depot. Full insurance, unlimited mileage, and 24/7 roadside assistance included. Ideal for day trips to Cape Sounion or the Peloponnese.",
+      pricingConfig: {
+        dailyRate: 4500,
+        currency: "EUR",
+        insuranceIncluded: true,
+      },
+    },
+    {
+      code: "ATH_RENTAL_LUXURY",
+      name: "Athens Rental Car — Luxury",
+      mobilityProviderId: mobilityProvider3.id,
+      hotelId: hotel2.id,
+      mobilityType: "RENTAL_CAR" as const,
+      vehicleClass: "Luxury SUV (BMW X5 or similar)",
+      capacity: 5,
+      baggageCapacity: 4,
+      city: "Athens",
+      description:
+        "Drive through Greece in a premium BMW X5 or Audi Q7. Full insurance, GPS navigation, child seat option, and 24/7 concierge included.",
+      pricingConfig: {
+        dailyRate: 14500,
+        currency: "EUR",
+        insuranceIncluded: true,
+      },
+    },
+  ] as const;
+
+  for (const mp of extraMobilityProducts) {
+    await db.mobilityProduct.upsert({
+      where: {
+        tenantId_mobilityProviderId_code: {
+          tenantId: tenant.id,
+          mobilityProviderId: mp.mobilityProviderId,
+          code: mp.code,
+        },
+      },
+      create: {
+        tenantId: tenant.id,
+        mobilityProviderId: mp.mobilityProviderId,
+        hotelId: mp.hotelId,
+        code: mp.code,
+        name: mp.name,
+        mobilityType: mp.mobilityType as any,
+        vehicleClass: mp.vehicleClass,
+        capacity: mp.capacity,
+        baggageCapacity: mp.baggageCapacity,
+        city: mp.city,
+        description: mp.description,
+        pricingConfig: mp.pricingConfig as any,
+      },
+      update: {},
+    });
+  }
+
+  console.log("✓ 6 extra mobility products");
+
+  // ═══════════════════════════════════════════════════════════════
   // 6. BUNDLE OFFERS
   // ═══════════════════════════════════════════════════════════════
   const bundles = [
@@ -1019,7 +1665,7 @@ async function main() {
       subtotalCents: 52000,
       hotelId: hotel1.id,
       isVipOnly: false,
-      startsAt: new Date("2026-04-01"),
+      startsAt: new Date("2026-01-01"),
       endsAt: new Date("2026-09-30"),
       items: [
         {
@@ -1054,7 +1700,7 @@ async function main() {
       subtotalCents: 390000,
       hotelId: hotel1.id,
       isVipOnly: true,
-      startsAt: new Date("2026-04-01"),
+      startsAt: new Date("2026-01-01"),
       endsAt: new Date("2026-12-31"),
       items: [
         {
@@ -1128,7 +1774,7 @@ async function main() {
       subtotalCents: 49000,
       hotelId: hotel2.id,
       isVipOnly: false,
-      startsAt: new Date("2026-04-01"),
+      startsAt: new Date("2026-01-01"),
       endsAt: new Date("2026-10-31"),
       items: [
         {
@@ -1136,13 +1782,232 @@ async function main() {
           quantity: 2,
           unitCents: 12900,
           sortOrder: 1,
+          itemLabel: "2 Nights Accommodation",
         },
-        { itemType: "TRANSFER", quantity: 1, unitCents: 6500, sortOrder: 2 },
+        {
+          itemType: "TRANSFER",
+          quantity: 1,
+          unitCents: 6500,
+          sortOrder: 2,
+          itemLabel: "Airport Transfer",
+        },
         {
           itemType: "LOCAL_EXPERIENCE",
           quantity: 1,
           unitCents: 9000,
           sortOrder: 3,
+          itemLabel: "Private Acropolis Tour",
+        },
+      ],
+    },
+    {
+      code: "ATHENS_CULTURE_WEEKEND",
+      name: "Athens Culture Weekend",
+      description:
+        "A 3-day deep dive into ancient Athens. Includes 2 nights accommodation, the Acropolis Sunrise Walk, Athens Street Food Tour, and a Cape Sounion sunset transfer. The perfect cultural weekend escape.",
+      bundleType: "ACTIVITY_PACK",
+      pricingMode: "BUNDLED",
+      totalCents: 58000,
+      subtotalCents: 68500,
+      hotelId: hotel2.id,
+      isVipOnly: false,
+      startsAt: new Date("2026-01-01"),
+      endsAt: new Date("2026-11-30"),
+      items: [
+        {
+          itemType: "ROOM_NIGHTS",
+          quantity: 2,
+          unitCents: 12900,
+          sortOrder: 1,
+          itemLabel: "2 Nights at Boutique Athens",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 7500,
+          sortOrder: 2,
+          itemLabel: "Acropolis Sunrise Walk",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 5500,
+          sortOrder: 3,
+          itemLabel: "Athens Street Food Tour",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 12500,
+          sortOrder: 4,
+          itemLabel: "Cape Sounion Sunset Experience",
+        },
+        {
+          itemType: "TRANSFER",
+          quantity: 1,
+          unitCents: 6500,
+          sortOrder: 5,
+          itemLabel: "Athens Airport Transfer",
+        },
+      ],
+    },
+    {
+      code: "HONEYMOON_SUITE",
+      name: "Honeymoon Suite Package",
+      description:
+        "Everything you need for the perfect romantic escape. Suite upgrade guaranteed, rose petal turndown, couples' spa session, Bosphorus sunset yacht cruise, and a private candlelit dinner on the terrace.",
+      bundleType: "CURATED",
+      pricingMode: "BUNDLED",
+      totalCents: 95000,
+      subtotalCents: 118000,
+      hotelId: hotel1.id,
+      isVipOnly: false,
+      startsAt: new Date("2026-03-25"),
+      endsAt: new Date("2026-12-31"),
+      items: [
+        {
+          itemType: "ROOM_NIGHTS",
+          quantity: 3,
+          unitCents: 28900,
+          sortOrder: 1,
+          itemLabel: "3 Nights Suite Accommodation",
+        },
+        {
+          itemType: "AMENITY_PASS",
+          quantity: 2,
+          unitCents: 4500,
+          sortOrder: 2,
+          itemLabel: "Couples' Spa Session",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 8500,
+          sortOrder: 3,
+          itemLabel: "Bosphorus Sunset Cruise",
+        },
+        {
+          itemType: "DINING_CREDIT",
+          quantity: 1,
+          unitCents: 15000,
+          sortOrder: 4,
+          itemLabel: "Private Candlelit Dinner",
+        },
+        {
+          itemType: "TRANSFER",
+          quantity: 1,
+          unitCents: 5500,
+          sortOrder: 5,
+          itemLabel: "Airport Transfer",
+        },
+        {
+          itemType: "ROOM_EXTRA",
+          quantity: 1,
+          unitCents: 0,
+          sortOrder: 6,
+          itemLabel: "Rose Petal Turndown & Champagne",
+        },
+      ],
+    },
+    {
+      code: "BUSINESS_TRAVELER_BUNDLE",
+      name: "Business Traveler Bundle",
+      description:
+        "Designed for the discerning corporate guest. Includes executive room, express airport transfer, daily dry cleaning, business lounge access, and a restaurant dining credit.",
+      bundleType: "CURATED",
+      pricingMode: "BUNDLED",
+      totalCents: 38500,
+      subtotalCents: 46000,
+      hotelId: hotel1.id,
+      isVipOnly: false,
+      startsAt: new Date("2026-03-25"),
+      endsAt: new Date("2026-12-31"),
+      items: [
+        {
+          itemType: "ROOM_NIGHTS",
+          quantity: 2,
+          unitCents: 18900,
+          sortOrder: 1,
+          itemLabel: "2 Nights Executive Room",
+        },
+        {
+          itemType: "TRANSFER",
+          quantity: 2,
+          unitCents: 5500,
+          sortOrder: 2,
+          itemLabel: "Airport Transfers (both ways)",
+        },
+        {
+          itemType: "AMENITY_PASS",
+          quantity: 2,
+          unitCents: 0,
+          sortOrder: 3,
+          itemLabel: "Business Lounge Access",
+        },
+        {
+          itemType: "DINING_CREDIT",
+          quantity: 1,
+          unitCents: 5000,
+          sortOrder: 4,
+          itemLabel: "Restaurant Dining Credit",
+        },
+        {
+          itemType: "ROOM_EXTRA",
+          quantity: 1,
+          unitCents: 0,
+          sortOrder: 5,
+          itemLabel: "Daily Dry Cleaning (3 items)",
+        },
+      ],
+    },
+    {
+      code: "FAMILY_SUMMER_PACKAGE",
+      name: "Family Summer Package",
+      description:
+        "The ultimate family holiday. Spacious interconnecting rooms, kids' activities, family boat tour on the Aegean, beach transfers, and complimentary children's meals. Ages 3–12 welcome.",
+      bundleType: "ACTIVITY_PACK",
+      pricingMode: "BUNDLED",
+      totalCents: 68000,
+      subtotalCents: 82000,
+      hotelId: hotel2.id,
+      isVipOnly: false,
+      startsAt: new Date("2026-01-01"),
+      endsAt: new Date("2026-09-15"),
+      items: [
+        {
+          itemType: "ROOM_NIGHTS",
+          quantity: 5,
+          unitCents: 12900,
+          sortOrder: 1,
+          itemLabel: "5 Nights Family Room",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 19500,
+          sortOrder: 2,
+          itemLabel: "Aegean Sailing Day Trip (family)",
+        },
+        {
+          itemType: "LOCAL_EXPERIENCE",
+          quantity: 1,
+          unitCents: 9500,
+          sortOrder: 3,
+          itemLabel: "Greek Cooking Masterclass",
+        },
+        {
+          itemType: "TRANSFER",
+          quantity: 2,
+          unitCents: 9500,
+          sortOrder: 4,
+          itemLabel: "Airport Transfers (both ways)",
+        },
+        {
+          itemType: "ROOM_EXTRA",
+          quantity: 1,
+          unitCents: 0,
+          sortOrder: 5,
+          itemLabel: "Children's Meals (complimentary)",
         },
       ],
     },
@@ -1162,12 +2027,13 @@ async function main() {
         },
       });
       for (const item of items) {
+        const { itemLabel, ...itemData } = item as any;
         await db.bundleItem.create({
           data: {
             tenantId: tenant.id,
             bundleOfferId: bundle.id,
-            ...item,
-            metadata: {} as any,
+            ...itemData,
+            metadata: itemLabel ? { itemLabel } : ({} as any),
           },
         });
       }
@@ -1313,6 +2179,7 @@ async function main() {
           inventoryDate: invToday.date,
           originalPriceCents: invToday.pricePerNight,
           flashPriceCents: Math.round(invToday.pricePerNight * 0.65),
+          availableCount: invToday.availableCount ?? 1,
           currency: "USD",
         },
       });
@@ -1344,7 +2211,7 @@ async function main() {
           description:
             "Gold members: enjoy a 7-day Platinum trial at no extra charge. Butler service, suite upgrade, and unlimited spa.",
           offerType: "UPGRADE_TRIAL",
-          startsAt: new Date("2026-04-01"),
+          startsAt: new Date("2026-01-01"),
           endsAt: new Date("2026-06-30"),
           config: { trialDays: 7, autoUpgrade: false } as any,
         },

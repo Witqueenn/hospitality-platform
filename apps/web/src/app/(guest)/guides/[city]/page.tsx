@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Map, Compass, Clock, Users, BookOpen } from "lucide-react";
@@ -21,9 +20,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function CityGuidePage({
   params,
 }: {
-  params: Promise<{ city: string }>;
+  params: { city: string };
 }) {
-  const { city } = use(params);
+  const { city } = params;
 
   const { data: guide, isLoading } = trpc.cityGuide.getGuideByCity.useQuery({
     cityCode: city,

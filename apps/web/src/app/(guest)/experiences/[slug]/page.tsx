@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -22,9 +21,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function ExperienceDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = use(params);
+  const { slug } = params;
 
   const { data: experience, isLoading } =
     trpc.localExperience.getExperience.useQuery({ id: slug });

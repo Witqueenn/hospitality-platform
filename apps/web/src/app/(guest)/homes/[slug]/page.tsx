@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -18,9 +17,9 @@ import {
 export default function HomesDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = use(params);
+  const { slug } = params;
 
   const { data: unit, isLoading } = trpc.trustedStay.getUnit.useQuery({
     id: slug,
