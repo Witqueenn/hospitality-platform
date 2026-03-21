@@ -1,0 +1,941 @@
+// packages/db/prisma/schema.prisma
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgcrypto, pg_trgm]
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+  ONBOARDING
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  PLATFORM_OPS
+  HOTEL_ADMIN
+  HOTEL_MANAGER
+  FRONT_DESK
+  RESERVATIONS_MANAGER
+  EVENTS_MANAGER
+  BANQUET_MANAGER
+  FB_MANAGER
+  GUEST_RELATIONS
+  OPERATIONS_MANAGER
+  FINANCE_APPROVER
+  GUEST
+}
+
+enum HotelStatus {
+  DRAFT
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+}
+
+enum BookingType {
+  ROOM
+  EVENT
+  DINING
+  NIGHTLIFE
+  BUNDLE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  PARTIALLY_REFUNDED
+  REFUNDED
+  FAILED
+}
+
+enum EventType {
+  MEETING
+  CONFERENCE
+  WORKSHOP
+  WEDDING
+  GALA_DINNER
+  LAUNCH_EVENT
+  PRIVATE_EVENT
+  CORPORATE_RETREAT
+  BIRTHDAY
+  OTHER
+}
+
+enum EventRequestStatus {
+  INQUIRY
+  PROPOSAL_SENT
+  NEGOTIATING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum BEOStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REVISION_REQUESTED
+  FINALIZED
+  ARCHIVED
+}
+
+enum VenueLayoutType {
+  THEATER
+  CLASSROOM
+  U_SHAPE
+  BOARDROOM
+  BANQUET_ROUND
+  COCKTAIL
+  HOLLOW_SQUARE
+  CUSTOM
+}
+
+enum CaseSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum CaseStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_HOTEL
+  AWAITING_GUEST
+  AWAITING_APPROVAL
+  RESOLVED
+  CLOSED
+  ESCALATED
+}
+
+enum CaseCategory {
+  ROOM_CLEANLINESS
+  ROOM_NOT_READY
+  NOISE_COMPLAINT
+  WIFI_ISSUE
+  AC_BROKEN
+  WRONG_ROOM
+  BILLING_ISSUE
+  STAFF_BEHAVIOR
+  SAFETY_CONCERN
+  FOOD_QUALITY
+  EVENT_ISSUE
+  AMENITY_MISSING
+  CHECK_IN_DELAY
+  OTHER
+}
+
+enum CompensationType {
+  ROOM_UPGRADE
+  LATE_CHECKOUT
+  EARLY_CHECKIN
+  BREAKFAST_INCLUDED
+  PARTIAL_REFUND
+  FULL_REFUND
+  SERVICE_VOUCHER
+  AMENITY_CREDIT
+  EVENT_DISCOUNT
+  FREE_NIGHT
+  OTHER
+}
+
+enum CompensationStatus {
+  PROPOSED
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  EXECUTED
+  EXPIRED
+}
+
+enum AgentType {
+  MATCHMAKING
+  TRUTH_TRANSPARENCY
+  BOOKING_INTEGRITY
+  PRE_STAY_CONCIERGE
+  STAY_SUPPORT
+  RECOVERY_COMPENSATION
+  EVENT_MATCH
+  VENUE_CAPACITY
+  BEO_RUNOFSHOW
+  FB_PLANNING
+  NIGHTLIFE_EXPERIENCE
+  INSIGHT_HOTEL_SUCCESS
+}
+
+enum ReviewModerationStatus {
+  PENDING
+  APPROVED
+  FLAGGED
+  REJECTED
+}
+
+enum DiningType {
+  RESTAURANT
+  ROOM_SERVICE
+  BRUNCH
+  ROOFTOP
+  PRIVATE_DINING
+  GROUP_DINING
+  BUFFET
+}
+
+enum NightExperienceType {
+  DJ_NIGHT
+  LIVE_MUSIC
+  VIP_LOUNGE
+  COCKTAIL_PARTY
+  THEMED_NIGHT
+  POOL_PARTY
+  COMEDY_SHOW
+  OTHER
+}
+
+enum NotificationType {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+}
+
+// ─────────────────────────────────────────────
+// PLATFORM CORE
+// ─────────────────────────────────────────────
+
+model Tenant {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  slug        String       @unique
+  billingPlan String       @default("starter") @map("billing_plan")
+  status      TenantStatus @default(ONBOARDING)
+  settings    Json         @default("{}")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  hotels   Hotel[]
+  users    User[]
+  policies TenantPolicy[]
+  bookings Booking[]
+
+  @@map("tenants")
+}
+
+model User {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  email         String
+  emailVerified DateTime? @map("email_verified")
+  passwordHash  String?   @map("password_hash")
+  name          String
+  avatarUrl     String?   @map("avatar_url")
+  phone         String?
+  role          UserRole  @default(GUEST)
+  hotelId       String?   @map("hotel_id") @db.Uuid
+  preferences   Json      @default("{}")
+  isActive      Boolean   @default(true) @map("is_active")
+  lastLoginAt   DateTime? @map("last_login_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  tenant               Tenant              @relation(fields: [tenantId], references: [id])
+  hotel                Hotel?              @relation(fields: [hotelId], references: [id])
+  bookings             Booking[]
+  supportCasesAsGuest  SupportCase[]       @relation("GuestCases")
+  supportCasesAssigned SupportCase[]       @relation("AssignedCases")
+  reviews              Review[]
+  eventRequests        EventRequest[]
+  approvals            ApprovalRequest[]   @relation("Approver")
+  sessions             Session[]
+  diningReservations   DiningReservation[]
+  nightReservations    NightReservation[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([role])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("sessions")
+}
+
+model TenantPolicy {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  policyKey   String   @map("policy_key")
+  policyValue Json     @map("policy_value")
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, policyKey])
+  @@map("tenant_policies")
+}
+
+// ─────────────────────────────────────────────
+// HOTEL CONTEXT
+// ─────────────────────────────────────────────
+
+model Hotel {
+  id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String      @map("tenant_id") @db.Uuid
+  name             String
+  slug             String
+  description      String?     @db.Text
+  shortDescription String?     @map("short_description")
+  starRating       Int?        @map("star_rating")
+  address          Json
+  contactInfo      Json        @default("{}") @map("contact_info")
+  policies         Json        @default("{}")
+  amenities        Json        @default("[]")
+  tags             Json        @default("[]")
+  verifiedFields   Json        @default("{}") @map("verified_fields")
+  photos           Json        @default("[]")
+  noiseNotes       String?     @map("noise_notes") @db.Text
+  wifiQuality      String?     @map("wifi_quality")
+  status           HotelStatus @default(DRAFT)
+  timezone         String      @default("UTC")
+  currency         String      @default("USD") @db.VarChar(3)
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  staff             User[]
+  roomTypes         RoomType[]
+  venues            Venue[]
+  diningExperiences DiningExperience[]
+  nightExperiences  NightExperience[]
+  bookings          Booking[]
+  eventRequests     EventRequest[]
+  supportCases      SupportCase[]
+  reviews           Review[]
+  hotelInsights     HotelInsight[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([status])
+  @@map("hotels")
+}
+
+// ─────────────────────────────────────────────
+// STAY OS
+// ─────────────────────────────────────────────
+
+model RoomType {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hotelId               String   @map("hotel_id") @db.Uuid
+  tenantId              String   @map("tenant_id") @db.Uuid
+  name                  String
+  description           String?  @db.Text
+  capacity              Int
+  bedType               String   @map("bed_type")
+  sizeSqm               Decimal? @map("size_sqm") @db.Decimal(6, 2)
+  floor                 String?
+  photos                Json     @default("[]")
+  features              Json     @default("[]")
+  noiseNotes            String?  @map("noise_notes") @db.Text
+  accessibilityFeatures Json     @default("[]") @map("accessibility_features")
+  isActive              Boolean  @default(true) @map("is_active")
+  sortOrder             Int      @default(0) @map("sort_order")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  hotel        Hotel           @relation(fields: [hotelId], references: [id])
+  inventory    RoomInventory[]
+  bookingItems BookingItem[]
+
+  @@index([hotelId])
+  @@index([tenantId])
+  @@map("room_types")
+}
+
+model RoomInventory {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roomTypeId     String   @map("room_type_id") @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  date           DateTime @db.Date
+  totalCount     Int      @map("total_count")
+  availableCount Int      @map("available_count")
+  blockedCount   Int      @default(0) @map("blocked_count")
+  pricePerNight  Int      @map("price_per_night")
+  minStay        Int      @default(1) @map("min_stay")
+  restrictions   Json     @default("{}")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  roomType RoomType @relation(fields: [roomTypeId], references: [id])
+
+  @@unique([roomTypeId, date])
+  @@index([tenantId])
+  @@index([date])
+  @@index([roomTypeId, date])
+  @@map("room_inventory")
+}
+
+// ─────────────────────────────────────────────
+// BOOKING (Cross-Domain)
+// ─────────────────────────────────────────────
+
+model Booking {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String        @map("tenant_id") @db.Uuid
+  hotelId         String        @map("hotel_id") @db.Uuid
+  guestId         String        @map("guest_id") @db.Uuid
+  bookingType     BookingType   @map("booking_type")
+  bookingRef      String        @unique @map("booking_ref")
+  status          BookingStatus @default(PENDING)
+  checkIn         DateTime?     @map("check_in") @db.Date
+  checkOut        DateTime?     @map("check_out") @db.Date
+  guestCount      Int           @default(1) @map("guest_count")
+  childCount      Int           @default(0) @map("child_count")
+  subtotalCents   Int           @map("subtotal_cents")
+  taxCents        Int           @default(0) @map("tax_cents")
+  feesCents       Int           @default(0) @map("fees_cents")
+  discountCents   Int           @default(0) @map("discount_cents")
+  totalCents      Int           @map("total_cents")
+  currency        String        @default("USD") @db.VarChar(3)
+  paymentStatus   PaymentStatus @default(PENDING) @map("payment_status")
+  specialRequests String?       @map("special_requests") @db.Text
+  internalNotes   String?       @map("internal_notes") @db.Text
+  cancelledAt     DateTime?     @map("cancelled_at")
+  checkedInAt     DateTime?     @map("checked_in_at")
+  checkedOutAt    DateTime?     @map("checked_out_at")
+  metadata        Json          @default("{}")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id])
+  hotel        Hotel         @relation(fields: [hotelId], references: [id])
+  guest        User          @relation(fields: [guestId], references: [id])
+  items        BookingItem[]
+  supportCases SupportCase[]
+  reviews      Review[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([guestId])
+  @@index([status])
+  @@index([bookingRef])
+  @@index([checkIn, checkOut])
+  @@map("bookings")
+}
+
+model BookingItem {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId   String   @map("booking_id") @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  itemType    String   @map("item_type")
+  referenceId String?  @map("reference_id") @db.Uuid
+  description String
+  quantity    Int      @default(1)
+  unitCents   Int      @map("unit_cents")
+  totalCents  Int      @map("total_cents")
+  metadata    Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  booking  Booking   @relation(fields: [bookingId], references: [id])
+  roomType RoomType? @relation(fields: [referenceId], references: [id])
+
+  @@index([bookingId])
+  @@index([tenantId])
+  @@map("booking_items")
+}
+
+// ─────────────────────────────────────────────
+// EVENT OS
+// ─────────────────────────────────────────────
+
+model Venue {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hotelId          String           @map("hotel_id") @db.Uuid
+  tenantId         String           @map("tenant_id") @db.Uuid
+  name             String
+  description      String?          @db.Text
+  floorLevel       String?          @map("floor_level")
+  sizeSquareMeters Decimal?         @map("size_square_meters") @db.Decimal(8, 2)
+  capacities       Json             @default("{}") // { THEATER: 100, CLASSROOM: 60, ... }
+  defaultLayout    VenueLayoutType? @map("default_layout")
+  availableLayouts Json             @default("[]") @map("available_layouts")
+  features         Json             @default("[]") // ["natural_light", "av_equipment", "private_bar", ...]
+  avEquipment      Json             @default("[]") @map("av_equipment")
+  cateringOptions  Json             @default("[]") @map("catering_options")
+  photos           Json             @default("[]")
+  ratePerHour      Int?             @map("rate_per_hour") // cents
+  ratePerDay       Int?             @map("rate_per_day") // cents
+  isActive         Boolean          @default(true) @map("is_active")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  hotel         Hotel          @relation(fields: [hotelId], references: [id])
+  eventBookings EventBooking[]
+
+  @@index([hotelId])
+  @@index([tenantId])
+  @@map("venues")
+}
+
+model EventRequest {
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String             @map("tenant_id") @db.Uuid
+  hotelId           String             @map("hotel_id") @db.Uuid
+  requesterId       String             @map("requester_id") @db.Uuid
+  eventType         EventType          @map("event_type")
+  title             String
+  description       String?            @db.Text
+  eventDate         DateTime           @map("event_date") @db.Date
+  startTime         String?            @map("start_time")
+  endTime           String?            @map("end_time")
+  guestCount        Int                @map("guest_count")
+  budgetCents       Int?               @map("budget_cents")
+  requirements      Json               @default("{}")
+  status            EventRequestStatus @default(INQUIRY)
+  assignedManagerId String?            @map("assigned_manager_id") @db.Uuid
+  proposalSentAt    DateTime?          @map("proposal_sent_at")
+  confirmedAt       DateTime?          @map("confirmed_at")
+  internalNotes     String?            @map("internal_notes") @db.Text
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  hotel        Hotel         @relation(fields: [hotelId], references: [id])
+  requester    User          @relation(fields: [requesterId], references: [id])
+  eventBooking EventBooking?
+  beo          BEO?
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([status])
+  @@index([eventDate])
+  @@map("event_requests")
+}
+
+model EventBooking {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String          @map("tenant_id") @db.Uuid
+  eventRequestId String          @unique @map("event_request_id") @db.Uuid
+  venueId        String          @map("venue_id") @db.Uuid
+  layout         VenueLayoutType
+  setupTime      String?         @map("setup_time")
+  breakdownTime  String?         @map("breakdown_time")
+  contractedPax  Int             @map("contracted_pax")
+  guaranteedPax  Int?            @map("guaranteed_pax")
+  totalCents     Int             @map("total_cents")
+  depositCents   Int             @default(0) @map("deposit_cents")
+  notes          String?         @db.Text
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  eventRequest EventRequest @relation(fields: [eventRequestId], references: [id])
+  venue        Venue        @relation(fields: [venueId], references: [id])
+
+  @@index([tenantId])
+  @@index([venueId])
+  @@map("event_bookings")
+}
+
+model BEO {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  eventRequestId String    @unique @map("event_request_id") @db.Uuid
+  version        Int       @default(1)
+  status         BEOStatus @default(DRAFT)
+  title          String
+  content        Json      @default("{}")
+  runOfShow      Json      @default("[]") @map("run_of_show")
+  fbRequirements Json      @default("{}") @map("fb_requirements")
+  staffingPlan   Json      @default("[]") @map("staffing_plan")
+  agentNotes     String?   @map("agent_notes") @db.Text
+  approvedBy     String?   @map("approved_by") @db.Uuid
+  approvedAt     DateTime? @map("approved_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  eventRequest EventRequest @relation(fields: [eventRequestId], references: [id])
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("beos")
+}
+
+// ─────────────────────────────────────────────
+// EXPERIENCE OS
+// ─────────────────────────────────────────────
+
+model DiningExperience {
+  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hotelId        String     @map("hotel_id") @db.Uuid
+  tenantId       String     @map("tenant_id") @db.Uuid
+  name           String
+  diningType     DiningType @map("dining_type")
+  description    String?    @db.Text
+  cuisine        Json       @default("[]")
+  openHours      Json       @default("{}") @map("open_hours")
+  capacity       Int?
+  priceRange     String?    @map("price_range") // "$", "$$", "$$$", "$$$$"
+  menuHighlights Json       @default("[]") @map("menu_highlights")
+  photos         Json       @default("[]")
+  isActive       Boolean    @default(true) @map("is_active")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  hotel        Hotel               @relation(fields: [hotelId], references: [id])
+  reservations DiningReservation[]
+
+  @@index([hotelId])
+  @@index([tenantId])
+  @@map("dining_experiences")
+}
+
+model DiningReservation {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  diningExperienceId String   @map("dining_experience_id") @db.Uuid
+  guestId            String   @map("guest_id") @db.Uuid
+  date               DateTime @db.Date
+  time               String
+  partySize          Int      @map("party_size")
+  specialRequests    String?  @map("special_requests") @db.Text
+  dietaryNotes       String?  @map("dietary_notes") @db.Text
+  status             String   @default("confirmed")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  diningExperience DiningExperience @relation(fields: [diningExperienceId], references: [id])
+  guest            User             @relation(fields: [guestId], references: [id])
+
+  @@index([tenantId])
+  @@index([diningExperienceId])
+  @@index([guestId])
+  @@map("dining_reservations")
+}
+
+model NightExperience {
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hotelId        String              @map("hotel_id") @db.Uuid
+  tenantId       String              @map("tenant_id") @db.Uuid
+  name           String
+  experienceType NightExperienceType @map("experience_type")
+  description    String?             @db.Text
+  date           DateTime?           @db.Date
+  startTime      String?             @map("start_time")
+  endTime        String?             @map("end_time")
+  priceCents     Int?                @map("price_cents")
+  capacity       Int?
+  minAge         Int?                @map("min_age")
+  dressCode      String?             @map("dress_code")
+  features       Json                @default("[]")
+  photos         Json                @default("[]")
+  isActive       Boolean             @default(true) @map("is_active")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+
+  hotel        Hotel              @relation(fields: [hotelId], references: [id])
+  reservations NightReservation[]
+
+  @@index([hotelId])
+  @@index([tenantId])
+  @@map("night_experiences")
+}
+
+model NightReservation {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  nightExperienceId String   @map("night_experience_id") @db.Uuid
+  guestId           String   @map("guest_id") @db.Uuid
+  partySize         Int      @map("party_size")
+  tablePref         String?  @map("table_pref")
+  specialRequests   String?  @map("special_requests") @db.Text
+  status            String   @default("confirmed")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  nightExperience NightExperience @relation(fields: [nightExperienceId], references: [id])
+  guest           User            @relation(fields: [guestId], references: [id])
+
+  @@index([tenantId])
+  @@index([nightExperienceId])
+  @@index([guestId])
+  @@map("night_reservations")
+}
+
+// ─────────────────────────────────────────────
+// SUPPORT & RECOVERY
+// ─────────────────────────────────────────────
+
+model SupportCase {
+  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String       @map("tenant_id") @db.Uuid
+  hotelId            String       @map("hotel_id") @db.Uuid
+  guestId            String       @map("guest_id") @db.Uuid
+  bookingId          String?      @map("booking_id") @db.Uuid
+  caseRef            String       @unique @map("case_ref")
+  category           CaseCategory
+  severity           CaseSeverity @default(MEDIUM)
+  status             CaseStatus   @default(OPEN)
+  title              String
+  description        String       @db.Text
+  assignedToId       String?      @map("assigned_to_id") @db.Uuid
+  roomNumber         String?      @map("room_number")
+  responseDeadline   DateTime?    @map("response_deadline")
+  resolutionDeadline DateTime?    @map("resolution_deadline")
+  resolvedAt         DateTime?    @map("resolved_at")
+  closedAt           DateTime?    @map("closed_at")
+  guestRating        Int?         @map("guest_rating")
+  metadata           Json         @default("{}")
+  createdAt          DateTime     @default(now()) @map("created_at")
+  updatedAt          DateTime     @updatedAt @map("updated_at")
+
+  hotel         Hotel                @relation(fields: [hotelId], references: [id])
+  guest         User                 @relation("GuestCases", fields: [guestId], references: [id])
+  assignedTo    User?                @relation("AssignedCases", fields: [assignedToId], references: [id])
+  booking       Booking?             @relation(fields: [bookingId], references: [id])
+  timeline      CaseTimeline[]
+  compensations CompensationAction[]
+  agentLogs     AgentExecutionLog[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([guestId])
+  @@index([status])
+  @@index([severity])
+  @@index([caseRef])
+  @@map("support_cases")
+}
+
+model CaseTimeline {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caseId    String   @map("case_id") @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  actorType String   @map("actor_type") // "guest", "staff", "agent", "system"
+  actorId   String?  @map("actor_id") @db.Uuid
+  actorName String   @map("actor_name")
+  eventType String   @map("event_type") // "message", "status_change", "assignment", "compensation", "resolution"
+  content   String   @db.Text
+  metadata  Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  supportCase SupportCase @relation(fields: [caseId], references: [id])
+
+  @@index([caseId])
+  @@index([tenantId])
+  @@map("case_timeline")
+}
+
+model CompensationAction {
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String             @map("tenant_id") @db.Uuid
+  caseId           String             @map("case_id") @db.Uuid
+  compensationType CompensationType   @map("compensation_type")
+  description      String
+  valueCents       Int?               @map("value_cents")
+  status           CompensationStatus @default(PROPOSED)
+  requiresApproval Boolean            @default(false) @map("requires_approval")
+  approvalId       String?            @map("approval_id") @db.Uuid
+  executedAt       DateTime?          @map("executed_at")
+  reasoning        String?            @db.Text
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+
+  supportCase SupportCase      @relation(fields: [caseId], references: [id])
+  approval    ApprovalRequest? @relation(fields: [approvalId], references: [id])
+
+  @@index([tenantId])
+  @@index([caseId])
+  @@map("compensation_actions")
+}
+
+model ApprovalRequest {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  requestType   String    @map("request_type")
+  referenceId   String    @map("reference_id") @db.Uuid
+  referenceType String    @map("reference_type")
+  requestedBy   String    @map("requested_by")
+  summary       String    @db.Text
+  details       Json      @default("{}")
+  status        String    @default("pending")
+  approverId    String?   @map("approver_id") @db.Uuid
+  approverNote  String?   @map("approver_note") @db.Text
+  decidedAt     DateTime? @map("decided_at")
+  expiresAt     DateTime? @map("expires_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  approver      User?                @relation("Approver", fields: [approverId], references: [id])
+  compensations CompensationAction[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("approval_requests")
+}
+
+// ─────────────────────────────────────────────
+// AGENTIC MANAGER
+// ─────────────────────────────────────────────
+
+model AgentExecutionLog {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String    @map("tenant_id") @db.Uuid
+  caseId          String?   @map("case_id") @db.Uuid
+  sessionId       String?   @map("session_id") @db.Uuid
+  agentType       AgentType @map("agent_type")
+  triggerEvent    String    @map("trigger_event")
+  inputPayload    Json      @map("input_payload")
+  outputPayload   Json      @map("output_payload")
+  decisionSummary String    @map("decision_summary") @db.Text
+  reasoning       String?   @db.Text
+  confidenceScore Decimal?  @map("confidence_score") @db.Decimal(3, 2)
+  durationMs      Int?      @map("duration_ms")
+  escalated       Boolean   @default(false)
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  supportCase SupportCase?          @relation(fields: [caseId], references: [id])
+  session     OrchestrationSession? @relation(fields: [sessionId], references: [id])
+
+  @@index([tenantId])
+  @@index([caseId])
+  @@index([agentType])
+  @@index([createdAt])
+  @@map("agent_execution_logs")
+}
+
+model OrchestrationSession {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  triggerType   String    @map("trigger_type")
+  triggerRef    String    @map("trigger_ref")
+  context       Json      @default("{}")
+  agentsInvoked Json      @default("[]") @map("agents_invoked")
+  status        String    @default("active")
+  completedAt   DateTime? @map("completed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  agentLogs AgentExecutionLog[]
+
+  @@index([tenantId])
+  @@index([triggerType, triggerRef])
+  @@map("orchestration_sessions")
+}
+
+// ─────────────────────────────────────────────
+// INTELLIGENCE
+// ─────────────────────────────────────────────
+
+model Review {
+  id               String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String                 @map("tenant_id") @db.Uuid
+  hotelId          String                 @map("hotel_id") @db.Uuid
+  guestId          String                 @map("guest_id") @db.Uuid
+  bookingId        String?                @map("booking_id") @db.Uuid
+  overallScore     Int                    @map("overall_score")
+  scores           Json                   @default("{}")
+  title            String?
+  text             String?                @db.Text
+  sentiment        String?
+  sentimentScore   Decimal?               @map("sentiment_score") @db.Decimal(3, 2)
+  moderationStatus ReviewModerationStatus @default(PENDING) @map("moderation_status")
+  hotelResponse    String?                @map("hotel_response") @db.Text
+  respondedAt      DateTime?              @map("responded_at")
+  createdAt        DateTime               @default(now()) @map("created_at")
+  updatedAt        DateTime               @updatedAt @map("updated_at")
+
+  hotel   Hotel    @relation(fields: [hotelId], references: [id])
+  guest   User     @relation(fields: [guestId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([overallScore])
+  @@map("reviews")
+}
+
+model HotelInsight {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  hotelId        String    @map("hotel_id") @db.Uuid
+  insightType    String    @map("insight_type")
+  category       String?
+  title          String
+  description    String    @db.Text
+  severity       String?
+  data           Json      @default("{}")
+  isActionable   Boolean   @default(false) @map("is_actionable")
+  acknowledgedAt DateTime? @map("acknowledged_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([insightType])
+  @@map("hotel_insights")
+}
+
+// ─────────────────────────────────────────────
+// NOTIFICATIONS
+// ─────────────────────────────────────────────
+
+model Notification {
+  id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String             @map("tenant_id") @db.Uuid
+  recipientId String             @map("recipient_id") @db.Uuid
+  type        NotificationType
+  channel     String
+  subject     String
+  body        String             @db.Text
+  metadata    Json               @default("{}")
+  status      NotificationStatus @default(PENDING)
+  sentAt      DateTime?          @map("sent_at")
+  readAt      DateTime?          @map("read_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+
+  @@index([tenantId])
+  @@index([recipientId])
+  @@index([status])
+  @@map("notifications")
+}

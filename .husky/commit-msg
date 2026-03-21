@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# ─────────────────────────────────────────────────────────────
+# COMMIT-MSG HOOK
+# Validates the commit message against Conventional Commits.
+#
+# Format:  <type>(<scope>): <subject>
+# Example: feat(booking): add multi-room reservation support
+#
+# Valid types: feat, fix, chore, docs, refactor, perf,
+#              test, ci, build, revert, style
+# ─────────────────────────────────────────────────────────────
+
+pnpm commitlint --edit "$1"
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ [commit-msg] Commit message does not follow Conventional Commits."
+  echo "   Format: <type>(<scope>): <subject>"
+  echo "   Example: feat(booking): add multi-room reservation support"
+  echo "   See .commitlintrc.mjs for valid types and scopes."
+  exit 1
+fi

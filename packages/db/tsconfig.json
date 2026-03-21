@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/tsconfig/library",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": ["src", "prisma/seed.ts"],
+  "exclude": ["node_modules", "dist"]
+}

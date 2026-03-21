@@ -1,0 +1,171 @@
+{
+  "$schema": "./quality-rules.schema.json",
+  "meta": {
+    "generatedAt": "2026-03-20T17:34:08.128Z",
+    "generatedBy": "scripts/analyze-project.mjs",
+    "version": "1.0.0",
+    "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
+    "runHistory": ["2026-03-20T17:34:08.128Z"]
+  },
+  "metrics": {
+    "totalFiles": 278,
+    "totalLines": 49396,
+    "largestFile": {
+      "path": "pnpm-lock.yaml",
+      "lines": 10108
+    },
+    "byExtension": {
+      ".md": 75,
+      ".json": 47,
+      ".mjs": 7,
+      ".example": 1,
+      ".local": 1,
+      ".yml": 3,
+      "(none)": 22,
+      ".sh": 1,
+      ".ts": 84,
+      ".js": 3,
+      ".tsx": 28,
+      ".css": 1,
+      ".tsbuildinfo": 1,
+      ".sql": 1,
+      ".prisma": 1,
+      ".yaml": 2
+    },
+    "typeScriptCoverage": {
+      "tsFiles": 112,
+      "percentage": 40
+    }
+  },
+  "detectedPatterns": {
+    "description": "Patterns consistently used in this codebase",
+    "patterns": [
+      {
+        "id": "PAT-001",
+        "name": "Type-safe API layer",
+        "detected": false,
+        "description": "tRPC procedures used for all API communication"
+      },
+      {
+        "id": "PAT-002",
+        "name": "Zod runtime validation",
+        "detected": true,
+        "description": "Zod schemas used for input validation"
+      },
+      {
+        "id": "PAT-003",
+        "name": "Prisma ORM",
+        "detected": true,
+        "description": "Prisma used for all database access"
+      },
+      {
+        "id": "PAT-004",
+        "name": "Consistent type imports",
+        "detected": true,
+        "description": "'import type' used for type-only imports"
+      },
+      {
+        "id": "PAT-005",
+        "name": "Monorepo package boundaries",
+        "detected": true,
+        "description": "Code organized into discrete workspace packages with clear ownership"
+      }
+    ]
+  },
+  "activeRules": {
+    "eslint": {
+      "configLocation": "tooling/eslint-config/base.js",
+      "extends": [
+        "eslint:recommended",
+        "@typescript-eslint/recommended-type-checked",
+        "@typescript-eslint/stylistic-type-checked"
+      ],
+      "keyRules": [
+        "no-unused-vars (error) — vars matching ^_ are exempt",
+        "consistent-type-imports (warn) — prefer separate type imports",
+        "no-misused-promises (error) — catches async in void contexts",
+        "import/consistent-type-specifier-style (error) — top-level type imports"
+      ]
+    },
+    "prettier": {
+      "configLocation": "tooling/prettier-config/index.js",
+      "settings": {
+        "printWidth": 100,
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all"
+      }
+    },
+    "typescript": {
+      "strict": true,
+      "configLocations": [
+        "tooling/tsconfig/base.json",
+        "tooling/tsconfig/library.json",
+        "tooling/tsconfig/nextjs.json"
+      ]
+    },
+    "commitlint": {
+      "configLocation": ".commitlintrc.mjs",
+      "format": "<type>(<scope>): <subject>",
+      "enforces": "Conventional Commits"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "check-secrets + lint-staged",
+        "commit-msg": "commitlint",
+        "pre-push": "full check suite"
+      }
+    },
+    "lintStaged": {
+      "configLocation": "lint-staged.config.mjs",
+      "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
+      "*.{js,mjs,cjs}": ["prettier --write"],
+      "*.{json,md,yaml}": ["prettier --write"]
+    }
+  },
+  "violations": {
+    "summary": {
+      "total": 2,
+      "errors": 0,
+      "warnings": 1,
+      "info": 1
+    },
+    "items": [
+      {
+        "file": "packages/queue/src/logger.ts",
+        "rule": "no-console",
+        "message": "console.log() found — use a structured logger instead",
+        "severity": "warn"
+      },
+      {
+        "file": "packages/queue/src/index.ts",
+        "rule": "barrel-completeness",
+        "message": "Barrel may be missing exports: logger.ts",
+        "severity": "info"
+      }
+    ]
+  },
+  "codeQualitySignals": {
+    "todos": {
+      "count": 0,
+      "items": []
+    },
+    "fixmes": {
+      "count": 0,
+      "items": []
+    },
+    "anyTypeUsage": 0,
+    "nonNullAssertions": 3,
+    "consoleLogUsage": 1
+  },
+  "recommendations": [
+    {
+      "id": "REC-006",
+      "priority": "high",
+      "title": "Add test infrastructure",
+      "description": "No test runner config detected (vitest or jest). Testing is critical for a production platform.",
+      "action": "Set up Vitest for unit tests and Playwright for E2E tests."
+    }
+  ]
+}

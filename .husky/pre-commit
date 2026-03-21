@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# ─────────────────────────────────────────────────────────────
+# PRE-COMMIT HOOK
+# Runs fast checks on staged files only. Should complete < 30s.
+#
+# Checks performed:
+#   1. Secrets scan on staged files
+#   2. lint-staged  (prettier + eslint --fix on changed files)
+# ─────────────────────────────────────────────────────────────
+
+echo "🔍 [pre-commit] Scanning staged files for secrets..."
+node scripts/check-secrets.mjs --staged
+if [ $? -ne 0 ]; then
+  echo "❌ [pre-commit] Secret detected in staged files. Commit blocked."
+  echo "   Remove the sensitive value and try again."
+  exit 1
+fi
+
+echo "🎨 [pre-commit] Running lint-staged (format + lint on changed files)..."
+pnpm lint-staged
+if [ $? -ne 0 ]; then
+  echo "❌ [pre-commit] lint-staged failed. Fix the errors above and try again."
+  exit 1
+fi
+
+echo "✅ [pre-commit] All checks passed."

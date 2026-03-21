@@ -1,0 +1,156 @@
+version: "3.9"
+
+# Coolify bu dosyayı otomatik algılar.
+# Servisler (postgres, redis, minio) Coolify UI'dan da ayrıca eklenebilir.
+# Ortam değişkenleri Coolify dashboard'dan set edilir, .env.production dosyasından okunur.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospitality_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      # Email
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      EMAIL_FROM: ${EMAIL_FROM}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
+      # Storage
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: ${MINIO_BUCKET:-hospitality}
+      # AI
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      AGENT_DEFAULT_MODEL: ${AGENT_DEFAULT_MODEL:-deepseek/deepseek-chat}
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-https://cloud.langfuse.com}
+      # Notifications
+      NOVU_API_KEY: ${NOVU_API_KEY}
+      NOVU_APP_IDENTIFIER: ${NOVU_APP_IDENTIFIER}
+      # Search
+      ALGOLIA_APP_ID: ${ALGOLIA_APP_ID}
+      ALGOLIA_SEARCH_API_KEY: ${ALGOLIA_SEARCH_API_KEY}
+      ALGOLIA_ADMIN_API_KEY: ${ALGOLIA_ADMIN_API_KEY}
+      ALGOLIA_INDEX_HOTELS: ${ALGOLIA_INDEX_HOTELS:-hotels}
+      ALGOLIA_INDEX_ROOMS: ${ALGOLIA_INDEX_ROOMS:-rooms}
+      ALGOLIA_INDEX_EXPERIENCES: ${ALGOLIA_INDEX_EXPERIENCES:-experiences}
+      # Analytics & Monitoring
+      NEXT_PUBLIC_UMAMI_WEBSITE_ID: ${NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+      NEXT_PUBLIC_UMAMI_URL: ${NEXT_PUBLIC_UMAMI_URL:-https://analytics.yourdomain.com}
+      NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+      NEW_RELIC_APP_NAME: ${NEW_RELIC_APP_NAME:-Hospitality Platform}
+      # Maps
+      NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
+      # Agent config
+      AGENT_CONFIDENCE_THRESHOLD: ${AGENT_CONFIDENCE_THRESHOLD:-0.6}
+      COMPENSATION_AUTO_APPROVE_MAX_CENTS: ${COMPENSATION_AUTO_APPROVE_MAX_CENTS:-2500}
+      REFUND_APPROVAL_THRESHOLD_CENTS: ${REFUND_APPROVAL_THRESHOLD_CENTS:-10000}
+      SLA_CRITICAL_RESPONSE_MINUTES: ${SLA_CRITICAL_RESPONSE_MINUTES:-15}
+      SLA_HIGH_RESPONSE_MINUTES: ${SLA_HIGH_RESPONSE_MINUTES:-30}
+      SLA_MEDIUM_RESPONSE_MINUTES: ${SLA_MEDIUM_RESPONSE_MINUTES:-120}
+      SLA_LOW_RESPONSE_MINUTES: ${SLA_LOW_RESPONSE_MINUTES:-1440}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - hospitality_net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: hospitality_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hospitality_platform}
+      POSTGRES_USER: ${POSTGRES_USER:-hospitality}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hospitality}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hospitality_net
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: hospitality_umami
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-hospitality}:${POSTGRES_PASSWORD}@postgres:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hospitality_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: hospitality_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hospitality_net
+
+  minio:
+    image: minio/minio:latest
+    container_name: hospitality_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    volumes:
+      - miniodata:/data
+    ports:
+      - "9001:9001" # MinIO Console (Coolify dashboard'dan erişim)
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hospitality_net
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:
+
+networks:
+  hospitality_net:
+    driver: bridge

@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, Typecheck, Test & Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: hospitality_platform
+          POSTGRES_USER: dev
+          POSTGRES_PASSWORD: devpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://dev:devpass@localhost:5432/hospitality_platform
+      REDIS_URL: redis://localhost:6379
+      NEXTAUTH_SECRET: ci-secret-key-for-testing-only-32ch
+      NEXTAUTH_URL: http://localhost:3000
+      ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
+      # Email
+      RESEND_API_KEY: re_ci_mock_key
+      EMAIL_FROM: noreply@hospitality.local
+      EMAIL_FROM_NAME: Hospitality Platform
+      SMTP_HOST: localhost
+      SMTP_PORT: "1025"
+      SMTP_FROM: noreply@hospitality.local
+      # Storage
+      CLOUDINARY_CLOUD_NAME: ci-mock
+      CLOUDINARY_API_KEY: "000000000000000"
+      CLOUDINARY_API_SECRET: ci-mock-secret
+      CLOUDINARY_UPLOAD_PRESET: hospitality_uploads
+      UPLOAD_DIR: ./uploads
+      MAX_FILE_SIZE: "10485760"
+      # AI / LLM
+      OPENROUTER_API_KEY: sk-or-ci-mock
+      OPENROUTER_BASE_URL: https://openrouter.ai/api/v1
+      AGENT_DEFAULT_MODEL: deepseek/deepseek-chat
+      LANGFUSE_PUBLIC_KEY: pk-lf-ci-mock
+      LANGFUSE_SECRET_KEY: sk-lf-ci-mock
+      LANGFUSE_HOST: https://cloud.langfuse.com
+      # Notifications
+      NOVU_API_KEY: ci-mock-novu-key
+      NOVU_APP_IDENTIFIER: ci-mock-app
+      # Search
+      ALGOLIA_APP_ID: CI_MOCK_APP
+      ALGOLIA_SEARCH_API_KEY: ci-mock-search-key
+      ALGOLIA_ADMIN_API_KEY: ci-mock-admin-key
+      ALGOLIA_INDEX_HOTELS: hotels
+      ALGOLIA_INDEX_ROOMS: rooms
+      ALGOLIA_INDEX_EXPERIENCES: experiences
+      # Analytics & Monitoring (disabled in CI)
+      NEXT_PUBLIC_UMAMI_WEBSITE_ID: 00000000-0000-0000-0000-000000000000
+      NEXT_PUBLIC_UMAMI_URL: http://localhost:3001
+      UMAMI_APP_SECRET: ci-mock-umami-secret-32-chars-long
+      NEXT_PUBLIC_SENTRY_DSN: ""
+      NEW_RELIC_LICENSE_KEY: ci-mock
+      NEW_RELIC_APP_NAME: Hospitality Platform CI
+      # Maps
+      NEXT_PUBLIC_MAPBOX_TOKEN: pk.ci_mock_token
+      # Agent Configuration
+      AGENT_CONFIDENCE_THRESHOLD: "0.6"
+      COMPENSATION_AUTO_APPROVE_MAX_CENTS: "2500"
+      REFUND_APPROVAL_THRESHOLD_CENTS: "10000"
+      SLA_CRITICAL_RESPONSE_MINUTES: "15"
+      SLA_HIGH_RESPONSE_MINUTES: "30"
+      SLA_MEDIUM_RESPONSE_MINUTES: "120"
+      SLA_LOW_RESPONSE_MINUTES: "1440"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Run DB migrations
+        run: pnpm db:migrate
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
