@@ -10,6 +10,11 @@
       "cache": false,
       "persistent": true
     },
+    "@repo/web#dev": {
+      "dependsOn": ["@repo/agents#build"],
+      "cache": false,
+      "persistent": true
+    },
     "lint": {},
     "typecheck": {
       "dependsOn": ["^build"]

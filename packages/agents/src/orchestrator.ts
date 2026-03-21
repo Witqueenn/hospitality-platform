@@ -3,7 +3,6 @@ import type { AgentInput, AgentOutput } from "@repo/shared";
 import { PIPELINES } from "./pipelines.js";
 import { getAgent } from "./registry.js";
 import { buildContext, loadHistory, loadPolicies } from "./contextBuilder.js";
-import crypto from "crypto";
 
 const CONFIDENCE_THRESHOLD = Number(
   process.env["AGENT_CONFIDENCE_THRESHOLD"] ?? 0.6,
@@ -91,7 +90,7 @@ export async function orchestrate(
   const triggerRef =
     (payload["caseId"] as string | undefined) ??
     (payload["bookingId"] as string | undefined) ??
-    crypto.randomUUID();
+    globalThis.crypto.randomUUID();
 
   const session = await createSession(triggerEvent, triggerRef, tenantId);
 

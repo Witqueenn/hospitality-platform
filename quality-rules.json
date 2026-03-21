@@ -1,15 +1,15 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-20T17:28:51.419Z",
+    "generatedAt": "2026-03-20T17:34:08.128Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-20T17:28:51.419Z"]
+    "runHistory": ["2026-03-20T17:34:08.128Z"]
   },
   "metrics": {
-    "totalFiles": 276,
-    "totalLines": 49355,
+    "totalFiles": 278,
+    "totalLines": 49396,
     "largestFile": {
       "path": "pnpm-lock.yaml",
       "lines": 10108
@@ -23,7 +23,7 @@
       ".yml": 3,
       "(none)": 22,
       ".sh": 1,
-      ".ts": 82,
+      ".ts": 84,
       ".js": 3,
       ".tsx": 28,
       ".css": 1,
@@ -33,7 +33,7 @@
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 110,
+      "tsFiles": 112,
       "percentage": 40
     }
   },
@@ -126,35 +126,23 @@
   },
   "violations": {
     "summary": {
-      "total": 4,
+      "total": 2,
       "errors": 0,
-      "warnings": 4,
-      "info": 0
+      "warnings": 1,
+      "info": 1
     },
     "items": [
       {
-        "file": "apps/web/src/instrumentation.ts",
-        "rule": "no-direct-env",
-        "message": "Direct process.env access — centralize env vars in a typed env module",
-        "severity": "warn"
-      },
-      {
-        "file": "packages/queue/src/workers/agentWorker.ts",
+        "file": "packages/queue/src/logger.ts",
         "rule": "no-console",
         "message": "console.log() found — use a structured logger instead",
         "severity": "warn"
       },
       {
-        "file": "packages/queue/src/workers/notificationWorker.ts",
-        "rule": "no-console",
-        "message": "console.log() found — use a structured logger instead",
-        "severity": "warn"
-      },
-      {
-        "file": "packages/queue/src/workers/slaCheckWorker.ts",
-        "rule": "no-console",
-        "message": "console.log() found — use a structured logger instead",
-        "severity": "warn"
+        "file": "packages/queue/src/index.ts",
+        "rule": "barrel-completeness",
+        "message": "Barrel may be missing exports: logger.ts",
+        "severity": "info"
       }
     ]
   },
@@ -169,7 +157,7 @@
     },
     "anyTypeUsage": 0,
     "nonNullAssertions": 3,
-    "consoleLogUsage": 3
+    "consoleLogUsage": 1
   },
   "recommendations": [
     {
