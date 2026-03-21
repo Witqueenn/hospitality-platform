@@ -67,7 +67,7 @@ export default function RoomTypesPage() {
       setOpen(false);
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: { message: string }) => toast.error(e.message),
   });
 
   const updateMutation = trpc.roomType.update.useMutation({
@@ -76,17 +76,28 @@ export default function RoomTypesPage() {
       setOpen(false);
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: { message: string }) => toast.error(e.message),
   });
 
   const deactivateMutation = trpc.roomType.delete.useMutation({
     onSuccess: () => {
       void refetch();
     },
-    onError: (e) => toast.error(e.message),
+    onError: (e: { message: string }) => toast.error(e.message),
   });
 
-  type RoomTypeItem = NonNullable<typeof roomTypes>[number] & {
+  type RoomTypeItem = {
+    id: string;
+    name: string;
+    description: string | null;
+    capacity: number;
+    bedType: string;
+    sizeSqm: unknown;
+    floor: string | null;
+    features: unknown;
+    photos: unknown;
+    noiseNotes: string | null;
+    isActive: boolean;
     baseRateCents?: number | null;
   };
   const handleOpen = (roomType?: RoomTypeItem) => {
@@ -187,7 +198,7 @@ export default function RoomTypesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {roomTypes.map((rt) => {
+              {(roomTypes as unknown as RoomTypeItem[]).map((rt) => {
                 const photos = Array.isArray(rt.photos)
                   ? (rt.photos as { thumb: string; alt: string }[])
                   : [];
