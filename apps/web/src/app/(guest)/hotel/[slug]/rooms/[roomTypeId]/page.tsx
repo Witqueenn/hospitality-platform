@@ -333,7 +333,7 @@ export default function RoomDetailPage() {
             {features.length > 0 && (
               <div className="rounded-xl border bg-white p-6">
                 <h2 className="mb-4 text-lg font-semibold text-gray-900">
-                  What's included
+                  What&apos;s included
                 </h2>
                 <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {features.map((f) => (
