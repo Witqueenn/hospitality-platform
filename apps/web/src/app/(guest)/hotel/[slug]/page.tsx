@@ -418,26 +418,29 @@ export default function HotelDetailPage() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {hotelData.diningExperiences.map((d) => (
-                <div
+                <Link
                   key={d.id}
-                  className="overflow-hidden rounded-xl border bg-white"
+                  href={`/hotel/${slug}/dining/${d.id}`}
+                  className="group cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
                   {d.photos?.length > 0 && (
                     <div className="h-36 overflow-hidden">
                       <img
                         src={d.photos[0]?.url}
                         alt={d.photos[0]?.alt}
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   )}
                   <div className="p-5">
                     <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900">{d.name}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a1a2e]">
+                        {d.name}
+                      </h3>
                       <Badge variant="secondary">{d.diningType}</Badge>
                     </div>
                     {d.description && (
-                      <p className="mt-2 text-sm text-gray-500">
+                      <p className="mt-2 line-clamp-2 text-sm text-gray-500">
                         {d.description}
                       </p>
                     )}
@@ -445,8 +448,14 @@ export default function HotelDetailPage() {
                       {d.capacity ? `Capacity: ${d.capacity}` : ""}
                       {d.priceRange ? ` · ${d.priceRange}` : ""}
                     </p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1a1a2e]">
+                        View details →
+                      </p>
+                      <ChevronRight className="h-4 w-4 text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1a1a2e]" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
@@ -461,26 +470,29 @@ export default function HotelDetailPage() {
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {hotelData.nightExperiences.map((n) => (
-                <div
+                <Link
                   key={n.id}
-                  className="overflow-hidden rounded-xl border bg-white"
+                  href={`/hotel/${slug}/nightlife/${n.id}`}
+                  className="group cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
                   {n.photos?.length > 0 && (
                     <div className="h-36 overflow-hidden">
                       <img
                         src={n.photos[0]?.url}
                         alt={n.photos[0]?.alt}
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   )}
                   <div className="p-5">
                     <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900">{n.name}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a1a2e]">
+                        {n.name}
+                      </h3>
                       <Badge variant="secondary">{n.experienceType}</Badge>
                     </div>
                     {n.description && (
-                      <p className="mt-2 text-sm text-gray-500">
+                      <p className="mt-2 line-clamp-2 text-sm text-gray-500">
                         {n.description}
                       </p>
                     )}
@@ -489,8 +501,14 @@ export default function HotelDetailPage() {
                         Ticket: ${(n.priceCents / 100).toFixed(0)}
                       </p>
                     )}
+                    <div className="mt-3 flex items-center justify-between">
+                      <p className="text-sm font-semibold text-[#1a1a2e]">
+                        View details →
+                      </p>
+                      <ChevronRight className="h-4 w-4 text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1a1a2e]" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}

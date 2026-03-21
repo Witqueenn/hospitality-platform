@@ -13,6 +13,7 @@ const HOTEL_NAV = [
   { href: "/hotel/events", label: "Events", icon: "🎭" },
   { href: "/hotel/venues", label: "Venues", icon: "🏛" },
   { href: "/hotel/dining", label: "Dining", icon: "🍽" },
+  { href: "/hotel/nightlife", label: "Nightlife", icon: "🌙" },
   { href: "/hotel/support", label: "Support Cases", icon: "🎫" },
   { href: "/hotel/approvals", label: "Approvals", icon: "✅" },
   { href: "/hotel/reviews", label: "Reviews", icon: "⭐" },

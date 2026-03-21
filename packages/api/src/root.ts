@@ -15,6 +15,7 @@ import { reviewRouter } from "./routers/review.router.js";
 import { analyticsRouter } from "./routers/analytics.router.js";
 import { notificationRouter } from "./routers/notification.router.js";
 import { diningRouter } from "./routers/dining.router.js";
+import { nightlifeRouter } from "./routers/nightlife.router.js";
 
 export const appRouter = router({
   auth: authRouter,
@@ -31,6 +32,7 @@ export const appRouter = router({
   analytics: analyticsRouter,
   notification: notificationRouter,
   dining: diningRouter,
+  nightlife: nightlifeRouter,
 });
 
 export type AppRouter = typeof appRouter;

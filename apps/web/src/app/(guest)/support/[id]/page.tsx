@@ -68,7 +68,7 @@ export default function SupportCaseDetailPage() {
         100,
       );
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err: { message: string }) => toast.error(err.message),
   });
 
   const handleSend = () => {
@@ -106,6 +106,38 @@ export default function SupportCaseDetailPage() {
     );
   }
 
+  type TimelineEntry = {
+    id: string;
+    actorType: string;
+    actorId: string | null;
+    actorName: string | null;
+    content: string | null;
+    createdAt: string | Date;
+  };
+  type Compensation = {
+    id: string;
+    compensationType: string;
+    description: string | null;
+    valueCents: number | null;
+    status: string;
+  };
+  type SupportCaseDetail = {
+    id: string;
+    caseRef: string;
+    severity: string;
+    status: string;
+    category: string;
+    title: string;
+    createdAt: string | Date;
+    responseDeadline: string | Date | null;
+    resolutionDeadline: string | Date | null;
+    booking: { bookingRef: string } | null;
+    assignedTo: { name: string } | null;
+    compensations: Compensation[];
+    timeline: TimelineEntry[];
+  };
+  const sc = supportCase as unknown as SupportCaseDetail;
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <Button
@@ -122,41 +154,37 @@ export default function SupportCaseDetailPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="font-mono text-sm text-gray-400">
-                {supportCase.caseRef}
-              </p>
+              <p className="font-mono text-sm text-gray-400">{sc.caseRef}</p>
               <Badge
-                className={SEVERITY_STYLE[supportCase.severity] ?? ""}
+                className={SEVERITY_STYLE[sc.severity] ?? ""}
                 variant="outline"
               >
-                {supportCase.severity}
+                {sc.severity}
               </Badge>
               <Badge
-                className={STATUS_STYLE[supportCase.status] ?? ""}
+                className={STATUS_STYLE[sc.status] ?? ""}
                 variant="outline"
               >
-                {supportCase.status.replace("_", " ")}
+                {sc.status.replace("_", " ")}
               </Badge>
               <Badge variant="secondary">
-                {supportCase.category.replace(/_/g, " ")}
+                {sc.category.replace(/_/g, " ")}
               </Badge>
             </div>
-            <h1 className="mt-2 text-xl font-bold text-gray-900">
-              {supportCase.title}
-            </h1>
-            {supportCase.booking && (
+            <h1 className="mt-2 text-xl font-bold text-gray-900">{sc.title}</h1>
+            {sc.booking && (
               <p className="mt-1 text-sm text-gray-400">
-                Booking: {supportCase.booking.bookingRef}
+                Booking: {sc.booking.bookingRef}
               </p>
             )}
           </div>
           <div className="text-right text-sm text-gray-400">
-            <p>Opened {formatDate(supportCase.createdAt)}</p>
-            {supportCase.assignedTo && (
+            <p>Opened {formatDate(sc.createdAt)}</p>
+            {sc.assignedTo && (
               <p>
                 Assigned to:{" "}
                 <span className="font-medium text-gray-700">
-                  {supportCase.assignedTo.name}
+                  {sc.assignedTo.name}
                 </span>
               </p>
             )}
@@ -164,26 +192,26 @@ export default function SupportCaseDetailPage() {
         </div>
 
         {/* SLA Deadlines */}
-        {(supportCase.responseDeadline || supportCase.resolutionDeadline) && (
+        {(sc.responseDeadline || sc.resolutionDeadline) && (
           <div className="mt-4 flex flex-wrap gap-4 rounded-lg bg-gray-50 p-3 text-sm">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-gray-400" />
-              {supportCase.responseDeadline && (
+              {sc.responseDeadline && (
                 <span className="text-gray-600">
                   Response by:{" "}
                   <span className="font-medium">
-                    {formatDate(supportCase.responseDeadline)}
+                    {formatDate(sc.responseDeadline)}
                   </span>
                 </span>
               )}
             </div>
-            {supportCase.resolutionDeadline && (
+            {sc.resolutionDeadline && (
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4 text-gray-400" />
                 <span className="text-gray-600">
                   Resolution by:{" "}
                   <span className="font-medium">
-                    {formatDate(supportCase.resolutionDeadline)}
+                    {formatDate(sc.resolutionDeadline)}
                   </span>
                 </span>
               </div>
@@ -193,13 +221,13 @@ export default function SupportCaseDetailPage() {
       </div>
 
       {/* Compensation */}
-      {supportCase.compensations && supportCase.compensations.length > 0 && (
+      {sc.compensations && sc.compensations.length > 0 && (
         <div className="rounded-xl border bg-white p-5">
           <h2 className="mb-3 font-semibold text-gray-900">
             Compensation Offers
           </h2>
           <div className="space-y-3">
-            {supportCase.compensations.map((comp) => (
+            {sc.compensations.map((comp) => (
               <div
                 key={comp.id}
                 className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
@@ -234,7 +262,7 @@ export default function SupportCaseDetailPage() {
         </div>
 
         <div className="max-h-96 space-y-3 overflow-y-auto p-5">
-          {supportCase.timeline.map((entry) => {
+          {sc.timeline.map((entry) => {
             const isGuestMsg = entry.actorType === "guest";
             const isMe = entry.actorId === user?.id;
 
@@ -279,42 +307,39 @@ export default function SupportCaseDetailPage() {
         </div>
 
         {/* Message input */}
-        {supportCase.status !== "RESOLVED" &&
-          supportCase.status !== "CLOSED" && (
-            <div className="border-t p-4">
-              <div className="flex gap-3">
-                <Textarea
-                  placeholder="Type a message..."
-                  rows={2}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSend();
-                    }
-                  }}
-                  className="resize-none"
-                />
-                <Button
-                  className="self-end bg-[#1a1a2e] hover:bg-[#16213e]"
-                  onClick={handleSend}
-                  disabled={!message.trim() || addEntry.isPending}
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-              <p className="mt-1 text-xs text-gray-400">
-                Press Enter to send, Shift+Enter for new line
-              </p>
+        {sc.status !== "RESOLVED" && sc.status !== "CLOSED" && (
+          <div className="border-t p-4">
+            <div className="flex gap-3">
+              <Textarea
+                placeholder="Type a message..."
+                rows={2}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
+                className="resize-none"
+              />
+              <Button
+                className="self-end bg-[#1a1a2e] hover:bg-[#16213e]"
+                onClick={handleSend}
+                disabled={!message.trim() || addEntry.isPending}
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
-          )}
+            <p className="mt-1 text-xs text-gray-400">
+              Press Enter to send, Shift+Enter for new line
+            </p>
+          </div>
+        )}
 
-        {(supportCase.status === "RESOLVED" ||
-          supportCase.status === "CLOSED") && (
+        {(sc.status === "RESOLVED" || sc.status === "CLOSED") && (
           <div className="border-t bg-green-50 px-5 py-3 text-center text-sm text-green-700">
-            This case is {supportCase.status.toLowerCase()}. Thank you for your
-            patience.
+            This case is {sc.status.toLowerCase()}. Thank you for your patience.
           </div>
         )}
       </div>
