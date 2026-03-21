@@ -46,6 +46,26 @@ const SKIP_DIRS = new Set([
   "coverage",
   ".cache",
   "prisma/migrations", // generated
+  // External repos / tooling cloned into the workspace root (not part of this project)
+  "chatwoot",
+  "nocodb",
+  "twenty",
+  "umami",
+  "opencode",
+  "playwright",
+  "GSAP",
+  "motion",
+  "magicui",
+  "quill",
+  "context7",
+  "coolify",
+  "free-for-dev",
+  "agency-agents",
+  "claude-mem",
+  "marketingskills",
+  "superpowers",
+  "vibe-kanban",
+  "hospitality-platform",
 ]);
 
 function* walkFiles(dir) {
