@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar } from "./Sidebar";
+import { AiConcierge } from "@/components/ai-concierge/AiConcierge";
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -46,6 +47,7 @@ export function HotelLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="p-6">{children}</div>
       </main>
+      <AiConcierge />
     </div>
   );
 }

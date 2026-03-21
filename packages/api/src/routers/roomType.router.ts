@@ -1,9 +1,33 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpc.js";
+import { router, protectedProcedure, publicProcedure } from "../trpc.js";
 import { createRoomTypeSchema, inventoryUpdateSchema } from "@repo/shared";
 
 export const roomTypeRouter = router({
+  /** Public — used by the guest-facing room detail page */
+  getPublic: publicProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const roomType = await ctx.db.roomType.findFirst({
+        where: { id: input.id, isActive: true },
+        include: {
+          hotel: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              starRating: true,
+              address: true,
+              wifiQuality: true,
+              noiseNotes: true,
+            },
+          },
+        },
+      });
+      if (!roomType) throw new TRPCError({ code: "NOT_FOUND" });
+      return roomType;
+    }),
+
   list: protectedProcedure
     .input(z.object({ hotelId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
