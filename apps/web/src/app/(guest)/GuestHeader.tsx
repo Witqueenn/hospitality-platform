@@ -17,6 +17,7 @@ import {
   Compass,
   Tag,
   Crown,
+  Briefcase,
 } from "lucide-react";
 
 export function GuestHeader() {
@@ -76,6 +77,12 @@ export function GuestHeader() {
             className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
           >
             <Tag className="h-4 w-4" /> Offers
+          </Link>
+          <Link
+            href="/jobs"
+            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
+          >
+            <Briefcase className="h-4 w-4" /> Careers
           </Link>
           {isAuth && (
             <>
