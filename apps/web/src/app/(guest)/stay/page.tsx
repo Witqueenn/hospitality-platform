@@ -16,6 +16,7 @@ import {
   Calendar,
   Building2,
   ChevronRight,
+  Compass,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -67,6 +68,14 @@ const ACTIONS = [
     href: "/stay/staff-feedback",
     color: "text-yellow-600",
     bg: "bg-yellow-50",
+  },
+  {
+    icon: Compass,
+    label: "Explore",
+    description: "Local experiences & city guide",
+    href: "/stay/explore",
+    color: "text-teal-600",
+    bg: "bg-teal-50",
   },
 ];
 
