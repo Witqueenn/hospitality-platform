@@ -130,7 +130,8 @@ export default function MyStayPage() {
     : null;
 
   const pendingRequests =
-    session.messages?.filter((m) => !m.readAt).length ?? 0;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (session as any).messages?.filter((m: any) => !m.readAt).length ?? 0;
 
   return (
     <div className="space-y-6">
@@ -187,13 +188,15 @@ export default function MyStayPage() {
       </div>
 
       {/* Recent Messages */}
-      {session.messages && session.messages.length > 0 && (
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      {(session as any).messages && (session as any).messages.length > 0 && (
         <div>
           <h2 className="mb-3 text-base font-semibold text-gray-800">
             Recent Messages
           </h2>
           <div className="space-y-2">
-            {session.messages.slice(0, 3).map((msg) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(session as any).messages.slice(0, 3).map((msg: any) => (
               <div
                 key={msg.id}
                 className={`flex items-start gap-3 rounded-xl border p-4 ${

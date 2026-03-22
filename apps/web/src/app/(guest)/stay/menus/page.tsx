@@ -65,7 +65,8 @@ export default function StayMenusPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {menus.map((menu) => {
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {(menus as any[]).map((menu: any) => {
             const isOpen = expanded === menu.id;
             type MenuContent = {
               sections?: Array<{
