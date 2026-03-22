@@ -93,7 +93,7 @@ export default function GuidesPage() {
           {query ? (
             <>
               <p className="font-medium text-gray-600">
-                No results for "{query}"
+                No results for &ldquo;{query}&rdquo;
               </p>
               <p className="mt-1 text-sm text-gray-400">
                 Try a different city or country name.
