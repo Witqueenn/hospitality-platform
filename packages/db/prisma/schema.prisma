@@ -51,14 +51,6 @@ enum BookingType {
   DINING
   NIGHTLIFE
   BUNDLE
-  // VIP Marketplace extensions
-  AMENITY
-  MOBILITY
-  TRUSTED_STAY
-  LOCAL_EXPERIENCE
-  SAME_NIGHT
-  NIGHT_USE
-  VIP_SERVICE
 }
 
 enum BookingStatus {
@@ -236,6 +228,243 @@ enum NotificationStatus {
   FAILED
 }
 
+// ── GUEST STAY & IN-STAY ─────────────────────
+enum GuestStayStatus {
+  ACTIVE
+  CHECKED_OUT
+  CANCELLED
+}
+
+enum MessageCategory {
+  WELCOME
+  WIFI
+  EVENT
+  DINING
+  UPSELL
+  ALERT
+  SERVICE_UPDATE
+  CHECKOUT_REMINDER
+}
+
+enum MenuType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  ALL_DAY
+  ROOM_SERVICE
+  POOLSIDE
+  BAR
+  BRUNCH
+  TASTING
+  SPECIAL
+}
+
+enum ServiceRequestType {
+  EXTRA_TOWELS
+  HOUSEKEEPING
+  ROOM_CLEANING
+  MINIBAR_REFILL
+  AC_ISSUE
+  TV_INTERNET_ISSUE
+  LUGGAGE_ASSISTANCE
+  WAKE_UP_CALL
+  BABY_CRIB
+  MAINTENANCE
+  OTHER
+}
+
+enum ServiceRequestStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ServicePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// ── INCIDENTS & RECOVERY ─────────────────────
+enum IncidentCategory {
+  ROOM_ISSUE
+  SERVICE_FAILURE
+  STAFF_COMPLAINT
+  FACILITY_ISSUE
+  BILLING_DISPUTE
+  NOISE_COMPLAINT
+  SAFETY_CONCERN
+  FOOD_QUALITY
+  OTHER
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_RESPONSE
+  RESOLVED
+  CLOSED
+}
+
+enum RecoveryOfferType {
+  DISCOUNT
+  AMENITY_PASS
+  DINING_CREDIT
+  LATE_CHECKOUT
+  REFUND_NOTE
+  VIP_CREDIT
+}
+
+enum RecoveryOfferStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+// ── LOST & FOUND ──────────────────────────────
+enum LostFoundStatus {
+  STORED
+  CLAIMED
+  SHIPPED
+  RETURNED
+  DONATED
+  DISCARDED
+}
+
+enum ClaimStatus {
+  OPEN
+  MATCHED
+  COLLECTING
+  SHIPPED
+  RESOLVED
+  CLOSED
+}
+
+// ── STAFF & REPUTATION ───────────────────────
+enum StaffDepartment {
+  FRONT_DESK
+  CONCIERGE
+  HOUSEKEEPING
+  DINING
+  ROOM_SERVICE
+  MANAGEMENT
+  MAINTENANCE
+  SPA
+  SECURITY
+  OTHER
+}
+
+enum StaffReviewType {
+  FRONT_DESK
+  CONCIERGE
+  HOUSEKEEPING
+  DINING
+  ROOM_SERVICE
+  MANAGEMENT
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum ConductNoteType {
+  RESPECTFUL
+  HELPFUL
+  COMPLAINT
+  DAMAGE_RISK
+  ABUSE
+  SAFETY_ISSUE
+  VIP
+}
+
+enum NoteSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TipType {
+  POST_SERVICE
+  POST_STAY
+  THANK_YOU
+}
+
+enum TipStatus {
+  PENDING
+  SETTLED
+  REFUNDED
+  CANCELLED
+}
+
+enum BadgeType {
+  GUEST_FAVORITE
+  TOP_CONCIERGE
+  FRONT_DESK_STAR
+  HOUSEKEEPING_APPRECIATED
+  SERVICE_EXCELLENCE
+  FAST_RESPONDER
+}
+
+// ── JOBS & TALENT ─────────────────────────────
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  SEASONAL
+  INTERNSHIP
+  TRAINEE
+  TEMPORARY
+}
+
+enum ExperienceLevel {
+  ENTRY
+  JUNIOR
+  MID
+  SENIOR
+  MANAGEMENT
+}
+
+enum JobPostingStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  FILLED
+}
+
+enum ApplicationType {
+  INTERNAL_STAFF
+  OPEN_MARKET
+  INTERNSHIP
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  SHORTLISTED
+  INTERVIEW
+  REJECTED
+  HIRED
+}
+
+enum CareerVisibility {
+  PRIVATE
+  PLATFORM_ONLY
+  PUBLIC
+}
+
 // ─────────────────────────────────────────────
 // PLATFORM CORE
 // ─────────────────────────────────────────────
@@ -254,6 +483,48 @@ model Tenant {
   users    User[]
   policies TenantPolicy[]
   bookings Booking[]
+
+  // In-Stay
+  guestStaySessions          GuestStaySession[]
+  hotelWifiCredentials       HotelWifiCredential[]
+  inStayMessages             InStayMessage[]
+  hotelVenueMenus            HotelVenueMenu[]
+  guestServiceRequests       GuestServiceRequest[]
+  serviceTaskAssignments     ServiceTaskAssignment[]
+  taskCompletionLogs         TaskCompletionLog[]
+  // Incidents
+  serviceIncidents           ServiceIncident[]
+  serviceResolutions         ServiceResolution[]
+  recoveryOffers             RecoveryOffer[]
+  recoveryActionLogs         RecoveryActionLog[]
+  // Lost & Found
+  lostFoundItems             LostFoundItem[]
+  lostFoundClaims            LostFoundClaim[]
+  // Staff
+  staffProfiles              StaffProfile[]
+  staffGuestReviews          StaffGuestReview[]
+  staffGuestConductNotes     StaffGuestConductNote[]
+  staffTips                  StaffTip[]
+  staffBadges                StaffBadge[]
+  staffRecognitionLogs       StaffRecognitionLog[]
+  gratitudeWallEntries       GratitudeWallEntry[]
+  // Jobs
+  jobPostings                JobPosting[]
+  jobApplications            JobApplication[]
+  jobInterviews              JobInterview[]
+  applicationStatusHistories ApplicationStatusHistory[]
+  recruiterNotes             RecruiterNote[]
+  // Career
+  careerPassports            CareerPassport[]
+  // Talent
+  talentProfiles             TalentProfile[]
+  talentApplications         TalentApplication[]
+  // Learning
+  staffCourseEnrollments     StaffCourseEnrollment[]
+  staffCertificates          StaffCertificate[]
+  // Shifts
+  shiftPostings              ShiftPosting[]
+  shiftClaims                ShiftClaim[]
 
   @@map("tenants")
 }
@@ -275,29 +546,19 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  tenant                      Tenant                       @relation(fields: [tenantId], references: [id])
-  hotel                       Hotel?                       @relation(fields: [hotelId], references: [id])
-  bookings                    Booking[]
-  supportCasesAsGuest         SupportCase[]                @relation("GuestCases")
-  supportCasesAssigned        SupportCase[]                @relation("AssignedCases")
-  reviews                     Review[]
-  eventRequests               EventRequest[]
-  approvals                   ApprovalRequest[]            @relation("Approver")
-  sessions                    Session[]
-  diningReservations          DiningReservation[]
-  nightReservations           NightReservation[]
-  // VIP Marketplace relations
-  vipMemberships              UserVipMembership[]
-  benefitWallets              UserBenefitWallet[]
-  preferenceProfile           UserPreferenceProfile?
-  travelProfile               UserTravelProfile?
-  amenityReservations         AmenityReservation[]         @relation("AmenityReservations")
-  amenityReviews              AmenityReview[]              @relation("AmenityReviews")
-  mobilityReservations        MobilityReservation[]        @relation("MobilityReservations")
-  localExperienceReservations LocalExperienceReservation[] @relation("LocalExperienceReservations")
-  vipUsageLogs                VipUsageLog[]                @relation("VipUsageLogs")
-  bundleRedemptions           BundleRedemption[]           @relation("BundleRedemptions")
-  crossSellLogs               CrossSellRecommendationLog[] @relation("CrossSellLogs")
+  tenant               Tenant              @relation(fields: [tenantId], references: [id])
+  hotel                Hotel?              @relation(fields: [hotelId], references: [id])
+  bookings             Booking[]
+  supportCasesAsGuest  SupportCase[]       @relation("GuestCases")
+  supportCasesAssigned SupportCase[]       @relation("AssignedCases")
+  reviews              Review[]
+  eventRequests        EventRequest[]
+  approvals            ApprovalRequest[]   @relation("Approver")
+  sessions             Session[]
+  diningReservations   DiningReservation[]
+  nightReservations    NightReservation[]
+  guestStaySessions    GuestStaySession[]  @relation("GuestStaySessions")
+  staffProfile         StaffProfile?       @relation("StaffUserProfile")
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -364,29 +625,32 @@ model Hotel {
   createdAt        DateTime    @default(now()) @map("created_at")
   updatedAt        DateTime    @updatedAt @map("updated_at")
 
-  tenant               Tenant                 @relation(fields: [tenantId], references: [id])
-  staff                User[]
-  roomTypes            RoomType[]
-  venues               Venue[]
-  diningExperiences    DiningExperience[]
-  nightExperiences     NightExperience[]
-  bookings             Booking[]
-  eventRequests        EventRequest[]
-  supportCases         SupportCase[]
-  reviews              Review[]
-  hotelInsights        HotelInsight[]
-  // VIP Marketplace relations
-  vipOffers            VipOffer[]
-  amenityAssets        AmenityAsset[]
-  flashWindows         InventoryFlashWindow[]
-  nightUsePolicies     NightUsePolicy[]
-  trustedStayUnits     TrustedStayUnit[]
-  mobilityProducts     MobilityProduct[]
-  mobilityReservations MobilityReservation[]
-  amenityReservations  AmenityReservation[]
-  localExperiences     LocalExperience[]
-  bundleOffers         BundleOffer[]
-  upsellCampaigns      UpsellCampaign[]
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  staff             User[]
+  roomTypes         RoomType[]
+  venues            Venue[]
+  diningExperiences DiningExperience[]
+  nightExperiences  NightExperience[]
+  bookings          Booking[]
+  eventRequests     EventRequest[]
+  supportCases      SupportCase[]
+  reviews           Review[]
+  hotelInsights     HotelInsight[]
+
+  // In-Stay
+  guestStaySessions    GuestStaySession[]
+  hotelWifiCredentials HotelWifiCredential[]
+  hotelVenueMenus      HotelVenueMenu[]
+  guestServiceRequests GuestServiceRequest[]
+  serviceIncidents     ServiceIncident[]
+  lostFoundItems       LostFoundItem[]
+  // Staff
+  staffProfiles        StaffProfile[]
+  gratitudeWallEntries GratitudeWallEntry[]
+  // Jobs
+  jobPostings          JobPosting[]
+  // Shifts
+  shiftPostings        ShiftPosting[]
 
   @@unique([tenantId, slug])
   @@index([tenantId])
@@ -417,12 +681,9 @@ model RoomType {
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  hotel            Hotel                  @relation(fields: [hotelId], references: [id])
-  inventory        RoomInventory[]
-  bookingItems     BookingItem[]
-  // Tonight Deals relations
-  flashWindows     InventoryFlashWindow[]
-  nightUsePolicies NightUsePolicy[]
+  hotel        Hotel           @relation(fields: [hotelId], references: [id])
+  inventory    RoomInventory[]
+  bookingItems BookingItem[]
 
   @@index([hotelId])
   @@index([tenantId])
@@ -443,14 +704,7 @@ model RoomInventory {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  roomType           RoomType              @relation(fields: [roomTypeId], references: [id])
-  // Tonight Deals fields
-  sameNightEligible  Boolean?              @default(false) @map("same_night_eligible")
-  nightUseEligible   Boolean?              @default(false) @map("night_use_eligible")
-  sameNightBasePrice Int?                  @map("same_night_base_price")
-  flashWindowId      String?               @map("flash_window_id") @db.Uuid
-  flashWindow        InventoryFlashWindow? @relation(fields: [flashWindowId], references: [id])
-  flashRateSnapshots FlashRateSnapshot[]
+  roomType RoomType @relation(fields: [roomTypeId], references: [id])
 
   @@unique([roomTypeId, date])
   @@index([tenantId])
@@ -491,25 +745,13 @@ model Booking {
   createdAt       DateTime      @default(now()) @map("created_at")
   updatedAt       DateTime      @updatedAt @map("updated_at")
 
-  tenant                      Tenant                       @relation(fields: [tenantId], references: [id])
-  hotel                       Hotel                        @relation(fields: [hotelId], references: [id])
-  guest                       User                         @relation(fields: [guestId], references: [id])
-  items                       BookingItem[]
-  supportCases                SupportCase[]
-  reviews                     Review[]
-  // VIP Marketplace relations
-  bundleOfferId               String?                      @map("bundle_offer_id") @db.Uuid
-  sourceChannel               String?                      @map("source_channel")
-  vipMembershipId             String?                      @map("vip_membership_id") @db.Uuid
-  bundleOffer                 BundleOffer?                 @relation(fields: [bundleOfferId], references: [id])
-  vipMembership               UserVipMembership?           @relation(fields: [vipMembershipId], references: [id])
-  amenityReservations         AmenityReservation[]
-  mobilityReservations        MobilityReservation[]
-  localExperienceReservations LocalExperienceReservation[]
-  settlementLines             SettlementLine[]
-  trustedStayBookingLinks     TrustedStayBookingLink[]
-  bundleRedemptions           BundleRedemption[]
-  crossSellLogs               CrossSellRecommendationLog[]
+  tenant            Tenant             @relation(fields: [tenantId], references: [id])
+  hotel             Hotel              @relation(fields: [hotelId], references: [id])
+  guest             User               @relation(fields: [guestId], references: [id])
+  items             BookingItem[]
+  supportCases      SupportCase[]
+  reviews           Review[]
+  guestStaySessions GuestStaySession[]
 
   @@index([tenantId])
   @@index([hotelId])
@@ -538,7 +780,6 @@ model BookingItem {
 
   @@index([bookingId])
   @@index([tenantId])
-  @@index([itemType, referenceId])
   @@map("booking_items")
 }
 
@@ -997,1326 +1238,949 @@ model Notification {
 }
 
 // ─────────────────────────────────────────────
-// VIP MARKETPLACE — NEW ENUMS
+// GUEST ARRIVAL & IN-STAY EXPERIENCE
 // ─────────────────────────────────────────────
 
-enum VipTier {
-  CORE
-  COMFORT
-  SIGNATURE
+model GuestStaySession {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String          @map("tenant_id") @db.Uuid
+  hotelId           String          @map("hotel_id") @db.Uuid
+  bookingId         String          @map("booking_id") @db.Uuid
+  guestId           String          @map("guest_id") @db.Uuid
+  roomNumber        String?         @map("room_number")
+  status            GuestStayStatus @default(ACTIVE)
+  welcomeSentAt     DateTime?       @map("welcome_sent_at")
+  wifiSentAt        DateTime?       @map("wifi_sent_at")
+  menusSentAt       DateTime?       @map("menus_sent_at")
+  supportInfoSentAt DateTime?       @map("support_info_sent_at")
+  checkInAt         DateTime        @default(now()) @map("check_in_at")
+  checkOutAt        DateTime?       @map("check_out_at")
+  metadata          Json            @default("{}")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  tenant          Tenant                @relation(fields: [tenantId], references: [id])
+  hotel           Hotel                 @relation(fields: [hotelId], references: [id])
+  booking         Booking               @relation(fields: [bookingId], references: [id])
+  guest           User                  @relation("GuestStaySessions", fields: [guestId], references: [id])
+  messages        InStayMessage[]
+  serviceRequests GuestServiceRequest[]
+  incidents       ServiceIncident[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([bookingId])
+  @@index([guestId])
+  @@index([status])
+  @@map("guest_stay_sessions")
 }
 
-enum VipMembershipStatus {
-  ACTIVE
-  PAUSED
-  CANCELLED
-  EXPIRED
-  TRIAL
-}
-
-enum AmenityType {
-  GYM
-  POOL
-  TENNIS
-  SPA
-  SAUNA
-  HAMMAM
-  CO_WORKING
-  KIDS_CLUB
-  BEACH_ACCESS
-  OTHER
-}
-
-enum AccessUnit {
-  HOURLY
-  DAILY
-  WEEKLY
-  MONTHLY
-}
-
-enum AmenityReservationStatus {
-  PENDING
-  CONFIRMED
-  CHECKED_IN
-  COMPLETED
-  CANCELLED
-  NO_SHOW
-}
-
-enum FlashWindowStatus {
-  DRAFT
-  SCHEDULED
-  ACTIVE
-  PAUSED
-  ENDED
-}
-
-enum TrustedStayType {
-  APARTMENT
-  ROOM
-  STUDIO
-  SERVICED_APARTMENT
-  VILLA
-  OTHER
-}
-
-enum StayTerm {
-  DAILY
-  WEEKLY
-  MONTHLY
-  FLEX
-}
-
-enum VerificationStatus {
-  PENDING
-  VERIFIED
-  REJECTED
-  SUSPENDED
-}
-
-enum MobilityType {
-  AIRPORT_TRANSFER
-  RENTAL_CAR
-  CHAUFFEUR
-  CITY_TRANSFER
-  HOURLY_DRIVER
-}
-
-enum MobilityReservationStatus {
-  PENDING
-  CONFIRMED
-  EN_ROUTE
-  COMPLETED
-  CANCELLED
-  NO_SHOW
-}
-
-enum ExperienceCategory {
-  FREE_WALK
-  CITY_INTRO
-  FOOD_TOUR
-  NIGHT_TOUR
-  BUSINESS_HELPER
-  CULTURAL
-  SHOPPING
-  FAMILY
-  OTHER
-}
-
-enum GuidePersona {
-  SOLO
-  FAMILY
-  BUSINESS
-  LUXURY
-  BUDGET
-  FIRST_TIME_VISITOR
-}
-
-enum PartnerType {
-  HOTEL
-  MOBILITY
-  EXPERIENCE
-  AMENITY
-  TRUSTED_STAY_HOST
-  OTHER
-}
-
-enum SettlementStatus {
-  DRAFT
-  READY
-  PAID
-  FAILED
-  VOID
-}
-
-// ─────────────────────────────────────────────
-// A. VIP MEMBERSHIP & PERSONALIZATION
-// ─────────────────────────────────────────────
-
-model VipPlan {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  code              String
-  name              String
-  tier              VipTier
-  description       String?  @db.Text
-  monthlyPriceCents Int?     @map("monthly_price_cents")
-  yearlyPriceCents  Int?     @map("yearly_price_cents")
-  currency          String   @default("USD") @db.VarChar(3)
-  benefitConfig     Json     @default("{}") @map("benefit_config")
-  isActive          Boolean  @default(true) @map("is_active")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  memberships UserVipMembership[]
-  benefits    VipBenefit[]
-  offers      VipOffer[]
-
-  @@unique([tenantId, code])
-  @@index([tenantId, isActive])
-  @@map("vip_plans")
-}
-
-model UserVipMembership {
-  id        String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId  String              @map("tenant_id") @db.Uuid
-  userId    String              @map("user_id") @db.Uuid
-  vipPlanId String              @map("vip_plan_id") @db.Uuid
-  status    VipMembershipStatus @default(TRIAL)
-  startsAt  DateTime            @map("starts_at")
-  endsAt    DateTime?           @map("ends_at")
-  autoRenew Boolean             @default(false) @map("auto_renew")
-  source    String?
-  metadata  Json                @default("{}")
-  createdAt DateTime            @default(now()) @map("created_at")
-  updatedAt DateTime            @updatedAt @map("updated_at")
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  vipPlan VipPlan @relation(fields: [vipPlanId], references: [id])
-
-  bookings  Booking[]
-  usageLogs VipUsageLog[]
-
-  @@unique([tenantId, userId, vipPlanId, startsAt])
-  @@index([tenantId, userId, status])
-  @@index([vipPlanId])
-  @@map("user_vip_memberships")
-}
-
-model VipBenefit {
+model HotelWifiCredential {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   tenantId    String   @map("tenant_id") @db.Uuid
-  vipPlanId   String   @map("vip_plan_id") @db.Uuid
-  code        String
-  name        String
-  description String?  @db.Text
-  config      Json     @default("{}")
+  hotelId     String   @map("hotel_id") @db.Uuid
+  networkName String   @map("network_name")
+  password    String
+  zone        String?
+  description String?
   isActive    Boolean  @default(true) @map("is_active")
+  sortOrder   Int      @default(0) @map("sort_order")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  vipPlan   VipPlan       @relation(fields: [vipPlanId], references: [id])
-  usageLogs VipUsageLog[]
-
-  @@unique([tenantId, vipPlanId, code])
-  @@index([tenantId, isActive])
-  @@map("vip_benefits")
-}
-
-model UserBenefitWallet {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId       String    @map("tenant_id") @db.Uuid
-  userId         String    @map("user_id") @db.Uuid
-  benefitCode    String    @map("benefit_code")
-  availableUnits Int       @default(0) @map("available_units")
-  usedUnits      Int       @default(0) @map("used_units")
-  expiresAt      DateTime? @map("expires_at")
-  metadata       Json      @default("{}")
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([tenantId, userId, benefitCode])
-  @@index([tenantId, expiresAt])
-  @@map("user_benefit_wallets")
-}
-
-model UserPreferenceProfile {
-  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId             String   @map("tenant_id") @db.Uuid
-  userId               String   @unique @map("user_id") @db.Uuid
-  preferredCheckInFrom String?  @map("preferred_check_in_from")
-  preferredCheckOutTo  String?  @map("preferred_check_out_to")
-  preferredRoomTemp    Int?     @map("preferred_room_temp")
-  preferredBedType     String?  @map("preferred_bed_type")
-  preferredFloor       String?  @map("preferred_floor")
-  prefersQuietRoom     Boolean? @map("prefers_quiet_room")
-  prefersHighFloor     Boolean? @map("prefers_high_floor")
-  needsStrongWifi      Boolean? @map("needs_strong_wifi")
-  likesGymAccess       Boolean? @map("likes_gym_access")
-  likesSpaAccess       Boolean? @map("likes_spa_access")
-  mobilityPreferences  Json     @default("{}") @map("mobility_preferences")
-  dietaryPreferences   Json     @default("{}") @map("dietary_preferences")
-  languagePreferences  Json     @default("[]") @map("language_preferences")
-  tags                 Json     @default("[]")
-  createdAt            DateTime @default(now()) @map("created_at")
-  updatedAt            DateTime @updatedAt @map("updated_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  hotel  Hotel  @relation(fields: [hotelId], references: [id])
 
   @@index([tenantId])
-  @@map("user_preference_profiles")
+  @@index([hotelId])
+  @@map("hotel_wifi_credentials")
 }
 
-model UserTravelProfile {
-  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String   @map("tenant_id") @db.Uuid
-  userId             String   @unique @map("user_id") @db.Uuid
-  travelStyle        String?  @map("travel_style")
-  typicalStayLength  Int?     @map("typical_stay_length")
-  preferredCities    Json     @default("[]") @map("preferred_cities")
-  preferredHotelTags Json     @default("[]") @map("preferred_hotel_tags")
-  passportCountry    String?  @map("passport_country")
-  needsVisaSupport   Boolean  @default(false) @map("needs_visa_support")
-  arrivalPatterns    Json     @default("{}") @map("arrival_patterns")
-  metadata           Json     @default("{}")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+model InStayMessage {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId  String          @map("tenant_id") @db.Uuid
+  stayId    String          @map("stay_id") @db.Uuid
+  guestId   String          @map("guest_id") @db.Uuid
+  hotelId   String          @map("hotel_id") @db.Uuid
+  category  MessageCategory
+  subject   String?
+  body      String          @db.Text
+  channel   String?
+  sentAt    DateTime?       @map("sent_at")
+  readAt    DateTime?       @map("read_at")
+  metadata  Json            @default("{}")
+  createdAt DateTime        @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant           @relation(fields: [tenantId], references: [id])
+  stay   GuestStaySession @relation(fields: [stayId], references: [id])
 
   @@index([tenantId])
-  @@map("user_travel_profiles")
+  @@index([stayId])
+  @@index([guestId])
+  @@map("in_stay_messages")
 }
 
-model VipOffer {
+model HotelVenueMenu {
   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   tenantId    String    @map("tenant_id") @db.Uuid
-  hotelId     String?   @map("hotel_id") @db.Uuid
-  vipPlanId   String?   @map("vip_plan_id") @db.Uuid
-  title       String
+  hotelId     String    @map("hotel_id") @db.Uuid
+  venueRef    String?   @map("venue_ref") @db.Uuid
+  name        String
   description String?   @db.Text
-  offerType   String    @map("offer_type")
-  config      Json      @default("{}")
-  startsAt    DateTime? @map("starts_at")
-  endsAt      DateTime? @map("ends_at")
+  menuType    MenuType  @map("menu_type")
+  content     Json      @default("{}")
   isActive    Boolean   @default(true) @map("is_active")
+  sortOrder   Int       @default(0) @map("sort_order")
+  validFrom   DateTime? @map("valid_from")
+  validUntil  DateTime? @map("valid_until")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  hotel   Hotel?   @relation(fields: [hotelId], references: [id])
-  vipPlan VipPlan? @relation(fields: [vipPlanId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  hotel  Hotel  @relation(fields: [hotelId], references: [id])
 
-  @@index([tenantId, isActive])
+  @@index([tenantId])
   @@index([hotelId])
-  @@index([vipPlanId])
-  @@map("vip_offers")
+  @@index([menuType])
+  @@map("hotel_venue_menus")
 }
 
-// ─────────────────────────────────────────────
-// B. AMENITY MARKETPLACE
-// ─────────────────────────────────────────────
+model GuestServiceRequest {
+  id           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId     String               @map("tenant_id") @db.Uuid
+  hotelId      String               @map("hotel_id") @db.Uuid
+  stayId       String               @map("stay_id") @db.Uuid
+  guestId      String               @map("guest_id") @db.Uuid
+  requestRef   String               @unique @map("request_ref")
+  requestType  ServiceRequestType   @map("request_type")
+  description  String?              @db.Text
+  roomNumber   String?              @map("room_number")
+  status       ServiceRequestStatus @default(PENDING)
+  priority     ServicePriority      @default(NORMAL)
+  scheduledFor DateTime?            @map("scheduled_for")
+  metadata     Json                 @default("{}")
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
 
-model AmenityAsset {
-  id                   String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId             String      @map("tenant_id") @db.Uuid
-  hotelId              String      @map("hotel_id") @db.Uuid
-  code                 String
-  name                 String
-  amenityType          AmenityType @map("amenity_type")
-  description          String?     @db.Text
-  locationLabel        String?     @map("location_label")
-  photos               Json        @default("[]")
-  features             Json        @default("[]")
-  rules                Json        @default("{}")
-  capacity             Int?
-  isExternalAccessOpen Boolean     @default(false) @map("is_external_access_open")
-  isVipOnly            Boolean     @default(false) @map("is_vip_only")
-  isActive             Boolean     @default(true) @map("is_active")
-  createdAt            DateTime    @default(now()) @map("created_at")
-  updatedAt            DateTime    @updatedAt @map("updated_at")
+  tenant      Tenant                  @relation(fields: [tenantId], references: [id])
+  hotel       Hotel                   @relation(fields: [hotelId], references: [id])
+  stay        GuestStaySession        @relation(fields: [stayId], references: [id])
+  assignments ServiceTaskAssignment[]
+  completions TaskCompletionLog[]
 
-  hotel        Hotel                @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  schedules    AmenitySchedule[]
-  passPlans    AmenityPassPlan[]
-  reservations AmenityReservation[]
-  reviews      AmenityReview[]
-
-  @@unique([tenantId, hotelId, code])
-  @@index([tenantId, hotelId, amenityType])
-  @@map("amenity_assets")
-}
-
-model AmenitySchedule {
-  id                  String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId            String  @map("tenant_id") @db.Uuid
-  amenityAssetId      String  @map("amenity_asset_id") @db.Uuid
-  dayOfWeek           Int     @map("day_of_week")
-  opensAt             String  @map("opens_at")
-  closesAt            String  @map("closes_at")
-  slotDurationMinutes Int?    @map("slot_duration_minutes")
-  capacityPerSlot     Int?    @map("capacity_per_slot")
-  externalAccessStart String? @map("external_access_start")
-  externalAccessEnd   String? @map("external_access_end")
-  isActive            Boolean @default(true) @map("is_active")
-
-  amenityAsset AmenityAsset @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
-
-  @@index([tenantId, amenityAssetId, dayOfWeek])
-  @@map("amenity_schedules")
-}
-
-model AmenityPassPlan {
-  id                 String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String     @map("tenant_id") @db.Uuid
-  amenityAssetId     String     @map("amenity_asset_id") @db.Uuid
-  code               String
-  name               String
-  accessUnit         AccessUnit @map("access_unit")
-  durationCount      Int        @default(1) @map("duration_count")
-  priceCents         Int        @map("price_cents")
-  currency           String     @default("USD") @db.VarChar(3)
-  totalVisits        Int?       @map("total_visits")
-  vipDiscountPercent Int?       @map("vip_discount_percent")
-  rules              Json       @default("{}")
-  isActive           Boolean    @default(true) @map("is_active")
-  createdAt          DateTime   @default(now()) @map("created_at")
-  updatedAt          DateTime   @updatedAt @map("updated_at")
-
-  amenityAsset AmenityAsset         @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
-  reservations AmenityReservation[]
-
-  @@unique([tenantId, amenityAssetId, code])
-  @@index([tenantId, accessUnit, isActive])
-  @@map("amenity_pass_plans")
-}
-
-model AmenityReservation {
-  id                String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String                   @map("tenant_id") @db.Uuid
-  hotelId           String                   @map("hotel_id") @db.Uuid
-  amenityAssetId    String                   @map("amenity_asset_id") @db.Uuid
-  amenityPassPlanId String?                  @map("amenity_pass_plan_id") @db.Uuid
-  guestId           String                   @map("guest_id") @db.Uuid
-  bookingId         String?                  @map("booking_id") @db.Uuid
-  accessDate        DateTime                 @map("access_date") @db.Date
-  startsAt          DateTime?                @map("starts_at")
-  endsAt            DateTime?                @map("ends_at")
-  partySize         Int                      @default(1) @map("party_size")
-  status            AmenityReservationStatus @default(PENDING)
-  subtotalCents     Int                      @default(0) @map("subtotal_cents")
-  totalCents        Int                      @default(0) @map("total_cents")
-  currency          String                   @default("USD") @db.VarChar(3)
-  specialRequests   String?                  @map("special_requests") @db.Text
-  metadata          Json                     @default("{}")
-  createdAt         DateTime                 @default(now()) @map("created_at")
-  updatedAt         DateTime                 @updatedAt @map("updated_at")
-
-  hotel           Hotel            @relation(fields: [hotelId], references: [id])
-  amenityAsset    AmenityAsset     @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
-  amenityPassPlan AmenityPassPlan? @relation(fields: [amenityPassPlanId], references: [id])
-  guest           User             @relation("AmenityReservations", fields: [guestId], references: [id])
-  booking         Booking?         @relation(fields: [bookingId], references: [id])
-
-  @@index([tenantId, hotelId, accessDate])
-  @@index([amenityAssetId, accessDate])
-  @@index([guestId])
-  @@index([bookingId])
-  @@map("amenity_reservations")
-}
-
-model AmenityReview {
-  id               String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId         String                 @map("tenant_id") @db.Uuid
-  amenityAssetId   String                 @map("amenity_asset_id") @db.Uuid
-  guestId          String                 @map("guest_id") @db.Uuid
-  rating           Int
-  title            String?
-  body             String?                @db.Text
-  moderationStatus ReviewModerationStatus @default(PENDING) @map("moderation_status")
-  createdAt        DateTime               @default(now()) @map("created_at")
-  updatedAt        DateTime               @updatedAt @map("updated_at")
-
-  amenityAsset AmenityAsset @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
-  guest        User         @relation("AmenityReviews", fields: [guestId], references: [id])
-
-  @@index([tenantId, amenityAssetId])
-  @@index([guestId])
-  @@map("amenity_reviews")
-}
-
-// ─────────────────────────────────────────────
-// C. TONIGHT DEALS / EVENING STAY ENGINE
-// ─────────────────────────────────────────────
-
-model InventoryFlashWindow {
-  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId         String            @map("tenant_id") @db.Uuid
-  hotelId          String            @map("hotel_id") @db.Uuid
-  roomTypeId       String            @map("room_type_id") @db.Uuid
-  name             String
-  startsAt         DateTime          @map("starts_at")
-  endsAt           DateTime          @map("ends_at")
-  status           FlashWindowStatus @default(DRAFT)
-  visibilityRule   Json              @default("{}") @map("visibility_rule")
-  pricingRule      Json              @default("{}") @map("pricing_rule")
-  isVipEarlyAccess Boolean           @default(false) @map("is_vip_early_access")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-
-  hotel         Hotel               @relation(fields: [hotelId], references: [id])
-  roomType      RoomType            @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
-  rateSnapshots FlashRateSnapshot[]
-  inventories   RoomInventory[]
-
-  @@index([tenantId, hotelId, status])
-  @@index([roomTypeId, startsAt, endsAt])
-  @@map("inventory_flash_windows")
-}
-
-model FlashRateSnapshot {
-  id                     String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId               String      @map("tenant_id") @db.Uuid
-  inventoryFlashWindowId String      @map("inventory_flash_window_id") @db.Uuid
-  roomInventoryId        String      @map("room_inventory_id") @db.Uuid
-  inventoryDate          DateTime    @map("inventory_date") @db.Date
-  originalPriceCents     Int         @map("original_price_cents")
-  flashPriceCents        Int         @map("flash_price_cents")
-  availableCount         Int         @map("available_count")
-  bookingTypeTarget      BookingType @map("booking_type_target")
-  createdAt              DateTime    @default(now()) @map("created_at")
-
-  inventoryFlashWindow InventoryFlashWindow @relation(fields: [inventoryFlashWindowId], references: [id], onDelete: Cascade)
-  roomInventory        RoomInventory        @relation(fields: [roomInventoryId], references: [id], onDelete: Cascade)
-
-  @@index([tenantId, inventoryDate])
-  @@index([roomInventoryId, inventoryDate])
-  @@map("flash_rate_snapshots")
-}
-
-model NightUsePolicy {
-  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId            String   @map("tenant_id") @db.Uuid
-  hotelId             String   @map("hotel_id") @db.Uuid
-  roomTypeId          String?  @map("room_type_id") @db.Uuid
-  checkInFrom         String   @map("check_in_from")
-  checkOutUntil       String   @map("check_out_until")
-  minHours            Int?     @map("min_hours")
-  maxHours            Int?     @map("max_hours")
-  baseDiscountPercent Int?     @map("base_discount_percent")
-  ruleConfig          Json     @default("{}")
-  isActive            Boolean  @default(true) @map("is_active")
-  createdAt           DateTime @default(now()) @map("created_at")
-  updatedAt           DateTime @updatedAt @map("updated_at")
-
-  hotel    Hotel     @relation(fields: [hotelId], references: [id])
-  roomType RoomType? @relation(fields: [roomTypeId], references: [id])
-
-  @@index([tenantId, hotelId, isActive])
-  @@index([roomTypeId])
-  @@map("night_use_policies")
-}
-
-// ─────────────────────────────────────────────
-// D. TRUSTED STAYS
-// ─────────────────────────────────────────────
-
-model TrustedStayHost {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String             @map("tenant_id") @db.Uuid
-  displayName        String             @map("display_name")
-  legalName          String?            @map("legal_name")
-  email              String?
-  phone              String?
-  hostType           String?            @map("host_type")
-  verificationStatus VerificationStatus @default(PENDING) @map("verification_status")
-  verificationNotes  String?            @map("verification_notes") @db.Text
-  payoutMetadata     Json               @default("{}") @map("payout_metadata")
-  isActive           Boolean            @default(true) @map("is_active")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
-
-  units         TrustedStayUnit[]
-  verifications TrustedStayVerification[]
-
-  @@index([tenantId, verificationStatus])
-  @@map("trusted_stay_hosts")
-}
-
-model TrustedStayUnit {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String             @map("tenant_id") @db.Uuid
-  hostId             String             @map("host_id") @db.Uuid
-  hotelId            String?            @map("hotel_id") @db.Uuid
-  slug               String
-  name               String
-  trustedStayType    TrustedStayType    @map("trusted_stay_type")
-  stayTerm           StayTerm           @map("stay_term")
-  description        String?            @db.Text
-  address            Json
-  geo                Json?
-  roomCount          Int?               @map("room_count")
-  guestCapacity      Int?               @map("guest_capacity")
-  bathroomCount      Decimal?           @map("bathroom_count") @db.Decimal(4, 1)
-  wifiQuality        String?            @map("wifi_quality")
-  noiseNotes         String?            @map("noise_notes") @db.Text
-  amenities          Json               @default("[]")
-  tags               Json               @default("[]")
-  verifiedFields     Json               @default("{}") @map("verified_fields")
-  houseRules         Json               @default("{}") @map("house_rules")
-  photos             Json               @default("[]")
-  currency           String             @default("USD") @db.VarChar(3)
-  verificationStatus VerificationStatus @default(PENDING) @map("verification_status")
-  isActive           Boolean            @default(true) @map("is_active")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
-
-  host          TrustedStayHost           @relation(fields: [hostId], references: [id], onDelete: Cascade)
-  hotel         Hotel?                    @relation(fields: [hotelId], references: [id])
-  availability  TrustedStayAvailability[]
-  ratePlans     TrustedStayRatePlan[]
-  verifications TrustedStayVerification[]
-  photoRecords  TrustedStayPhoto[]
-  policyRecords TrustedStayPolicy[]
-  bookingLinks  TrustedStayBookingLink[]
-
-  @@unique([tenantId, slug])
-  @@index([tenantId, trustedStayType, stayTerm, isActive])
-  @@index([hostId])
-  @@map("trusted_stay_units")
-}
-
-model TrustedStayAvailability {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  trustedStayUnitId String   @map("trusted_stay_unit_id") @db.Uuid
-  date              DateTime @db.Date
-  isAvailable       Boolean  @default(true) @map("is_available")
-  minNights         Int?     @map("min_nights")
-  maxNights         Int?     @map("max_nights")
-  priceCents        Int?     @map("price_cents")
-  cleaningFeeCents  Int?     @default(0) @map("cleaning_fee_cents")
-  serviceFeeCents   Int?     @default(0) @map("service_fee_cents")
-  restrictions      Json     @default("{}")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
-
-  @@unique([trustedStayUnitId, date])
-  @@index([tenantId, date, isAvailable])
-  @@map("trusted_stay_availability")
-}
-
-model TrustedStayRatePlan {
-  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String   @map("tenant_id") @db.Uuid
-  trustedStayUnitId  String   @map("trusted_stay_unit_id") @db.Uuid
-  code               String
-  name               String
-  stayTerm           StayTerm @map("stay_term")
-  nightlyPriceCents  Int?     @map("nightly_price_cents")
-  weeklyPriceCents   Int?     @map("weekly_price_cents")
-  monthlyPriceCents  Int?     @map("monthly_price_cents")
-  depositCents       Int?     @map("deposit_cents")
-  cancellationPolicy Json     @default("{}") @map("cancellation_policy")
-  isActive           Boolean  @default(true) @map("is_active")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
-
-  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
-
-  @@unique([tenantId, trustedStayUnitId, code])
-  @@index([tenantId, stayTerm, isActive])
-  @@map("trusted_stay_rate_plans")
-}
-
-model TrustedStayVerification {
-  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String             @map("tenant_id") @db.Uuid
-  hostId            String?            @map("host_id") @db.Uuid
-  trustedStayUnitId String?            @map("trusted_stay_unit_id") @db.Uuid
-  verificationType  String             @map("verification_type")
-  status            VerificationStatus @default(PENDING)
-  evidence          Json               @default("{}")
-  notes             String?            @db.Text
-  verifiedAt        DateTime?          @map("verified_at")
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
-
-  host            TrustedStayHost? @relation(fields: [hostId], references: [id])
-  trustedStayUnit TrustedStayUnit? @relation(fields: [trustedStayUnitId], references: [id])
-
-  @@index([tenantId, status])
-  @@index([hostId])
-  @@index([trustedStayUnitId])
-  @@map("trusted_stay_verifications")
-}
-
-// ─────────────────────────────────────────────
-// E. MOBILITY LAYER
-// ─────────────────────────────────────────────
-
-model MobilityProvider {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String             @map("tenant_id") @db.Uuid
-  name               String
-  mobilityType       MobilityType       @map("mobility_type")
-  cities             Json               @default("[]")
-  serviceAreas       Json               @default("[]") @map("service_areas")
-  contactInfo        Json               @default("{}") @map("contact_info")
-  verificationStatus VerificationStatus @default(PENDING) @map("verification_status")
-  ratingAggregate    Decimal?           @map("rating_aggregate") @db.Decimal(3, 2)
-  isActive           Boolean            @default(true) @map("is_active")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
-
-  products       MobilityProduct[]
-  reservations   MobilityReservation[]
-  vehicleClasses MobilityVehicleClass[]
-  driverAreas    DriverServiceArea[]    @relation("DriverServiceAreas")
-
-  @@index([tenantId, mobilityType, isActive])
-  @@map("mobility_providers")
-}
-
-model MobilityProduct {
-  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String       @map("tenant_id") @db.Uuid
-  mobilityProviderId String       @map("mobility_provider_id") @db.Uuid
-  hotelId            String?      @map("hotel_id") @db.Uuid
-  code               String
-  name               String
-  mobilityType       MobilityType @map("mobility_type")
-  description        String?      @db.Text
-  vehicleClass       String?      @map("vehicle_class")
-  capacity           Int?
-  baggageCapacity    Int?         @map("baggage_capacity")
-  pricingConfig      Json         @default("{}") @map("pricing_config")
-  city               String?
-  currency           String       @default("USD") @db.VarChar(3)
-  isActive           Boolean      @default(true) @map("is_active")
-  createdAt          DateTime     @default(now()) @map("created_at")
-  updatedAt          DateTime     @updatedAt @map("updated_at")
-
-  mobilityProvider MobilityProvider      @relation(fields: [mobilityProviderId], references: [id], onDelete: Cascade)
-  hotel            Hotel?                @relation(fields: [hotelId], references: [id])
-  reservations     MobilityReservation[]
-  pricingRules     MobilityPricingRule[]
-
-  @@unique([tenantId, mobilityProviderId, code])
-  @@index([tenantId, mobilityType, isActive])
+  @@index([tenantId])
   @@index([hotelId])
-  @@map("mobility_products")
+  @@index([stayId])
+  @@index([status])
+  @@map("guest_service_requests")
 }
 
-model MobilityReservation {
-  id                 String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String                    @map("tenant_id") @db.Uuid
-  hotelId            String?                   @map("hotel_id") @db.Uuid
-  mobilityProviderId String                    @map("mobility_provider_id") @db.Uuid
-  mobilityProductId  String                    @map("mobility_product_id") @db.Uuid
-  guestId            String                    @map("guest_id") @db.Uuid
-  bookingId          String?                   @map("booking_id") @db.Uuid
-  status             MobilityReservationStatus @default(PENDING)
-  pickupAt           DateTime                  @map("pickup_at")
-  pickupLocation     Json                      @map("pickup_location")
-  dropoffLocation    Json?                     @map("dropoff_location")
-  passengerCount     Int                       @default(1) @map("passenger_count")
-  subtotalCents      Int                       @default(0) @map("subtotal_cents")
-  totalCents         Int                       @default(0) @map("total_cents")
-  currency           String                    @default("USD") @db.VarChar(3)
-  externalRef        String?                   @map("external_ref")
-  notes              String?                   @db.Text
-  metadata           Json                      @default("{}")
-  createdAt          DateTime                  @default(now()) @map("created_at")
-  updatedAt          DateTime                  @updatedAt @map("updated_at")
+model ServiceTaskAssignment {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  requestId  String   @map("request_id") @db.Uuid
+  assignedTo String   @map("assigned_to") @db.Uuid
+  assignedBy String   @map("assigned_by") @db.Uuid
+  note       String?  @db.Text
+  assignedAt DateTime @default(now()) @map("assigned_at")
 
-  hotel            Hotel?           @relation(fields: [hotelId], references: [id])
-  mobilityProvider MobilityProvider @relation(fields: [mobilityProviderId], references: [id])
-  mobilityProduct  MobilityProduct  @relation(fields: [mobilityProductId], references: [id])
-  guest            User             @relation("MobilityReservations", fields: [guestId], references: [id])
-  booking          Booking?         @relation(fields: [bookingId], references: [id])
+  tenant  Tenant              @relation(fields: [tenantId], references: [id])
+  request GuestServiceRequest @relation(fields: [requestId], references: [id])
 
-  @@index([tenantId, status, pickupAt])
-  @@index([guestId])
-  @@index([bookingId])
-  @@map("mobility_reservations")
+  @@index([tenantId])
+  @@index([requestId])
+  @@map("service_task_assignments")
 }
 
-// ─────────────────────────────────────────────
-// F. CITY GUIDE & LOCAL EXPERIENCES
-// ─────────────────────────────────────────────
-
-model CityGuide {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String   @map("tenant_id") @db.Uuid
-  cityCode      String   @map("city_code")
-  cityName      String   @map("city_name")
-  countryCode   String   @map("country_code")
-  languageCode  String   @default("en") @map("language_code")
-  summary       String?  @db.Text
-  safetyNotes   String?  @map("safety_notes") @db.Text
-  transportTips String?  @map("transport_tips") @db.Text
-  emergencyInfo Json     @default("{}") @map("emergency_info")
-  usefulApps    Json     @default("[]") @map("useful_apps")
-  isActive      Boolean  @default(true) @map("is_active")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-
-  sections        CityGuideSection[]
-  experiences     LocalExperience[]
-  personaVariants GuidePersonaVariant[]
-
-  @@unique([tenantId, cityCode, languageCode])
-  @@index([tenantId, cityName, isActive])
-  @@map("city_guides")
-}
-
-model CityGuideSection {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId    String        @map("tenant_id") @db.Uuid
-  cityGuideId String        @map("city_guide_id") @db.Uuid
-  persona     GuidePersona?
-  sectionKey  String        @map("section_key")
-  title       String
-  body        String        @db.Text
-  sortOrder   Int           @default(0) @map("sort_order")
-  isActive    Boolean       @default(true) @map("is_active")
-
-  cityGuide CityGuide @relation(fields: [cityGuideId], references: [id], onDelete: Cascade)
-
-  @@unique([tenantId, cityGuideId, sectionKey, persona])
-  @@index([tenantId, cityGuideId, sortOrder])
-  @@map("city_guide_sections")
-}
-
-model LocalExperience {
-  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId        String             @map("tenant_id") @db.Uuid
-  hotelId         String?            @map("hotel_id") @db.Uuid
-  cityGuideId     String?            @map("city_guide_id") @db.Uuid
-  name            String
-  slug            String
-  category        ExperienceCategory @map("category")
-  description     String?            @db.Text
-  durationMinutes Int?               @map("duration_minutes")
-  city            String?
-  meetingPoint    Json?              @map("meeting_point")
-  priceCents      Int?               @map("price_cents")
-  currency        String             @default("USD") @db.VarChar(3)
-  maxGuests       Int?               @map("max_guests")
-  languages       Json               @default("[]")
-  tags            Json               @default("[]")
-  isFree          Boolean            @default(false) @map("is_free")
-  isVipExclusive  Boolean            @default(false) @map("is_vip_exclusive")
-  isActive        Boolean            @default(true) @map("is_active")
-  createdAt       DateTime           @default(now()) @map("created_at")
-  updatedAt       DateTime           @updatedAt @map("updated_at")
-
-  hotel        Hotel?                       @relation(fields: [hotelId], references: [id])
-  cityGuide    CityGuide?                   @relation(fields: [cityGuideId], references: [id])
-  slots        LocalExperienceSlot[]
-  reservations LocalExperienceReservation[]
-  partners     LocalExperiencePartner[]
-
-  @@unique([tenantId, slug])
-  @@index([tenantId, city, category, isActive])
-  @@index([hotelId])
-  @@map("local_experiences")
-}
-
-model LocalExperienceSlot {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String    @map("tenant_id") @db.Uuid
-  localExperienceId  String    @map("local_experience_id") @db.Uuid
-  startsAt           DateTime  @map("starts_at")
-  endsAt             DateTime? @map("ends_at")
-  capacity           Int?
-  availableCount     Int?      @map("available_count")
-  priceOverrideCents Int?      @map("price_override_cents")
-  isActive           Boolean   @default(true) @map("is_active")
-
-  localExperience LocalExperience              @relation(fields: [localExperienceId], references: [id], onDelete: Cascade)
-  reservations    LocalExperienceReservation[]
-
-  @@index([tenantId, startsAt, isActive])
-  @@index([localExperienceId])
-  @@map("local_experience_slots")
-}
-
-model LocalExperienceReservation {
-  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId              String   @map("tenant_id") @db.Uuid
-  localExperienceId     String   @map("local_experience_id") @db.Uuid
-  localExperienceSlotId String?  @map("local_experience_slot_id") @db.Uuid
-  guestId               String   @map("guest_id") @db.Uuid
-  bookingId             String?  @map("booking_id") @db.Uuid
-  partySize             Int      @default(1) @map("party_size")
-  status                String   @default("confirmed")
-  subtotalCents         Int      @default(0) @map("subtotal_cents")
-  totalCents            Int      @default(0) @map("total_cents")
-  currency              String   @default("USD") @db.VarChar(3)
-  notes                 String?  @db.Text
-  metadata              Json     @default("{}")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
-
-  localExperience     LocalExperience      @relation(fields: [localExperienceId], references: [id], onDelete: Cascade)
-  localExperienceSlot LocalExperienceSlot? @relation(fields: [localExperienceSlotId], references: [id])
-  guest               User                 @relation("LocalExperienceReservations", fields: [guestId], references: [id])
-  booking             Booking?             @relation(fields: [bookingId], references: [id])
-
-  @@index([tenantId, localExperienceId])
-  @@index([guestId])
-  @@index([bookingId])
-  @@map("local_experience_reservations")
-}
-
-// ─────────────────────────────────────────────
-// G. BUNDLE & CROSS-SELL ENGINE
-// ─────────────────────────────────────────────
-
-model BundleOffer {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String    @map("tenant_id") @db.Uuid
-  hotelId       String?   @map("hotel_id") @db.Uuid
-  code          String
-  name          String
-  description   String?   @db.Text
-  bundleType    String    @map("bundle_type")
-  pricingMode   String    @map("pricing_mode")
-  subtotalCents Int?      @map("subtotal_cents")
-  totalCents    Int?      @map("total_cents")
-  currency      String    @default("USD") @db.VarChar(3)
-  rules         Json      @default("{}")
-  isVipOnly     Boolean   @default(false) @map("is_vip_only")
-  isActive      Boolean   @default(true) @map("is_active")
-  startsAt      DateTime? @map("starts_at")
-  endsAt        DateTime? @map("ends_at")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-
-  hotel            Hotel?                  @relation(fields: [hotelId], references: [id])
-  items            BundleItem[]
-  bookings         Booking[]
-  eligibilityRules BundleEligibilityRule[]
-  redemptions      BundleRedemption[]
-
-  @@unique([tenantId, code])
-  @@index([tenantId, isActive])
-  @@index([hotelId])
-  @@map("bundle_offers")
-}
-
-model BundleItem {
-  id            String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String  @map("tenant_id") @db.Uuid
-  bundleOfferId String  @map("bundle_offer_id") @db.Uuid
-  itemType      String  @map("item_type")
-  referenceId   String? @map("reference_id") @db.Uuid
-  quantity      Int     @default(1)
-  unitCents     Int?    @map("unit_cents")
-  sortOrder     Int     @default(0) @map("sort_order")
-  metadata      Json    @default("{}")
-
-  bundleOffer BundleOffer @relation(fields: [bundleOfferId], references: [id], onDelete: Cascade)
-
-  @@index([tenantId, bundleOfferId])
-  @@map("bundle_items")
-}
-
-// ─────────────────────────────────────────────
-// H. PLATFORM REVENUE, COMMISSION & SETTLEMENT
-// ─────────────────────────────────────────────
-
-model Partner {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String             @map("tenant_id") @db.Uuid
-  name               String
-  slug               String
-  partnerType        PartnerType        @map("partner_type")
-  verificationStatus VerificationStatus @default(PENDING) @map("verification_status")
-  contactInfo        Json               @default("{}") @map("contact_info")
-  contractMetadata   Json               @default("{}") @map("contract_metadata")
-  isActive           Boolean            @default(true) @map("is_active")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
-
-  commissionRules CommissionRule[]
-  settlementLines SettlementLine[]
-
-  @@unique([tenantId, slug])
-  @@index([tenantId, partnerType, isActive])
-  @@map("partners")
-}
-
-model CommissionRule {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId  String    @map("tenant_id") @db.Uuid
-  partnerId String?   @map("partner_id") @db.Uuid
-  moduleKey String    @map("module_key")
-  ruleType  String    @map("rule_type")
-  value     Decimal   @db.Decimal(10, 4)
-  currency  String?   @db.VarChar(3)
-  config    Json      @default("{}")
-  startsAt  DateTime? @map("starts_at")
-  endsAt    DateTime? @map("ends_at")
-  isActive  Boolean   @default(true) @map("is_active")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-
-  partner Partner? @relation(fields: [partnerId], references: [id])
-
-  @@index([tenantId, moduleKey, isActive])
-  @@index([partnerId])
-  @@map("commission_rules")
-}
-
-model SettlementBatch {
-  id                   String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId             String           @map("tenant_id") @db.Uuid
-  batchRef             String           @unique @map("batch_ref")
-  periodStart          DateTime         @map("period_start") @db.Date
-  periodEnd            DateTime         @map("period_end") @db.Date
-  status               SettlementStatus @default(DRAFT)
-  totalGrossCents      Int              @default(0) @map("total_gross_cents")
-  totalCommissionCents Int              @default(0) @map("total_commission_cents")
-  totalNetCents        Int              @default(0) @map("total_net_cents")
-  currency             String           @default("USD") @db.VarChar(3)
-  createdAt            DateTime         @default(now()) @map("created_at")
-  updatedAt            DateTime         @updatedAt @map("updated_at")
-
-  lines SettlementLine[]
-
-  @@index([tenantId, status, periodStart, periodEnd])
-  @@map("settlement_batches")
-}
-
-model SettlementLine {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  settlementBatchId String   @map("settlement_batch_id") @db.Uuid
-  partnerId         String?  @map("partner_id") @db.Uuid
-  bookingId         String?  @map("booking_id") @db.Uuid
-  moduleKey         String   @map("module_key")
-  grossCents        Int      @default(0) @map("gross_cents")
-  commissionCents   Int      @default(0) @map("commission_cents")
-  netCents          Int      @default(0) @map("net_cents")
-  currency          String   @default("USD") @db.VarChar(3)
-  metadata          Json     @default("{}")
-  createdAt         DateTime @default(now()) @map("created_at")
-
-  settlementBatch SettlementBatch @relation(fields: [settlementBatchId], references: [id], onDelete: Cascade)
-  partner         Partner?        @relation(fields: [partnerId], references: [id])
-  booking         Booking?        @relation(fields: [bookingId], references: [id])
-
-  @@index([tenantId, moduleKey])
-  @@index([partnerId])
-  @@index([bookingId])
-  @@map("settlement_lines")
-}
-
-// ─────────────────────────────────────────────
-// I. VIP USAGE LOG
-// ─────────────────────────────────────────────
-
-model VipUsageLog {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId        String   @map("tenant_id") @db.Uuid
-  userId          String   @map("user_id") @db.Uuid
-  membershipId    String   @map("membership_id") @db.Uuid
-  benefitId       String?  @map("benefit_id") @db.Uuid
-  benefitCode     String   @map("benefit_code")
-  usageContext    String   @map("usage_context")
-  referenceId     String?  @map("reference_id") @db.Uuid
-  referenceType   String?  @map("reference_type")
-  creditsConsumed Int      @default(0) @map("credits_consumed")
-  metadata        Json     @default("{}")
-  createdAt       DateTime @default(now()) @map("created_at")
-
-  user       User              @relation("VipUsageLogs", fields: [userId], references: [id])
-  membership UserVipMembership @relation(fields: [membershipId], references: [id])
-  benefit    VipBenefit?       @relation(fields: [benefitId], references: [id])
-
-  @@index([tenantId, userId, createdAt])
-  @@index([membershipId])
-  @@index([benefitCode])
-  @@map("vip_usage_logs")
-}
-
-// ─────────────────────────────────────────────
-// J. TRUSTED STAY — SUPPLEMENTARY MODELS
-// ─────────────────────────────────────────────
-
-model TrustedStayPhoto {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  trustedStayUnitId String   @map("trusted_stay_unit_id") @db.Uuid
-  url               String
-  caption           String?
-  sortOrder         Int      @default(0) @map("sort_order")
-  isVerified        Boolean  @default(false) @map("is_verified")
-  createdAt         DateTime @default(now()) @map("created_at")
-
-  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
-
-  @@index([trustedStayUnitId])
-  @@map("trusted_stay_photos")
-}
-
-model TrustedStayPolicy {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  trustedStayUnitId String   @map("trusted_stay_unit_id") @db.Uuid
-  policyType        String   @map("policy_type")
-  title             String
-  body              String   @db.Text
-  rules             Json     @default("{}")
-  isActive          Boolean  @default(true) @map("is_active")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
-
-  @@index([trustedStayUnitId, policyType])
-  @@map("trusted_stay_policies")
-}
-
-model TrustedStayBookingLink {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  trustedStayUnitId String   @map("trusted_stay_unit_id") @db.Uuid
-  bookingId         String   @map("booking_id") @db.Uuid
-  checkIn           DateTime @map("check_in") @db.Date
-  checkOut          DateTime @map("check_out") @db.Date
-  guestCount        Int      @default(1) @map("guest_count")
-  totalCents        Int      @default(0) @map("total_cents")
-  currency          String   @default("USD") @db.VarChar(3)
-  status            String   @default("confirmed")
-  notes             String?  @db.Text
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id])
-  booking         Booking         @relation(fields: [bookingId], references: [id])
-
-  @@index([tenantId, status])
-  @@index([trustedStayUnitId])
-  @@index([bookingId])
-  @@map("trusted_stay_booking_links")
-}
-
-// ─────────────────────────────────────────────
-// K. MOBILITY — SUPPLEMENTARY MODELS
-// ─────────────────────────────────────────────
-
-model MobilityVehicleClass {
-  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId           String   @map("tenant_id") @db.Uuid
-  mobilityProviderId String   @map("mobility_provider_id") @db.Uuid
-  code               String
-  name               String
-  description        String?  @db.Text
-  passengerCapacity  Int      @default(4) @map("passenger_capacity")
-  baggageCapacity    Int      @default(2) @map("baggage_capacity")
-  features           Json     @default("[]")
-  photos             Json     @default("[]")
-  basePriceCents     Int?     @map("base_price_cents")
-  currency           String   @default("USD") @db.VarChar(3)
-  isActive           Boolean  @default(true) @map("is_active")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
-
-  mobilityProvider MobilityProvider      @relation(fields: [mobilityProviderId], references: [id], onDelete: Cascade)
-  pricingRules     MobilityPricingRule[]
-
-  @@unique([tenantId, mobilityProviderId, code])
-  @@index([tenantId, isActive])
-  @@map("mobility_vehicle_classes")
-}
-
-model MobilityPricingRule {
-  id                     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId               String   @map("tenant_id") @db.Uuid
-  mobilityProductId      String?  @map("mobility_product_id") @db.Uuid
-  mobilityVehicleClassId String?  @map("mobility_vehicle_class_id") @db.Uuid
-  ruleType               String   @map("rule_type")
-  value                  Decimal  @db.Decimal(10, 4)
-  currency               String   @default("USD") @db.VarChar(3)
-  minDistanceKm          Decimal? @map("min_distance_km") @db.Decimal(8, 2)
-  maxDistanceKm          Decimal? @map("max_distance_km") @db.Decimal(8, 2)
-  validFrom              String?  @map("valid_from")
-  validTo                String?  @map("valid_to")
-  daysOfWeek             Json     @default("[]") @map("days_of_week")
-  config                 Json     @default("{}")
-  isActive               Boolean  @default(true) @map("is_active")
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_at")
-
-  mobilityProduct      MobilityProduct?      @relation(fields: [mobilityProductId], references: [id])
-  mobilityVehicleClass MobilityVehicleClass? @relation(fields: [mobilityVehicleClassId], references: [id])
-
-  @@index([tenantId, ruleType, isActive])
-  @@index([mobilityProductId])
-  @@map("mobility_pricing_rules")
-}
-
-model AirportTransferZone {
+model TaskCompletionLog {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   tenantId    String   @map("tenant_id") @db.Uuid
-  code        String
-  name        String
-  cityCode    String   @map("city_code")
-  airportCode String?  @map("airport_code")
-  description String?  @db.Text
-  geoPolygon  Json?    @map("geo_polygon")
-  isActive    Boolean  @default(true) @map("is_active")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  requestId   String   @map("request_id") @db.Uuid
+  completedBy String   @map("completed_by") @db.Uuid
+  note        String?  @db.Text
+  guestRating Int?     @map("guest_rating")
+  completedAt DateTime @default(now()) @map("completed_at")
 
-  @@unique([tenantId, code])
-  @@index([tenantId, cityCode, isActive])
-  @@map("airport_transfer_zones")
+  tenant  Tenant              @relation(fields: [tenantId], references: [id])
+  request GuestServiceRequest @relation(fields: [requestId], references: [id])
+
+  @@index([tenantId])
+  @@index([requestId])
+  @@map("task_completion_logs")
 }
 
-model DriverServiceArea {
+// ─────────────────────────────────────────────
+// SERVICE INCIDENTS & RECOVERY
+// ─────────────────────────────────────────────
+
+model ServiceIncident {
+  id           String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId     String           @map("tenant_id") @db.Uuid
+  hotelId      String           @map("hotel_id") @db.Uuid
+  guestId      String?          @map("guest_id") @db.Uuid
+  bookingId    String?          @map("booking_id") @db.Uuid
+  stayId       String?          @map("stay_id") @db.Uuid
+  incidentRef  String           @unique @map("incident_ref")
+  category     IncidentCategory
+  severity     IncidentSeverity @default(MEDIUM)
+  title        String
+  description  String           @db.Text
+  status       IncidentStatus   @default(OPEN)
+  assignedTeam String?          @map("assigned_team")
+  assignedToId String?          @map("assigned_to_id") @db.Uuid
+  slaHours     Int?             @map("sla_hours")
+  dueAt        DateTime?        @map("due_at")
+  resolvedAt   DateTime?        @map("resolved_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+
+  tenant         Tenant              @relation(fields: [tenantId], references: [id])
+  hotel          Hotel               @relation(fields: [hotelId], references: [id])
+  stay           GuestStaySession?   @relation(fields: [stayId], references: [id])
+  resolutions    ServiceResolution[]
+  recoveryOffers RecoveryOffer[]
+  actionLogs     RecoveryActionLog[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([status])
+  @@index([severity])
+  @@map("service_incidents")
+}
+
+model ServiceResolution {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  incidentId     String    @map("incident_id") @db.Uuid
+  resolvedBy     String    @map("resolved_by") @db.Uuid
+  resolution     String    @db.Text
+  guestConfirmed Boolean?  @map("guest_confirmed")
+  confirmedAt    DateTime? @map("confirmed_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id])
+  incident ServiceIncident @relation(fields: [incidentId], references: [id])
+
+  @@index([tenantId])
+  @@index([incidentId])
+  @@map("service_resolutions")
+}
+
+model RecoveryOffer {
+  id          String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String              @map("tenant_id") @db.Uuid
+  incidentId  String              @map("incident_id") @db.Uuid
+  offerType   RecoveryOfferType   @map("offer_type")
+  description String              @db.Text
+  valueCents  Int?                @map("value_cents")
+  status      RecoveryOfferStatus @default(PENDING)
+  expiresAt   DateTime?           @map("expires_at")
+  acceptedAt  DateTime?           @map("accepted_at")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id])
+  incident ServiceIncident @relation(fields: [incidentId], references: [id])
+
+  @@index([tenantId])
+  @@index([incidentId])
+  @@map("recovery_offers")
+}
+
+model RecoveryActionLog {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  incidentId String   @map("incident_id") @db.Uuid
+  actorId    String   @map("actor_id") @db.Uuid
+  action     String
+  note       String?  @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id])
+  incident ServiceIncident @relation(fields: [incidentId], references: [id])
+
+  @@index([tenantId])
+  @@index([incidentId])
+  @@map("recovery_action_logs")
+}
+
+// ─────────────────────────────────────────────
+// LOST & FOUND
+// ─────────────────────────────────────────────
+
+model LostFoundItem {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String          @map("tenant_id") @db.Uuid
+  hotelId         String          @map("hotel_id") @db.Uuid
+  itemRef         String          @unique @map("item_ref")
+  description     String          @db.Text
+  category        String?
+  foundAt         DateTime        @map("found_at")
+  foundLocation   String?         @map("found_location")
+  storageLocation String?         @map("storage_location")
+  status          LostFoundStatus @default(STORED)
+  loggedById      String          @map("logged_by_id") @db.Uuid
+  photo           String?
+  notes           String?         @db.Text
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  tenant Tenant           @relation(fields: [tenantId], references: [id])
+  hotel  Hotel            @relation(fields: [hotelId], references: [id])
+  claims LostFoundClaim[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([status])
+  @@map("lost_found_items")
+}
+
+model LostFoundClaim {
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId     String      @map("tenant_id") @db.Uuid
+  itemId       String?     @map("item_id") @db.Uuid
+  guestId      String      @map("guest_id") @db.Uuid
+  bookingId    String?     @map("booking_id") @db.Uuid
+  description  String      @db.Text
+  category     String?
+  lostAt       DateTime?   @map("lost_at")
+  lostLocation String?     @map("lost_location")
+  status       ClaimStatus @default(OPEN)
+  resolvedAt   DateTime?   @map("resolved_at")
+  notes        String?     @db.Text
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  tenant Tenant         @relation(fields: [tenantId], references: [id])
+  item   LostFoundItem? @relation(fields: [itemId], references: [id])
+
+  @@index([tenantId])
+  @@index([guestId])
+  @@index([status])
+  @@map("lost_found_claims")
+}
+
+// ─────────────────────────────────────────────
+// STAFF REPUTATION & TIPS
+// ─────────────────────────────────────────────
+
+model StaffProfile {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String          @map("tenant_id") @db.Uuid
+  hotelId         String          @map("hotel_id") @db.Uuid
+  userId          String?         @unique @map("user_id") @db.Uuid
+  slug            String          @unique
+  name            String
+  role            String
+  department      StaffDepartment
+  languages       String[]
+  yearsExperience Int?            @map("years_experience")
+  bio             String?         @db.Text
+  avgRating       Decimal?        @map("avg_rating") @db.Decimal(3, 2)
+  reviewCount     Int             @default(0) @map("review_count")
+  isPublic        Boolean         @default(false) @map("is_public")
+  tipEnabled      Boolean         @default(false) @map("tip_enabled")
+  isActive        Boolean         @default(true) @map("is_active")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  tenant        Tenant                  @relation(fields: [tenantId], references: [id])
+  hotel         Hotel                   @relation(fields: [hotelId], references: [id])
+  user          User?                   @relation("StaffUserProfile", fields: [userId], references: [id])
+  reviews       StaffGuestReview[]
+  conductNotes  StaffGuestConductNote[]
+  tips          StaffTip[]
+  badges        StaffBadge[]
+  gratitudeWall GratitudeWallEntry[]
+  recognitions  StaffRecognitionLog[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([department])
+  @@map("staff_profiles")
+}
+
+model StaffGuestReview {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String           @map("tenant_id") @db.Uuid
+  staffProfileId   String           @map("staff_profile_id") @db.Uuid
+  guestId          String           @map("guest_id") @db.Uuid
+  bookingId        String?          @map("booking_id") @db.Uuid
+  reviewType       StaffReviewType  @map("review_type")
+  rating           Int
+  title            String?
+  body             String?          @db.Text
+  moderationStatus ModerationStatus @default(PENDING) @map("moderation_status")
+  moderatedBy      String?          @map("moderated_by") @db.Uuid
+  moderatedAt      DateTime?        @map("moderated_at")
+  isGratitudeWall  Boolean          @default(false) @map("is_gratitude_wall")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  tenant         Tenant              @relation(fields: [tenantId], references: [id])
+  staffProfile   StaffProfile        @relation(fields: [staffProfileId], references: [id])
+  gratitudeEntry GratitudeWallEntry?
+
+  @@index([tenantId])
+  @@index([staffProfileId])
+  @@index([guestId])
+  @@index([moderationStatus])
+  @@map("staff_guest_reviews")
+}
+
+model StaffGuestConductNote {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String          @map("tenant_id") @db.Uuid
+  staffProfileId String          @map("staff_profile_id") @db.Uuid
+  guestId        String          @map("guest_id") @db.Uuid
+  bookingId      String?         @map("booking_id") @db.Uuid
+  noteType       ConductNoteType @map("note_type")
+  severity       NoteSeverity    @default(LOW)
+  content        String          @db.Text
+  isInternal     Boolean         @default(true) @map("is_internal")
+  createdBy      String          @map("created_by") @db.Uuid
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id])
+
+  @@index([tenantId])
+  @@index([staffProfileId])
+  @@index([guestId])
+  @@map("staff_guest_conduct_notes")
+}
+
+model StaffTip {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  staffProfileId String    @map("staff_profile_id") @db.Uuid
+  guestId        String    @map("guest_id") @db.Uuid
+  bookingId      String?   @map("booking_id") @db.Uuid
+  amountCents    Int       @map("amount_cents")
+  currency       String    @default("USD") @db.VarChar(3)
+  message        String?   @db.Text
+  tipType        TipType   @default(POST_STAY) @map("tip_type")
+  status         TipStatus @default(PENDING)
+  settledAt      DateTime? @map("settled_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id])
+
+  @@index([tenantId])
+  @@index([staffProfileId])
+  @@index([guestId])
+  @@map("staff_tips")
+}
+
+model StaffBadge {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String    @map("tenant_id") @db.Uuid
+  staffProfileId String    @map("staff_profile_id") @db.Uuid
+  badgeType      BadgeType @map("badge_type")
+  awardedAt      DateTime  @default(now()) @map("awarded_at")
+  expiresAt      DateTime? @map("expires_at")
+
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id])
+
+  @@index([tenantId])
+  @@index([staffProfileId])
+  @@map("staff_badges")
+}
+
+model StaffRecognitionLog {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  staffProfileId String   @map("staff_profile_id") @db.Uuid
+  period         String
+  metric         String
+  value          Decimal  @db.Decimal(10, 2)
+  note           String?
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  tenant       Tenant       @relation(fields: [tenantId], references: [id])
+  staffProfile StaffProfile @relation(fields: [staffProfileId], references: [id])
+
+  @@index([tenantId])
+  @@index([staffProfileId])
+  @@map("staff_recognition_logs")
+}
+
+model GratitudeWallEntry {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  hotelId        String   @map("hotel_id") @db.Uuid
+  staffProfileId String   @map("staff_profile_id") @db.Uuid
+  reviewId       String   @unique @map("review_id") @db.Uuid
+  isActive       Boolean  @default(true) @map("is_active")
+  featuredAt     DateTime @default(now()) @map("featured_at")
+
+  tenant       Tenant           @relation(fields: [tenantId], references: [id])
+  hotel        Hotel            @relation(fields: [hotelId], references: [id])
+  staffProfile StaffProfile     @relation(fields: [staffProfileId], references: [id])
+  review       StaffGuestReview @relation(fields: [reviewId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("gratitude_wall_entries")
+}
+
+// ─────────────────────────────────────────────
+// JOBS & TALENT MARKETPLACE
+// ─────────────────────────────────────────────
+
+model JobPosting {
+  id                    String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId              String           @map("tenant_id") @db.Uuid
+  hotelId               String           @map("hotel_id") @db.Uuid
+  slug                  String           @unique
+  title                 String
+  department            StaffDepartment
+  employmentType        EmploymentType   @map("employment_type")
+  city                  String
+  country               String
+  description           String           @db.Text
+  salaryMinCents        Int?             @map("salary_min_cents")
+  salaryMaxCents        Int?             @map("salary_max_cents")
+  currency              String           @default("USD") @db.VarChar(3)
+  languages             String[]
+  experienceLevel       ExperienceLevel  @default(ENTRY) @map("experience_level")
+  accommodationIncluded Boolean          @default(false) @map("accommodation_included")
+  mealsIncluded         Boolean          @default(false) @map("meals_included")
+  visaSupport           Boolean          @default(false) @map("visa_support")
+  isFeatured            Boolean          @default(false) @map("is_featured")
+  status                JobPostingStatus @default(DRAFT)
+  deadline              DateTime?
+  metadata              Json             @default("{}")
+  createdAt             DateTime         @default(now()) @map("created_at")
+  updatedAt             DateTime         @updatedAt @map("updated_at")
+
+  tenant       Tenant                  @relation(fields: [tenantId], references: [id])
+  hotel        Hotel                   @relation(fields: [hotelId], references: [id])
+  tags         JobPostingTag[]
+  requirements JobPostingRequirement[]
+  benefits     JobPostingBenefit[]
+  applications JobApplication[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([status])
+  @@index([city])
+  @@index([country])
+  @@index([employmentType])
+  @@map("job_postings")
+}
+
+model JobPostingTag {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postingId String @map("posting_id") @db.Uuid
+  tag       String
+
+  posting JobPosting @relation(fields: [postingId], references: [id], onDelete: Cascade)
+
+  @@index([postingId])
+  @@map("job_posting_tags")
+}
+
+model JobPostingRequirement {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postingId  String  @map("posting_id") @db.Uuid
+  label      String
+  isRequired Boolean @default(true) @map("is_required")
+
+  posting JobPosting @relation(fields: [postingId], references: [id], onDelete: Cascade)
+
+  @@index([postingId])
+  @@map("job_posting_requirements")
+}
+
+model JobPostingBenefit {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postingId String @map("posting_id") @db.Uuid
+  label     String
+
+  posting JobPosting @relation(fields: [postingId], references: [id], onDelete: Cascade)
+
+  @@index([postingId])
+  @@map("job_posting_benefits")
+}
+
+model JobApplication {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String            @map("tenant_id") @db.Uuid
+  postingId   String            @map("posting_id") @db.Uuid
+  applicantId String            @map("applicant_id") @db.Uuid
+  appType     ApplicationType   @default(OPEN_MARKET) @map("app_type")
+  coverLetter String?           @map("cover_letter") @db.Text
+  status      ApplicationStatus @default(SUBMITTED)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  tenant         Tenant                     @relation(fields: [tenantId], references: [id])
+  posting        JobPosting                 @relation(fields: [postingId], references: [id])
+  interviews     JobInterview[]
+  statusHistory  ApplicationStatusHistory[]
+  recruiterNotes RecruiterNote[]
+
+  @@unique([postingId, applicantId])
+  @@index([tenantId])
+  @@index([postingId])
+  @@index([applicantId])
+  @@index([status])
+  @@map("job_applications")
+}
+
+model JobInterview {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId       String   @map("tenant_id") @db.Uuid
+  applicationId  String   @map("application_id") @db.Uuid
+  scheduledAt    DateTime @map("scheduled_at")
+  format         String   @default("video")
+  interviewerIds Json     @default("[]") @map("interviewer_ids")
+  notes          String?  @db.Text
+  outcome        String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant         @relation(fields: [tenantId], references: [id])
+  application JobApplication @relation(fields: [applicationId], references: [id])
+
+  @@index([tenantId])
+  @@index([applicationId])
+  @@map("job_interviews")
+}
+
+model ApplicationStatusHistory {
+  id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String            @map("tenant_id") @db.Uuid
+  applicationId String            @map("application_id") @db.Uuid
+  fromStatus    ApplicationStatus @map("from_status")
+  toStatus      ApplicationStatus @map("to_status")
+  changedBy     String            @map("changed_by") @db.Uuid
+  note          String?           @db.Text
+  createdAt     DateTime          @default(now()) @map("created_at")
+
+  tenant      Tenant         @relation(fields: [tenantId], references: [id])
+  application JobApplication @relation(fields: [applicationId], references: [id])
+
+  @@index([tenantId])
+  @@index([applicationId])
+  @@map("application_status_history")
+}
+
+model RecruiterNote {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  applicationId String   @map("application_id") @db.Uuid
+  authorId      String   @map("author_id") @db.Uuid
+  content       String   @db.Text
+  isPrivate     Boolean  @default(true) @map("is_private")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  tenant      Tenant         @relation(fields: [tenantId], references: [id])
+  application JobApplication @relation(fields: [applicationId], references: [id])
+
+  @@index([tenantId])
+  @@index([applicationId])
+  @@map("recruiter_notes")
+}
+
+// ─────────────────────────────────────────────
+// CAREER PASSPORT
+// ─────────────────────────────────────────────
+
+model CareerPassport {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String           @map("tenant_id") @db.Uuid
+  userId           String           @unique @map("user_id") @db.Uuid
+  headline         String?
+  summary          String?          @db.Text
+  visibility       CareerVisibility @default(PRIVATE)
+  languages        String[]
+  preferredCities  String[]         @map("preferred_cities")
+  openToRelocation Boolean          @default(false) @map("open_to_relocation")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  tenant         Tenant                @relation(fields: [tenantId], references: [id])
+  experiences    CareerExperience[]
+  skills         CareerSkill[]
+  certifications CareerCertification[]
+  references     CareerReference[]
+
+  @@index([tenantId])
+  @@index([visibility])
+  @@map("career_passports")
+}
+
+model CareerExperience {
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passportId  String          @map("passport_id") @db.Uuid
+  hotelName   String          @map("hotel_name")
+  role        String
+  department  StaffDepartment
+  city        String?
+  country     String?
+  startDate   DateTime        @map("start_date") @db.Date
+  endDate     DateTime?       @map("end_date") @db.Date
+  isCurrent   Boolean         @default(false) @map("is_current")
+  description String?         @db.Text
+  isVerified  Boolean         @default(false) @map("is_verified")
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  passport CareerPassport @relation(fields: [passportId], references: [id], onDelete: Cascade)
+
+  @@index([passportId])
+  @@map("career_experiences")
+}
+
+model CareerSkill {
+  id         String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passportId String  @map("passport_id") @db.Uuid
+  skill      String
+  level      String?
+
+  passport CareerPassport @relation(fields: [passportId], references: [id], onDelete: Cascade)
+
+  @@index([passportId])
+  @@map("career_skills")
+}
+
+model CareerCertification {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passportId    String    @map("passport_id") @db.Uuid
+  name          String
+  issuer        String?
+  issuedAt      DateTime? @map("issued_at") @db.Date
+  expiresAt     DateTime? @map("expires_at") @db.Date
+  credentialUrl String?   @map("credential_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  passport CareerPassport @relation(fields: [passportId], references: [id], onDelete: Cascade)
+
+  @@index([passportId])
+  @@map("career_certifications")
+}
+
+model CareerReference {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passportId   String   @map("passport_id") @db.Uuid
+  refereeName  String   @map("referee_name")
+  refereeRole  String?  @map("referee_role")
+  refereeHotel String?  @map("referee_hotel")
+  refereeEmail String?  @map("referee_email")
+  relationship String?
+  note         String?  @db.Text
+  isVerified   Boolean  @default(false) @map("is_verified")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  passport CareerPassport @relation(fields: [passportId], references: [id], onDelete: Cascade)
+
+  @@index([passportId])
+  @@map("career_references")
+}
+
+// ─────────────────────────────────────────────
+// TALENT PORTAL (BEGINNER / SEASONAL)
+// ─────────────────────────────────────────────
+
+model TalentProfile {
   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   tenantId           String   @map("tenant_id") @db.Uuid
-  mobilityProviderId String   @map("mobility_provider_id") @db.Uuid
-  cityCode           String   @map("city_code")
-  areaName           String   @map("area_name")
-  coverageType       String   @default("full") @map("coverage_type")
-  geoPolygon         Json?    @map("geo_polygon")
-  surchargePercent   Int?     @map("surcharge_percent")
-  isActive           Boolean  @default(true) @map("is_active")
+  userId             String   @unique @map("user_id") @db.Uuid
+  displayName        String   @map("display_name")
+  summary            String?  @db.Text
+  education          String?
+  languages          String[]
+  cityPreferences    String[] @map("city_preferences")
+  needsAccommodation Boolean  @default(false) @map("needs_accommodation")
+  willingToRelocate  Boolean  @default(false) @map("willing_to_relocate")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  mobilityProvider MobilityProvider @relation("DriverServiceAreas", fields: [mobilityProviderId], references: [id], onDelete: Cascade)
+  tenant       Tenant                     @relation(fields: [tenantId], references: [id])
+  skills       TalentSkill[]
+  interestTags TalentInterestTag[]
+  availability TalentAvailabilityWindow[]
+  applications TalentApplication[]
 
-  @@index([tenantId, cityCode, isActive])
-  @@index([mobilityProviderId])
-  @@map("driver_service_areas")
+  @@index([tenantId])
+  @@map("talent_profiles")
+}
+
+model TalentSkill {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId String  @map("profile_id") @db.Uuid
+  skill     String
+  level     String?
+
+  profile TalentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("talent_skills")
+}
+
+model TalentInterestTag {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId String @map("profile_id") @db.Uuid
+  tag       String
+
+  profile TalentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("talent_interest_tags")
+}
+
+model TalentAvailabilityWindow {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId String   @map("profile_id") @db.Uuid
+  startDate DateTime @map("start_date") @db.Date
+  endDate   DateTime @map("end_date") @db.Date
+  note      String?
+
+  profile TalentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("talent_availability_windows")
+}
+
+model TalentApplication {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String            @map("tenant_id") @db.Uuid
+  profileId   String            @map("profile_id") @db.Uuid
+  postingId   String            @map("posting_id") @db.Uuid
+  coverLetter String?           @map("cover_letter") @db.Text
+  status      ApplicationStatus @default(SUBMITTED)
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+
+  tenant  Tenant        @relation(fields: [tenantId], references: [id])
+  profile TalentProfile @relation(fields: [profileId], references: [id])
+
+  @@index([tenantId])
+  @@index([profileId])
+  @@index([postingId])
+  @@map("talent_applications")
 }
 
 // ─────────────────────────────────────────────
-// L. CITY GUIDE — SUPPLEMENTARY MODELS
+// LEARNING & CERTIFICATION HUB
 // ─────────────────────────────────────────────
 
-model LocalExperiencePartner {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  localExperienceId String   @map("local_experience_id") @db.Uuid
-  name              String
-  role              String?
-  contactInfo       Json     @default("{}") @map("contact_info")
-  commissionPercent Int?     @map("commission_percent")
-  isActive          Boolean  @default(true) @map("is_active")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+model LearningTrack {
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String?          @map("tenant_id") @db.Uuid
+  slug        String           @unique
+  title       String
+  description String?          @db.Text
+  department  StaffDepartment?
+  difficulty  String           @default("beginner")
+  isPublished Boolean          @default(false) @map("is_published")
+  sortOrder   Int              @default(0) @map("sort_order")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
 
-  localExperience LocalExperience @relation(fields: [localExperienceId], references: [id], onDelete: Cascade)
+  modules     CourseModule[]
+  enrollments StaffCourseEnrollment[]
 
-  @@index([tenantId, localExperienceId])
-  @@map("local_experience_partners")
+  @@index([tenantId])
+  @@map("learning_tracks")
 }
 
-model GuidePersonaVariant {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId       String       @map("tenant_id") @db.Uuid
-  cityGuideId    String       @map("city_guide_id") @db.Uuid
-  persona        GuidePersona
-  title          String
-  intro          String?      @db.Text
-  highlights     Json         @default("[]")
-  suggestedRoute Json?        @map("suggested_route")
-  isActive       Boolean      @default(true) @map("is_active")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
+model CourseModule {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trackId     String   @map("track_id") @db.Uuid
+  title       String
+  content     Json     @default("{}")
+  sortOrder   Int      @default(0) @map("sort_order")
+  durationMin Int?     @map("duration_min")
+  createdAt   DateTime @default(now()) @map("created_at")
 
-  cityGuide CityGuide @relation(fields: [cityGuideId], references: [id], onDelete: Cascade)
+  track LearningTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
 
-  @@unique([cityGuideId, persona])
-  @@index([tenantId, cityGuideId, persona])
-  @@map("guide_persona_variants")
+  @@index([trackId])
+  @@map("course_modules")
 }
 
-// ─────────────────────────────────────────────
-// M. BUNDLE — SUPPLEMENTARY MODELS
-// ─────────────────────────────────────────────
+model StaffCourseEnrollment {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  trackId     String    @map("track_id") @db.Uuid
+  progress    Int       @default(0)
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
-model BundleEligibilityRule {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String   @map("tenant_id") @db.Uuid
-  bundleOfferId String   @map("bundle_offer_id") @db.Uuid
-  ruleType      String   @map("rule_type")
-  operator      String   @default("eq")
-  value         String
-  isRequired    Boolean  @default(true) @map("is_required")
-  createdAt     DateTime @default(now()) @map("created_at")
+  tenant Tenant        @relation(fields: [tenantId], references: [id])
+  track  LearningTrack @relation(fields: [trackId], references: [id])
 
-  bundleOffer BundleOffer @relation(fields: [bundleOfferId], references: [id], onDelete: Cascade)
-
-  @@index([tenantId, bundleOfferId])
-  @@map("bundle_eligibility_rules")
-}
-
-model BundleRedemption {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String   @map("tenant_id") @db.Uuid
-  bundleOfferId String   @map("bundle_offer_id") @db.Uuid
-  bookingId     String?  @map("booking_id") @db.Uuid
-  userId        String   @map("user_id") @db.Uuid
-  redeemedAt    DateTime @default(now()) @map("redeemed_at")
-  totalCents    Int      @default(0) @map("total_cents")
-  currency      String   @default("USD") @db.VarChar(3)
-  metadata      Json     @default("{}")
-
-  bundleOffer BundleOffer @relation(fields: [bundleOfferId], references: [id])
-  booking     Booking?    @relation(fields: [bookingId], references: [id])
-  user        User        @relation("BundleRedemptions", fields: [userId], references: [id])
-
-  @@index([tenantId, bundleOfferId])
+  @@unique([userId, trackId])
+  @@index([tenantId])
   @@index([userId])
-  @@index([bookingId])
-  @@map("bundle_redemptions")
+  @@map("staff_course_enrollments")
+}
+
+model StaffCertificate {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId  String    @map("tenant_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  trackId   String    @map("track_id") @db.Uuid
+  certRef   String    @unique @map("cert_ref")
+  issuedAt  DateTime  @default(now()) @map("issued_at")
+  expiresAt DateTime? @map("expires_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@map("staff_certificates")
 }
 
 // ─────────────────────────────────────────────
-// N. UPSELL & CROSS-SELL ENGINE
+// SHIFT MARKETPLACE (PHASE 3)
 // ─────────────────────────────────────────────
 
-model UpsellCampaign {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId      String    @map("tenant_id") @db.Uuid
-  hotelId       String?   @map("hotel_id") @db.Uuid
-  code          String
-  name          String
-  triggerType   String    @map("trigger_type")
-  targetModule  String    @map("target_module")
-  targetId      String?   @map("target_id") @db.Uuid
-  displayConfig Json      @default("{}") @map("display_config")
-  discountCents Int?      @map("discount_cents")
-  discountPct   Int?      @map("discount_pct")
-  priority      Int       @default(0)
-  startsAt      DateTime? @map("starts_at")
-  endsAt        DateTime? @map("ends_at")
-  isActive      Boolean   @default(true) @map("is_active")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+model ShiftPosting {
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String          @map("tenant_id") @db.Uuid
+  hotelId     String          @map("hotel_id") @db.Uuid
+  title       String
+  department  StaffDepartment
+  shiftDate   DateTime        @map("shift_date") @db.Date
+  startTime   String          @map("start_time")
+  endTime     String          @map("end_time")
+  rateCents   Int?            @map("rate_cents")
+  description String?         @db.Text
+  status      String          @default("open")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
 
-  hotel              Hotel?                       @relation(fields: [hotelId], references: [id])
-  recommendationLogs CrossSellRecommendationLog[]
+  tenant Tenant       @relation(fields: [tenantId], references: [id])
+  hotel  Hotel        @relation(fields: [hotelId], references: [id])
+  claims ShiftClaim[]
 
-  @@unique([tenantId, code])
-  @@index([tenantId, triggerType, isActive])
+  @@index([tenantId])
   @@index([hotelId])
-  @@map("upsell_campaigns")
+  @@index([shiftDate])
+  @@map("shift_postings")
 }
 
-model CrossSellRecommendationLog {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tenantId          String   @map("tenant_id") @db.Uuid
-  userId            String   @map("user_id") @db.Uuid
-  bookingId         String?  @map("booking_id") @db.Uuid
-  campaignId        String?  @map("campaign_id") @db.Uuid
-  recommendedModule String   @map("recommended_module")
-  recommendedId     String?  @map("recommended_id") @db.Uuid
-  score             Decimal? @db.Decimal(5, 4)
-  wasShown          Boolean  @default(false) @map("was_shown")
-  wasClicked        Boolean  @default(false) @map("was_clicked")
-  wasConverted      Boolean  @default(false) @map("was_converted")
-  context           Json     @default("{}")
-  createdAt         DateTime @default(now()) @map("created_at")
+model ShiftClaim {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId   String   @map("tenant_id") @db.Uuid
+  shiftId    String   @map("shift_id") @db.Uuid
+  claimantId String   @map("claimant_id") @db.Uuid
+  status     String   @default("pending")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  user     User            @relation("CrossSellLogs", fields: [userId], references: [id])
-  booking  Booking?        @relation(fields: [bookingId], references: [id])
-  campaign UpsellCampaign? @relation(fields: [campaignId], references: [id])
+  tenant Tenant       @relation(fields: [tenantId], references: [id])
+  shift  ShiftPosting @relation(fields: [shiftId], references: [id])
 
-  @@index([tenantId, userId, createdAt])
-  @@index([bookingId])
-  @@index([campaignId])
-  @@map("cross_sell_recommendation_logs")
+  @@index([tenantId])
+  @@index([shiftId])
+  @@map("shift_claims")
 }

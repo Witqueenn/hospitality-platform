@@ -56,6 +56,27 @@ import { bundleRouter } from "./routers/bundle.router.js";
 // ── Platform Finance ─────────────────────────────────────────────
 import { partnerRouter, settlementRouter } from "./routers/partner.router.js";
 
+// ── In-Stay Experience ───────────────────────────────────────────
+import { guestStayRouter } from "./routers/guestStay.router.js";
+import { inStayMessageRouter } from "./routers/inStayMessage.router.js";
+import { hotelWifiRouter } from "./routers/hotelWifi.router.js";
+import { hotelMenuRouter } from "./routers/hotelMenu.router.js";
+import { guestServiceRequestRouter } from "./routers/guestServiceRequest.router.js";
+import { incidentRouter } from "./routers/incident.router.js";
+import { recoveryRouter } from "./routers/recovery.router.js";
+import { lostFoundRouter } from "./routers/lostFound.router.js";
+
+// ── Staff & Reputation ───────────────────────────────────────────
+import { staffProfileRouter } from "./routers/staffProfile.router.js";
+import { staffReviewRouter } from "./routers/staffReview.router.js";
+import { guestConductRouter } from "./routers/guestConduct.router.js";
+import { staffTipRouter } from "./routers/staffTip.router.js";
+import { staffRecognitionRouter } from "./routers/staffRecognition.router.js";
+
+// ── Jobs & Talent ────────────────────────────────────────────────
+import { jobPostingRouter } from "./routers/jobPosting.router.js";
+import { jobApplicationRouter } from "./routers/jobApplication.router.js";
+
 export const appRouter = router({
   // Core
   auth: authRouter,
@@ -103,6 +124,27 @@ export const appRouter = router({
   // Platform Finance
   partner: partnerRouter,
   settlement: settlementRouter,
+
+  // In-Stay Experience
+  guestStay: guestStayRouter,
+  inStayMessage: inStayMessageRouter,
+  hotelWifi: hotelWifiRouter,
+  hotelMenu: hotelMenuRouter,
+  guestServiceRequest: guestServiceRequestRouter,
+  incident: incidentRouter,
+  recovery: recoveryRouter,
+  lostFound: lostFoundRouter,
+
+  // Staff & Reputation
+  staffProfile: staffProfileRouter,
+  staffReview: staffReviewRouter,
+  guestConduct: guestConductRouter,
+  staffTip: staffTipRouter,
+  staffRecognition: staffRecognitionRouter,
+
+  // Jobs & Talent
+  jobPosting: jobPostingRouter,
+  jobApplication: jobApplicationRouter,
 });
 
 export type AppRouter = typeof appRouter;

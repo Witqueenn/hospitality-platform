@@ -150,6 +150,152 @@ async function main() {
     },
     update: {},
   });
+
+  // ── Additional hotel staff roles
+  const hotelMgr = await db.user.upsert({
+    where: {
+      tenantId_email: {
+        tenantId: tenant.id,
+        email: "hotelmgr@grandpalace.com",
+      },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "hotelmgr@grandpalace.com",
+      name: "Serkan Arslan",
+      passwordHash: staffPw,
+      role: "HOTEL_MANAGER",
+    },
+    update: {},
+  });
+
+  const guestRelations = await db.user.upsert({
+    where: {
+      tenantId_email: {
+        tenantId: tenant.id,
+        email: "guestrel@grandpalace.com",
+      },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "guestrel@grandpalace.com",
+      name: "Selin Çelik",
+      passwordHash: staffPw,
+      role: "GUEST_RELATIONS",
+    },
+    update: {},
+  });
+
+  const opsManager = await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "ops@grandpalace.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "ops@grandpalace.com",
+      name: "Burak Doğan",
+      passwordHash: staffPw,
+      role: "OPERATIONS_MANAGER",
+    },
+    update: {},
+  });
+
+  const financeUser = await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "finance@grandpalace.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "finance@grandpalace.com",
+      name: "Hande Şahin",
+      passwordHash: staffPw,
+      role: "FINANCE_APPROVER",
+    },
+    update: {},
+  });
+
+  const eventsManager = await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "events@grandpalace.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "events@grandpalace.com",
+      name: "Tolga Yıldız",
+      passwordHash: staffPw,
+      role: "EVENTS_MANAGER",
+    },
+    update: {},
+  });
+
+  const fbManager = await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "fb@grandpalace.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "fb@grandpalace.com",
+      name: "Zeynep Aydın",
+      passwordHash: staffPw,
+      role: "FB_MANAGER",
+    },
+    update: {},
+  });
+
+  const resvManager = await db.user.upsert({
+    where: {
+      tenantId_email: {
+        tenantId: tenant.id,
+        email: "reservations@grandpalace.com",
+      },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      email: "reservations@grandpalace.com",
+      name: "Kaan Öztürk",
+      passwordHash: staffPw,
+      role: "RESERVATIONS_MANAGER",
+    },
+    update: {},
+  });
+
+  // ── Platform Ops (Admin portal access)
+  await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "ops@platform.heo" },
+    },
+    create: {
+      tenantId: tenant.id,
+      email: "ops@platform.heo",
+      name: "Platform Ops",
+      passwordHash: await bcrypt.hash("platform123456", 12),
+      role: "PLATFORM_OPS",
+    },
+    update: {},
+  });
+
+  // ── Extra guest accounts
+  await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "guest2@example.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      email: "guest2@example.com",
+      name: "James Miller",
+      passwordHash: await bcrypt.hash("guest123456", 12),
+      role: "GUEST",
+    },
+    update: {},
+  });
+
   console.log("✓ Hotel 1:", hotel1.name);
 
   // ─── Hotel 2 ────────────────────────────────
@@ -188,6 +334,39 @@ async function main() {
     },
     update: {},
   });
+  await db.user.upsert({
+    where: {
+      tenantId_email: {
+        tenantId: tenant.id,
+        email: "admin@boutiqueathens.com",
+      },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel2.id,
+      email: "admin@boutiqueathens.com",
+      name: "Nikos Papadopoulos",
+      passwordHash: staffPw,
+      role: "HOTEL_ADMIN",
+    },
+    update: {},
+  });
+
+  await db.user.upsert({
+    where: {
+      tenantId_email: { tenantId: tenant.id, email: "desk@boutiqueathens.com" },
+    },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel2.id,
+      email: "desk@boutiqueathens.com",
+      name: "Maria Georgiou",
+      passwordHash: staffPw,
+      role: "FRONT_DESK",
+    },
+    update: {},
+  });
+
   console.log("✓ Hotel 2:", hotel2.name);
 
   // ─── Room Types Hotel 1 ──────────────────────
@@ -685,12 +864,652 @@ async function main() {
   });
   console.log("✓ Tenant policies created");
 
+  // ─── Wi-Fi Credentials ────────────────────────
+  await db.hotelWifiCredential.upsert({
+    where: { id: "00000000-0000-0000-0010-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0010-000000000001",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      networkName: "GrandPalace_Guest",
+      password: "welcome2026",
+      zone: "All Areas",
+      description: "Available in all rooms and public areas",
+      isActive: true,
+    },
+    update: {},
+  });
+
+  await db.hotelWifiCredential.upsert({
+    where: { id: "00000000-0000-0000-0010-000000000002" },
+    create: {
+      id: "00000000-0000-0000-0010-000000000002",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      networkName: "GrandPalace_Premium",
+      password: "vip2026gp",
+      zone: "Suites",
+      description: "Suite guests and loyalty members only",
+      isActive: true,
+    },
+    update: {},
+  });
+  console.log("✓ Wi-Fi credentials created");
+
+  // ─── Hotel Menus ──────────────────────────────
+  await db.hotelVenueMenu.upsert({
+    where: { id: "00000000-0000-0000-0011-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0011-000000000001",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      name: "Room Service Menu",
+      menuType: "ROOM_SERVICE",
+      description: "Available 24/7 — delivered to your room",
+      isActive: true,
+      content: {
+        sections: [
+          {
+            title: "Starters",
+            items: [
+              {
+                name: "Hummus & Pita",
+                description: "House-made hummus with warm pita bread",
+                price: 12,
+              },
+              {
+                name: "Seasonal Soup",
+                description: "Chef's soup of the day",
+                price: 10,
+              },
+            ],
+          },
+          {
+            title: "Mains",
+            items: [
+              {
+                name: "Grilled Sea Bass",
+                description:
+                  "Mediterranean herbs, lemon butter sauce, seasonal vegetables",
+                price: 38,
+              },
+              {
+                name: "Ottoman Lamb Chops",
+                description: "Marinated lamb, pomegranate glaze, bulgur pilaf",
+                price: 45,
+              },
+              {
+                name: "Mushroom Risotto",
+                description: "Porcini & truffle, parmesan cream (V)",
+                price: 28,
+              },
+            ],
+          },
+          {
+            title: "Desserts",
+            items: [
+              {
+                name: "Baklava Selection",
+                description: "Pistachio & walnut baklava, clotted cream",
+                price: 14,
+              },
+              {
+                name: "Chocolate Fondant",
+                description: "Warm dark chocolate cake, vanilla gelato",
+                price: 16,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    update: {},
+  });
+
+  await db.hotelVenueMenu.upsert({
+    where: { id: "00000000-0000-0000-0011-000000000002" },
+    create: {
+      id: "00000000-0000-0000-0011-000000000002",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      name: "Minibar",
+      menuType: "BAR",
+      description: "Items from your in-room minibar",
+      isActive: true,
+      content: {
+        sections: [
+          {
+            title: "Beverages",
+            items: [
+              { name: "Still Water 500ml", price: 5 },
+              { name: "Sparkling Water 500ml", price: 6 },
+              {
+                name: "Soft Drinks",
+                description: "Cola, lemonade, orange juice",
+                price: 7,
+              },
+              { name: "Local Beer", price: 9 },
+            ],
+          },
+          {
+            title: "Snacks",
+            items: [
+              { name: "Mixed Nuts", price: 8 },
+              { name: "Dark Chocolate Bar", price: 6 },
+              { name: "Turkish Delight", price: 7 },
+            ],
+          },
+        ],
+      },
+    },
+    update: {},
+  });
+  console.log("✓ Hotel menus created");
+
+  // ─── Guest Stay Session ───────────────────────
+  const stay = await db.guestStaySession.upsert({
+    where: { id: "00000000-0000-0000-0012-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0012-000000000001",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      guestId: guest.id,
+      bookingId: booking2.id,
+      roomNumber: "412",
+      checkInAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      checkOutAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      status: "ACTIVE",
+    },
+    update: {},
+  });
+  console.log("✓ Guest stay session created");
+
+  // ─── In-Stay Messages ─────────────────────────
+  await db.inStayMessage.createMany({
+    skipDuplicates: true,
+    data: [
+      {
+        id: "00000000-0000-0000-0013-000000000001",
+        tenantId: tenant.id,
+        stayId: stay.id,
+        guestId: guest.id,
+        hotelId: hotel1.id,
+        category: "WELCOME",
+        body: "Welcome to Grand Palace Istanbul, Alice! We hope you have a wonderful stay. Please don't hesitate to reach out if you need anything.",
+        readAt: new Date(),
+        sentAt: new Date(Date.now() - 23 * 60 * 60 * 1000),
+      },
+      {
+        id: "00000000-0000-0000-0013-000000000002",
+        tenantId: tenant.id,
+        stayId: stay.id,
+        guestId: guest.id,
+        hotelId: hotel1.id,
+        category: "SERVICE_UPDATE",
+        body: "Thank you! Could you arrange a late checkout if possible?",
+        sentAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      },
+    ],
+  });
+  console.log("✓ In-stay messages created");
+
+  // ─── Service Requests ─────────────────────────
+  await db.guestServiceRequest.upsert({
+    where: { requestRef: "SRQ-SEED0001" },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      stayId: stay.id,
+      guestId: guest.id,
+      requestRef: "SRQ-SEED0001",
+      requestType: "EXTRA_TOWELS",
+      priority: "NORMAL",
+      status: "PENDING",
+      description: "Please bring 2 extra bath towels",
+    },
+    update: {},
+  });
+
+  await db.guestServiceRequest.upsert({
+    where: { requestRef: "SRQ-SEED0002" },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      stayId: stay.id,
+      guestId: guest.id,
+      requestRef: "SRQ-SEED0002",
+      requestType: "ROOM_CLEANING",
+      priority: "HIGH",
+      status: "IN_PROGRESS",
+      description: "Room cleaning needed — checked out for the day",
+    },
+    update: {},
+  });
+  console.log("✓ Service requests created");
+
+  // ─── Service Incidents ────────────────────────
+  await db.serviceIncident.upsert({
+    where: { incidentRef: "INC-SEED0001" },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      stayId: stay.id,
+      guestId: guest.id,
+      bookingId: booking2.id,
+      incidentRef: "INC-SEED0001",
+      category: "FACILITY_ISSUE",
+      severity: "HIGH",
+      status: "OPEN",
+      title: "Air conditioning not working",
+      description:
+        "AC unit in room 412 has stopped working. Room is getting warm.",
+      dueAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+    },
+    update: {},
+  });
+  console.log("✓ Incidents created");
+
+  // ─── Lost & Found Items ───────────────────────
+  await db.lostFoundItem.upsert({
+    where: { itemRef: "LF-SEED0001" },
+    create: {
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      itemRef: "LF-SEED0001",
+      description: "Black leather wallet with initials A.J.",
+      foundLocation: "Room 412 — under the bed",
+      category: "Accessories",
+      storageLocation: "Front desk safe — box #3",
+      status: "STORED",
+      foundAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      loggedById: frontDesk.id,
+    },
+    update: {},
+  });
+  console.log("✓ Lost & found items created");
+
+  // ─── Staff Profiles ───────────────────────────
+  const conciergeProfile = await db.staffProfile.upsert({
+    where: { id: "00000000-0000-0000-0014-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0014-000000000001",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      userId: frontDesk.id,
+      name: "Elif Kaya",
+      slug: "elif-kaya-grandpalace",
+      role: "Senior Front Desk Agent",
+      department: "FRONT_DESK",
+      bio: "5 years at Grand Palace Istanbul. Passionate about creating memorable guest experiences.",
+      languages: ["Turkish", "English", "Arabic"],
+      isPublic: true,
+      tipEnabled: true,
+      avgRating: 4.8,
+      reviewCount: 24,
+    },
+    update: {},
+  });
+
+  const chefProfile = await db.staffProfile.upsert({
+    where: { id: "00000000-0000-0000-0014-000000000002" },
+    create: {
+      id: "00000000-0000-0000-0014-000000000002",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      userId: hotelManager.id,
+      name: "Mehmet Yilmaz",
+      slug: "mehmet-yilmaz-grandpalace",
+      role: "Hotel Manager",
+      department: "MANAGEMENT",
+      bio: "10+ years in luxury hospitality across Istanbul, Dubai, and London.",
+      languages: ["Turkish", "English", "French"],
+      isPublic: true,
+      tipEnabled: false,
+      avgRating: 4.9,
+      reviewCount: 12,
+    },
+    update: {},
+  });
+
+  const spaProfile = await db.staffProfile.upsert({
+    where: { id: "00000000-0000-0000-0014-000000000003" },
+    create: {
+      id: "00000000-0000-0000-0014-000000000003",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      name: "Aylin Demir",
+      slug: "aylin-demir-grandpalace",
+      role: "Head Spa Therapist",
+      department: "SPA",
+      bio: "Certified aromatherapy and hot stone specialist with 7 years of experience.",
+      languages: ["Turkish", "English"],
+      isPublic: true,
+      tipEnabled: true,
+      avgRating: 4.95,
+      reviewCount: 38,
+    },
+    update: {},
+  });
+  console.log("✓ Staff profiles created");
+
+  // ─── Staff Badges ─────────────────────────────
+  await db.staffBadge.createMany({
+    skipDuplicates: true,
+    data: [
+      {
+        id: "00000000-0000-0000-0015-000000000001",
+        tenantId: tenant.id,
+        staffProfileId: conciergeProfile.id,
+        badgeType: "GUEST_FAVORITE",
+        awardedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      },
+      {
+        id: "00000000-0000-0000-0015-000000000002",
+        tenantId: tenant.id,
+        staffProfileId: spaProfile.id,
+        badgeType: "SERVICE_EXCELLENCE",
+        awardedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      },
+      {
+        id: "00000000-0000-0000-0015-000000000003",
+        tenantId: tenant.id,
+        staffProfileId: conciergeProfile.id,
+        badgeType: "FAST_RESPONDER",
+        awardedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+      },
+    ],
+  });
+  console.log("✓ Staff badges created");
+
+  // ─── Staff Reviews + Gratitude Wall ──────────
+  const staffReview1 = await db.staffGuestReview.upsert({
+    where: { id: "00000000-0000-0000-0016-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0016-000000000001",
+      tenantId: tenant.id,
+      staffProfileId: conciergeProfile.id,
+      guestId: guest.id,
+      reviewType: "CONCIERGE",
+      rating: 5,
+      title: "Elif made our stay unforgettable",
+      body: "Elif went above and beyond at every turn — from arranging a surprise anniversary setup to recommending the most amazing local restaurant. Truly exceptional hospitality.",
+      moderationStatus: "APPROVED",
+      isGratitudeWall: true,
+      moderatedAt: new Date(),
+    },
+    update: {},
+  });
+
+  const staffReview2 = await db.staffGuestReview.upsert({
+    where: { id: "00000000-0000-0000-0016-000000000002" },
+    create: {
+      id: "00000000-0000-0000-0016-000000000002",
+      tenantId: tenant.id,
+      staffProfileId: spaProfile.id,
+      guestId: guest.id,
+      reviewType: "MANAGEMENT",
+      rating: 5,
+      title: "Best spa experience I've ever had",
+      body: "Aylin's hot stone massage was absolutely divine. She was professional, attentive, and made me feel completely at ease. Already booked again for tomorrow!",
+      moderationStatus: "APPROVED",
+      isGratitudeWall: true,
+      moderatedAt: new Date(),
+    },
+    update: {},
+  });
+
+  await db.staffGuestReview.upsert({
+    where: { id: "00000000-0000-0000-0016-000000000003" },
+    create: {
+      id: "00000000-0000-0000-0016-000000000003",
+      tenantId: tenant.id,
+      staffProfileId: conciergeProfile.id,
+      guestId: guest.id,
+      reviewType: "CONCIERGE",
+      rating: 4,
+      title: "Very helpful during check-in",
+      body: "Fast and friendly check-in process. Elif explained all hotel facilities clearly.",
+      moderationStatus: "PENDING",
+    },
+    update: {},
+  });
+
+  // Gratitude wall entries
+  await db.gratitudeWallEntry.createMany({
+    skipDuplicates: true,
+    data: [
+      {
+        id: "00000000-0000-0000-0017-000000000001",
+        tenantId: tenant.id,
+        hotelId: hotel1.id,
+        reviewId: staffReview1.id,
+        staffProfileId: conciergeProfile.id,
+        isActive: true,
+      },
+      {
+        id: "00000000-0000-0000-0017-000000000002",
+        tenantId: tenant.id,
+        hotelId: hotel1.id,
+        reviewId: staffReview2.id,
+        staffProfileId: spaProfile.id,
+        isActive: true,
+      },
+    ],
+  });
+  console.log("✓ Staff reviews & gratitude wall created");
+
+  // ─── Job Postings ─────────────────────────────
+  const job1 = await db.jobPosting.upsert({
+    where: { id: "00000000-0000-0000-0018-000000000001" },
+    create: {
+      id: "00000000-0000-0000-0018-000000000001",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      title: "Front Desk Agent",
+      slug: "front-desk-agent-grandpalace-2026",
+      department: "FRONT_DESK",
+      employmentType: "FULL_TIME",
+      experienceLevel: "JUNIOR",
+      city: "Istanbul",
+      country: "Turkey",
+      description:
+        "Join our award-winning front desk team at Grand Palace Istanbul. You'll be the first point of contact for our guests, ensuring a seamless check-in/check-out experience and handling guest inquiries with warmth and professionalism.\n\nWe're looking for someone who loves people, speaks excellent English, and thrives in a fast-paced luxury environment.",
+      accommodationIncluded: true,
+      mealsIncluded: true,
+      visaSupport: false,
+      isFeatured: true,
+      salaryMinCents: 2400000,
+      salaryMaxCents: 3200000,
+      currency: "TRY",
+      status: "PUBLISHED",
+      deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      tags: {
+        create: [{ tag: "luxury" }, { tag: "5-star" }, { tag: "istanbul" }],
+      },
+      requirements: {
+        create: [
+          { label: "Fluent English (written & spoken)", isRequired: true },
+          {
+            label: "1+ year front desk or hospitality experience",
+            isRequired: true,
+          },
+          {
+            label: "Opera PMS or similar system experience",
+            isRequired: false,
+          },
+          {
+            label: "Second language (Arabic, Russian, or German)",
+            isRequired: false,
+          },
+        ],
+      },
+      benefits: {
+        create: [
+          { label: "Health insurance" },
+          { label: "Uniform provided" },
+          { label: "Staff meal allowance" },
+          { label: "Annual bonus" },
+          { label: "Career development program" },
+        ],
+      },
+    },
+    update: {},
+  });
+
+  const job2 = await db.jobPosting.upsert({
+    where: { id: "00000000-0000-0000-0018-000000000002" },
+    create: {
+      id: "00000000-0000-0000-0018-000000000002",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      title: "Spa Therapist — Seasonal",
+      slug: "spa-therapist-seasonal-grandpalace-2026",
+      department: "SPA",
+      employmentType: "SEASONAL",
+      experienceLevel: "MID",
+      city: "Istanbul",
+      country: "Turkey",
+      description:
+        "We're looking for a skilled and passionate Spa Therapist to join our team for the summer season (May–October 2026). You'll deliver a range of treatments in our award-winning spa with a focus on exceptional guest experience.",
+      accommodationIncluded: true,
+      mealsIncluded: true,
+      visaSupport: true,
+      isFeatured: false,
+      salaryMinCents: 180000,
+      salaryMaxCents: 240000,
+      currency: "USD",
+      status: "PUBLISHED",
+      deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
+      tags: {
+        create: [{ tag: "spa" }, { tag: "seasonal" }, { tag: "visa-support" }],
+      },
+      requirements: {
+        create: [
+          {
+            label: "Certified massage therapist (Level 3 or equivalent)",
+            isRequired: true,
+          },
+          {
+            label: "2+ years spa experience in hotel environment",
+            isRequired: true,
+          },
+          {
+            label: "Hot stone & aromatherapy certification",
+            isRequired: false,
+          },
+        ],
+      },
+      benefits: {
+        create: [
+          { label: "Staff accommodation included" },
+          { label: "3 meals per day" },
+          { label: "Visa & work permit processing" },
+          { label: "End-of-season bonus" },
+        ],
+      },
+    },
+    update: {},
+  });
+
+  const job3 = await db.jobPosting.upsert({
+    where: { id: "00000000-0000-0000-0018-000000000003" },
+    create: {
+      id: "00000000-0000-0000-0018-000000000003",
+      tenantId: tenant.id,
+      hotelId: hotel1.id,
+      title: "Housekeeping Supervisor",
+      slug: "housekeeping-supervisor-grandpalace-2026",
+      department: "HOUSEKEEPING",
+      employmentType: "FULL_TIME",
+      experienceLevel: "SENIOR",
+      city: "Istanbul",
+      country: "Turkey",
+      description:
+        "Lead our housekeeping team of 20+ staff to maintain Grand Palace Istanbul's exceptionally high cleanliness standards. You will manage shift scheduling, training, quality inspections, and guest request coordination.",
+      accommodationIncluded: false,
+      mealsIncluded: true,
+      visaSupport: false,
+      isFeatured: false,
+      salaryMinCents: 3600000,
+      salaryMaxCents: 4800000,
+      currency: "TRY",
+      status: "DRAFT",
+      tags: {
+        create: [{ tag: "management" }, { tag: "housekeeping" }],
+      },
+      requirements: {
+        create: [
+          {
+            label: "5+ years housekeeping experience in 4-5 star hotel",
+            isRequired: true,
+          },
+          {
+            label: "Previous supervisory/team lead experience",
+            isRequired: true,
+          },
+          { label: "Fluent Turkish; conversational English", isRequired: true },
+        ],
+      },
+      benefits: {
+        create: [
+          { label: "Supervisory pay grade" },
+          { label: "Staff meal allowance" },
+          { label: "Quarterly performance bonus" },
+        ],
+      },
+    },
+    update: {},
+  });
+  console.log("✓ Job postings created");
+
+  // ─── Job Applications ─────────────────────────
+  await db.jobApplication.upsert({
+    where: {
+      postingId_applicantId: { postingId: job1.id, applicantId: guest.id },
+    },
+    create: {
+      tenantId: tenant.id,
+      postingId: job1.id,
+      applicantId: guest.id,
+      appType: "OPEN_MARKET",
+      status: "SHORTLISTED",
+      coverLetter:
+        "I have been passionate about hospitality since my first hotel stay at age 12. With my background in customer service and fluency in three languages, I believe I would be a valuable addition to your front desk team.",
+    },
+    update: {},
+  });
+  console.log("✓ Job applications created");
+
   console.log("\n✅ Seed complete!");
-  console.log("\n📋 Demo credentials:");
-  console.log("  Admin:     admin@grandhot.com / admin123456");
-  console.log("  Hotel Mgr: manager@grandpalace.com / staff123456");
-  console.log("  Front Desk: frontdesk@grandpalace.com / staff123456");
-  console.log("  Guest:     guest@example.com / guest123456");
+  console.log(
+    "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+  );
+  console.log("📋 DEMO CREDENTIALS");
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  console.log("\n🌐 ADMIN PORTAL  →  /admin");
+  console.log("   SUPER_ADMIN    admin@grandhot.com          / admin123456");
+  console.log("   PLATFORM_OPS   ops@platform.heo            / platform123456");
+  console.log("\n🏨 HOTEL PORTAL  →  /hotel  (Grand Palace Istanbul)");
+  console.log("   HOTEL_ADMIN    manager@grandpalace.com     / staff123456");
+  console.log("   HOTEL_MANAGER  hotelmgr@grandpalace.com    / staff123456");
+  console.log("   FRONT_DESK     frontdesk@grandpalace.com   / staff123456");
+  console.log("   GUEST_RELATIONS  guestrel@grandpalace.com  / staff123456");
+  console.log("   OPERATIONS_MGR   ops@grandpalace.com       / staff123456");
+  console.log("   FINANCE        finance@grandpalace.com     / staff123456");
+  console.log("   EVENTS_MANAGER events@grandpalace.com      / staff123456");
+  console.log("   FB_MANAGER     fb@grandpalace.com          / staff123456");
+  console.log("   RESERVATIONS   reservations@grandpalace.com / staff123456");
+  console.log("\n🏨 HOTEL PORTAL  →  /hotel  (The Athens Boutique)");
+  console.log("   HOTEL_ADMIN    admin@boutiqueathens.com    / staff123456");
+  console.log("   FRONT_DESK     desk@boutiqueathens.com     / staff123456");
+  console.log("\n👤 GUEST PORTAL  →  /  (login at /login)");
+  console.log(
+    "   GUEST          guest@example.com           / guest123456   (Alice Johnson — active stay)",
+  );
+  console.log(
+    "   GUEST          guest2@example.com          / guest123456   (James Miller)",
+  );
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 }
 
 main()

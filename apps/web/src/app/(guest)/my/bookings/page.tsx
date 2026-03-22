@@ -68,6 +68,7 @@ export default function MyBookingsPage() {
     { enabled: isAuthenticated() },
   );
 
+  // @ts-expect-error tRPC type depth
   const cancelMutation = trpc.booking.cancel.useMutation({
     onSuccess: () => {
       toast.success("Booking cancelled.");
