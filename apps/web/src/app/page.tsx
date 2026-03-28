@@ -385,7 +385,7 @@ export default function HomePage() {
               <span className="text-gradient">senin için</span>
             </h2>
             <p className="mx-auto max-w-xl text-lg text-slate-400">
-              Check-in'den check-out'a kadar her detay düşünüldü.
+              Check-in&apos;den check-out&apos;a kadar her detay düşünüldü.
             </p>
           </motion.div>
 
