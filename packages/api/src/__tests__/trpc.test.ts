@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createTRPCContext } from "../trpc.js";
+import { createTRPCContext } from "../trpc";
 
 // ── Mock @repo/db so tests never hit a real database ─────────────────────────
 vi.mock("@repo/db", () => ({

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpc.js";
+import { router, protectedProcedure } from "../trpc";
 
 export const preferenceProfileRouter = router({
   get: protectedProcedure.query(async ({ ctx }) => {

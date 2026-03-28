@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { router, protectedProcedure, publicProcedure } from "../trpc.js";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 import { createRoomTypeSchema, inventoryUpdateSchema } from "@repo/shared";
 
 export const roomTypeRouter = router({

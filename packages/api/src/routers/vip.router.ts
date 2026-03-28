@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { router, protectedProcedure, publicProcedure } from "../trpc.js";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 
 const VIP_TIERS = ["CORE", "COMFORT", "SIGNATURE"] as const;
 const VIP_MEMBERSHIP_STATUSES = [

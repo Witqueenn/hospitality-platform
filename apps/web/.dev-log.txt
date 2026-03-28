@@ -1,0 +1,219 @@
+
+> @repo/web@0.1.0 dev /Users/mira/Desktop/Hospitality Experience Orchestration/apps/web
+> next dev
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3131
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · instrumentationHook
+
+ ✓ Starting...
+ ✓ Compiled /instrumentation in 198ms (64 modules)
+ ✓ Ready in 1494ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4.4s (2747 modules)
+ GET / 200 in 4606ms
+ ✓ Compiled in 218ms (1355 modules)
+ ✓ Compiled in 57ms (1341 modules)
+ ✓ Compiled in 599ms (2738 modules)
+ ✓ Compiled in 264ms (1407 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack from /Users/mira/Desktop/Hospitality Experience Orchestration/apps/web/.next/cache/webpack/client-development.pack.gz failed: TypeError: Cannot read properties of undefined (reading 'hasStartTime')
+ ✓ Compiled in 358ms (1355 modules)
+ ✓ Compiled in 160ms (1355 modules)
+ ✓ Compiled in 212ms (1355 modules)
+ ✓ Compiled in 434ms (1355 modules)
+ ⨯ Module not found: Error: Can't resolve 'next-flight-client-entry-loader' in '/Users/mira/Desktop/Hospitality Experience Orchestration/apps/web'
+ ⨯ Module not found: Error: Can't resolve 'next-client-pages-loader' in '/Users/mira/Desktop/Hospitality Experience Orchestration/apps/web'
+Error: Cannot find module 'next/dist/server/future/route-modules/pages/vendored/contexts/html-context'
+Require stack:
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:63:32)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js:45:35)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at loadDefaultErrorComponentsImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js:18:58)
+    at DevServer.getFallbackErrorComponents (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:594:81)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async DevServer.renderErrorToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2210:40)
+    at async DevServer.renderToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2026:30)
+    at async DevServer.pipeImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:920:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:816:17)
+    at async /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:353:24)
+    at async requestHandlerImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:377:13)
+    at async Server.requestListener (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: Cannot find module 'next/dist/server/future/route-modules/pages/vendored/contexts/html-context'
+Require stack:
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:63:32)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js:45:35)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at loadDefaultErrorComponentsImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js:18:58)
+    at DevServer.getFallbackErrorComponents (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:594:81)
+    at async DevServer.renderErrorToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2210:40)
+    at async pipe.req.req (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2063:30)
+    at async DevServer.pipeImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:920:25)
+    at async /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async requestHandlerImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:389:24)
+    at async Server.requestListener (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET / 500 in 204ms
+ GET / 500 in 3ms
+ ○ Compiling /_error ...
+Error: Cannot find module 'next/dist/server/future/route-modules/pages/vendored/contexts/html-context'
+Require stack:
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:63:32)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js:45:35)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at loadDefaultErrorComponentsImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js:18:58)
+    at DevServer.getFallbackErrorComponents (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:594:81)
+    at async DevServer.renderErrorToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2210:40)
+    at async DevServer.renderToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2026:30)
+    at async DevServer.pipeImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:920:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:816:17)
+    at async /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:353:24)
+    at async requestHandlerImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:377:13)
+    at async Server.requestListener (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+Error: Cannot find module 'next/dist/server/future/route-modules/pages/vendored/contexts/html-context'
+Require stack:
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js
+- /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:63:32)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js:45:35)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at loadDefaultErrorComponentsImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js:18:58)
+    at DevServer.getFallbackErrorComponents (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:594:81)
+    at async DevServer.renderErrorToResponseImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2210:40)
+    at async pipe.req.req (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:2063:30)
+    at async DevServer.pipeImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/base-server.js:920:25)
+    at async /Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async requestHandlerImpl (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js:389:24)
+    at async Server.requestListener (/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@16.2.1_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/next/dist/pages/_document.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-default-error-components.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/next.js',
+    '/Users/mira/Desktop/Hospitality Experience Orchestration/node_modules/.pnpm/next@14.2.5_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET / 500 in 22ms
+ GET / 500 in 2ms

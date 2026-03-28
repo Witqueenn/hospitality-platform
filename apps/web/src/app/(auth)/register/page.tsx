@@ -20,13 +20,13 @@ export default function RegisterPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#09090b] p-4">
       {/* Background glow */}
       <div className="pointer-events-none absolute left-1/4 top-1/4 h-[400px] w-[400px] rounded-full bg-[#7c3aed]/10 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-[#e94560]/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-[#f97316]/10 blur-[120px]" />
 
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-[#e94560]" />
+            <MapPin className="h-5 w-5 text-[#f97316]" />
             <span className="text-2xl font-bold tracking-tighter text-white">
               Nuvoya
             </span>
@@ -98,7 +98,7 @@ export default function RegisterPage() {
             </div>
 
             {error && (
-              <div className="rounded-lg border border-[#e94560]/30 bg-[#e94560]/10 px-4 py-3 text-sm text-[#ffb2b7]">
+              <div className="rounded-lg border border-[#f97316]/30 bg-[#f97316]/10 px-4 py-3 text-sm text-[#ffb2b7]">
                 {error}
               </div>
             )}
@@ -106,7 +106,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={register.isPending}
-              className="mt-2 w-full rounded-lg bg-[#e94560] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95 disabled:opacity-60"
+              className="mt-2 w-full rounded-lg bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95 disabled:opacity-60"
             >
               {register.isPending ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
             </button>
@@ -116,7 +116,7 @@ export default function RegisterPage() {
             Zaten hesabın var mı?{" "}
             <Link
               href="/login"
-              className="font-medium text-[#e94560] hover:underline"
+              className="font-medium text-[#f97316] hover:underline"
             >
               Giriş yap
             </Link>

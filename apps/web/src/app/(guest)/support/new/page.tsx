@@ -166,7 +166,7 @@ export default function NewSupportCasePage() {
         <button
           type="submit"
           disabled={createCase.isPending}
-          className="w-full rounded-lg bg-[#e94560] py-3 font-semibold text-white transition-colors hover:bg-[#c73652] disabled:opacity-60"
+          className="w-full rounded-lg bg-[#f97316] py-3 font-semibold text-white transition-colors hover:bg-[#c73652] disabled:opacity-60"
         >
           {createCase.isPending ? "Submitting..." : "Submit Report"}
         </button>

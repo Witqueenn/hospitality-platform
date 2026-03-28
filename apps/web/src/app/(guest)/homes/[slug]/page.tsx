@@ -67,7 +67,7 @@ export default function HomesDetailPage({
         </h2>
         <Link
           href="/homes"
-          className="mt-4 flex items-center gap-2 text-sm font-medium text-[#e94560] hover:underline"
+          className="mt-4 flex items-center gap-2 text-sm font-medium text-[#f97316] hover:underline"
         >
           <ArrowLeft className="h-4 w-4" /> Tüm konaklama yerlerine dön
         </Link>
@@ -159,7 +159,7 @@ export default function HomesDetailPage({
                 transition={{ duration: 0.4, delay: 0.1 }}
                 className="flex items-center gap-4 rounded-2xl border border-white/5 bg-[#0e0e10] p-4"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#e94560]/10 text-lg font-bold text-[#e94560]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f97316]/10 text-lg font-bold text-[#f97316]">
                   {u.host.displayName?.[0] ?? "H"}
                 </div>
                 <div>
@@ -269,7 +269,7 @@ export default function HomesDetailPage({
                     <Clock className="h-3 w-3" /> Min. {plan.minStayNights} gece
                   </p>
                 )}
-                <button className="mt-5 w-full rounded-xl bg-[#e94560] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95">
+                <button className="mt-5 w-full rounded-xl bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95">
                   Rezervasyon İste
                 </button>
               </motion.div>
@@ -285,7 +285,7 @@ export default function HomesDetailPage({
                 <p className="mb-4 text-sm text-slate-400">
                   Fiyat için ev sahibiyle iletişime geç
                 </p>
-                <button className="w-full rounded-xl bg-[#e94560] py-3 font-semibold text-white transition hover:opacity-90">
+                <button className="w-full rounded-xl bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90">
                   Ev Sahibine Ulaş
                 </button>
               </motion.div>

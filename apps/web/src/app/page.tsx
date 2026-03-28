@@ -3,6 +3,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const ThreeDEnvironment = dynamic(
+  () =>
+    import("@/components/ui/ThreeDEnvironment").then(
+      (mod) => mod.ThreeDEnvironment,
+    ),
+  { ssr: false },
+);
 import {
   Building2,
   CalendarDays,
@@ -10,7 +19,6 @@ import {
   ChevronRight,
   Bot,
   ArrowRight,
-  Shield,
   Zap,
   Heart,
   MapPin,
@@ -71,8 +79,8 @@ const moods = [
     label: "Şehrin Kalbinde",
     sublabel: "Urban Pulse",
     icon: Coffee,
-    gradient: "from-[#e94560]/30 to-[#7c3aed]/20",
-    border: "border-[#e94560]/20",
+    gradient: "from-[#f97316]/30 to-[#7c3aed]/20",
+    border: "border-[#f97316]/20",
     iconColor: "text-[#ffb2b7]",
     desc: "Işıkların hiç söndüğü yerde, tarihin dokusuna dokunarak uyan.",
     image: "/images/urban_pulse.png",
@@ -115,8 +123,8 @@ const experiences = [
     title: "Gastronomi",
     desc: "Otelin şefiyle buluş, yerel lezzetleri keşfet, damağının macerası başlasın.",
     color: "text-[#ffb2b7]",
-    bg: "bg-[#e94560]/10",
-    border: "border-[#e94560]/20",
+    bg: "bg-[#f97316]/10",
+    border: "border-[#f97316]/20",
   },
   {
     icon: Music,
@@ -206,7 +214,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/hotel/login"
-            className="rounded-full bg-[#e94560] px-6 py-2 text-xs font-bold uppercase tracking-widest text-white transition-all hover:opacity-90 active:scale-95"
+            className="rounded-full bg-[#f97316] px-6 py-2 text-xs font-bold uppercase tracking-widest text-white transition-all hover:opacity-90 active:scale-95"
           >
             Otel Portali
           </Link>
@@ -215,19 +223,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/hero_bg.png"
-            alt="Hero Background"
-            fill
-            className="object-cover opacity-40 mix-blend-overlay"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/80 via-[#09090b]/40 to-[#09090b]" />
-        </div>
-        <div className="pointer-events-none absolute left-1/4 top-1/4 h-[600px] w-[600px] rounded-full bg-[#e94560]/15 blur-[140px]" />
-        <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[600px] w-[600px] rounded-full bg-[#7c3aed]/15 blur-[140px]" />
-        <div className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
+        <ThreeDEnvironment />
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
           <motion.div
@@ -236,7 +232,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-300 backdrop-blur-md">
-              <MapPin className="h-3.5 w-3.5 text-[#e94560]" />
+              <MapPin className="h-3.5 w-3.5 text-[#f97316]" />
               Her konaklama bir maceradır
             </div>
             <h1 className="mb-6 text-5xl font-bold leading-[0.92] tracking-tighter text-white md:text-8xl">
@@ -260,8 +256,8 @@ export default function HomePage() {
           >
             <Link href="/search">
               <ShimmerButton
-                shimmerColor="#e94560"
-                background="rgba(233,69,96,0.9)"
+                shimmerColor="#f97316"
+                background="rgba(249,115,22,0.9)"
                 borderRadius="8px"
                 className="gap-2 px-10 py-5 text-lg font-bold"
               >
@@ -439,8 +435,8 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="glass-card rounded-3xl border border-white/10 p-10 transition-all duration-500 hover:bg-white/5"
           >
-            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#e94560]/30 bg-[#e94560]/20">
-              <Heart className="h-7 w-7 text-[#e94560]" />
+            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#f97316]/30 bg-[#f97316]/20">
+              <Heart className="h-7 w-7 text-[#f97316]" />
             </div>
             <h3 className="mb-3 text-2xl font-bold text-white">
               Misafirler için
@@ -497,14 +493,14 @@ export default function HomePage() {
                   key={item}
                   className="flex items-center gap-3 text-sm text-slate-300"
                 >
-                  <Zap className="h-4 w-4 shrink-0 text-[#e94560]" />
+                  <Zap className="h-4 w-4 shrink-0 text-[#f97316]" />
                   {item}
                 </li>
               ))}
             </ul>
             <Link
               href="/hotel/login"
-              className="mt-8 inline-flex items-center gap-2 font-bold text-[#e94560] transition-all hover:gap-3"
+              className="mt-8 inline-flex items-center gap-2 font-bold text-[#f97316] transition-all hover:gap-3"
             >
               Otel partneri ol <ArrowRight className="h-4 w-4" />
             </Link>
@@ -522,7 +518,7 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 bg-[#e94560]/10 blur-[100px]" />
+            <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 bg-[#f97316]/10 blur-[100px]" />
             <p className="heo-label mb-6">Sahne arkası</p>
             <h2 className="mb-8 text-4xl font-bold leading-tight text-white md:text-6xl">
               12 AI ajan, <span className="text-gradient italic">her an</span>{" "}
@@ -533,7 +529,7 @@ export default function HomePage() {
               bilen, birbirleriyle koordineli 12 uzmandan oluşan bir ekip.
             </p>
             <div className="flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-6 py-4">
-              <Bot className="h-5 w-5 text-[#e94560]" />
+              <Bot className="h-5 w-5 text-[#f97316]" />
               <span className="text-sm font-bold text-white">
                 Nuvoya AI — 12 ajan, 7/24 aktif
               </span>
@@ -615,7 +611,7 @@ export default function HomePage() {
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#e94560] to-[#7c3aed] text-xs font-bold text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#f97316] to-[#7c3aed] text-xs font-bold text-white">
                   {t.name[0]}
                 </div>
                 <div>
@@ -640,12 +636,12 @@ export default function HomePage() {
           className="glass-card relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 p-16 text-center"
         >
           <BorderBeam
-            colorFrom="#e94560"
+            colorFrom="#f97316"
             colorTo="#7c3aed"
             duration={8}
             size={120}
           />
-          <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#e94560]/20 blur-[100px]" />
+          <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#f97316]/20 blur-[100px]" />
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-[#7c3aed]/20 blur-[100px]" />
           <p className="heo-label relative z-10 mb-6">Sıra sende</p>
           <h2 className="relative z-10 mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
@@ -660,7 +656,7 @@ export default function HomePage() {
           <div className="relative z-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/search"
-              className="w-full rounded-lg bg-[#e94560] px-10 py-5 text-lg font-bold text-white transition-all hover:shadow-[0_0_30px_rgba(233,69,96,0.3)] active:scale-95 sm:w-auto"
+              className="w-full rounded-lg bg-[#f97316] px-10 py-5 text-lg font-bold text-white transition-all hover:shadow-[0_0_30px_rgba(249,115,22,0.3)] active:scale-95 sm:w-auto"
             >
               Keşfetmeye Başla
             </Link>

@@ -20,7 +20,7 @@ interface SidebarProps {
 export function Sidebar({
   items,
   title,
-  accentColor = "#e94560",
+  accentColor = "#f97316",
 }: SidebarProps) {
   const pathname = usePathname();
 

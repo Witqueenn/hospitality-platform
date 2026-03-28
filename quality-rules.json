@@ -1,31 +1,32 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-22T10:37:27.274Z",
+    "generatedAt": "2026-03-28T06:11:38.747Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-22T10:37:27.274Z"]
+    "runHistory": ["2026-03-28T06:11:38.744Z"]
   },
   "metrics": {
-    "totalFiles": 409,
-    "totalLines": 97529,
+    "totalFiles": 419,
+    "totalLines": 124153,
     "largestFile": {
       "path": "pnpm-lock.yaml",
-      "lines": 12795
+      "lines": 12874
     },
     "byExtension": {
-      ".md": 76,
-      ".json": 48,
+      "(none)": 24,
+      ".md": 77,
+      ".json": 49,
       ".mjs": 7,
       ".example": 1,
-      ".local": 2,
       ".yml": 3,
-      "(none)": 23,
       ".sh": 1,
-      ".ts": 116,
+      ".local": 1,
+      ".ts": 117,
       ".js": 3,
-      ".tsx": 119,
+      ".png": 5,
+      ".tsx": 121,
       ".css": 1,
       ".tsbuildinfo": 1,
       ".sql": 4,
@@ -34,7 +35,7 @@
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 235,
+      "tsFiles": 238,
       "percentage": 57
     }
   },
@@ -127,9 +128,9 @@
   },
   "violations": {
     "summary": {
-      "total": 53,
+      "total": 52,
       "errors": 0,
-      "warnings": 53,
+      "warnings": 52,
       "info": 0
     },
     "items": [
@@ -224,7 +225,7 @@
         "severity": "warn"
       },
       {
-        "file": "apps/web/src/app/(guest)/search/page.tsx",
+        "file": "apps/web/src/app/(guest)/stay/explore/page.tsx",
         "rule": "no-explicit-any",
         "message": "Uses 'any' type — prefer explicit types or 'unknown'",
         "severity": "warn"
@@ -440,12 +441,6 @@
         "severity": "warn"
       },
       {
-        "file": "apps/web/src/app/page.tsx",
-        "rule": "no-explicit-any",
-        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
-        "severity": "warn"
-      },
-      {
         "file": "apps/web/src/instrumentation.ts",
         "rule": "no-direct-env",
         "message": "Direct process.env access — centralize env vars in a typed env module",
@@ -462,7 +457,7 @@
       "count": 0,
       "items": []
     },
-    "anyTypeUsage": 52,
+    "anyTypeUsage": 51,
     "nonNullAssertions": 4,
     "consoleLogUsage": 0
   },
@@ -471,7 +466,7 @@
       "id": "REC-001",
       "priority": "high",
       "title": "Reduce 'any' type usage",
-      "description": "Found 52 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
+      "description": "Found 51 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
       "action": "Add 'no-explicit-any: error' to tooling/eslint-config/base.js"
     },
     {

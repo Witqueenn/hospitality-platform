@@ -70,7 +70,7 @@ export default function GuestLayout({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-[#e94560]" />
+            <MapPin className="h-5 w-5 text-[#f97316]" />
             <span className="text-xl font-bold tracking-tighter text-white">
               Nuvoya
             </span>
@@ -120,7 +120,7 @@ export default function GuestLayout({
             ) : (
               <Link
                 href="/login"
-                className="rounded-full bg-[#e94560] px-5 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90 active:scale-95"
+                className="rounded-full bg-[#f97316] px-5 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90 active:scale-95"
               >
                 Giriş Yap
               </Link>
@@ -137,7 +137,7 @@ export default function GuestLayout({
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
           <div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-[#e94560]" />
+              <MapPin className="h-4 w-4 text-[#f97316]" />
               <span className="text-lg font-bold tracking-tighter text-white">
                 Nuvoya
               </span>

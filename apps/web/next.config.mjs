@@ -13,7 +13,6 @@ const nextConfig = {
     serverActions: {
       allowedOrigins: ["localhost:3000", "localhost:3001", "localhost:3002"],
     },
-    instrumentationHook: true,
   },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "**" }],

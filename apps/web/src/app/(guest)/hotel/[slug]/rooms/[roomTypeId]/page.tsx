@@ -38,33 +38,38 @@ import {
 } from "lucide-react";
 
 // ── Feature icon + label map ───────────────────────────────────────────────────
-const FEATURE_MAP: Record<string, { label: string; icon: React.ElementType }> =
-  {
-    "bosphorus-view": { label: "Bosphorus View", icon: Eye },
-    "acropolis-view": { label: "Acropolis View", icon: Eye },
-    "panoramic-view": { label: "Panoramic View", icon: Eye },
-    "city-view": { label: "City View", icon: Eye },
-    "garden-view": { label: "Garden View", icon: Leaf },
-    "garden-terrace": { label: "Garden Terrace", icon: Leaf },
-    "private-terrace": { label: "Private Terrace", icon: Leaf },
-    minibar: { label: "Minibar", icon: Coffee },
-    "rain-shower": { label: "Rain Shower", icon: Bath },
-    jacuzzi: { label: "Jacuzzi", icon: Bath },
-    bathrobe: { label: "Bathrobe & Slippers", icon: Star },
-    butler: { label: "Butler Service", icon: Star },
-    "air-conditioning": { label: "Air Conditioning", icon: Wind },
-    safe: { label: "In-room Safe", icon: ShieldCheck },
-    "work-desk": { label: "Work Desk", icon: Briefcase },
-    kitchenette: { label: "Kitchenette", icon: Utensils },
-    "connecting-rooms": { label: "Connecting Rooms", icon: Users },
-    "bunk-beds": { label: "Bunk Beds (children)", icon: Bed },
-    "twin-beds": { label: "Twin Beds", icon: Bed },
-    tv: { label: "Smart TV", icon: Tv },
-    wifi: { label: "High-Speed WiFi", icon: Wifi },
-    gym: { label: "Gym Access", icon: Dumbbell },
-  };
+const FEATURE_MAP: Record<
+  string,
+  { label: string; icon: React.ComponentType<any> }
+> = {
+  "bosphorus-view": { label: "Bosphorus View", icon: Eye },
+  "acropolis-view": { label: "Acropolis View", icon: Eye },
+  "panoramic-view": { label: "Panoramic View", icon: Eye },
+  "city-view": { label: "City View", icon: Eye },
+  "garden-view": { label: "Garden View", icon: Leaf },
+  "garden-terrace": { label: "Garden Terrace", icon: Leaf },
+  "private-terrace": { label: "Private Terrace", icon: Leaf },
+  minibar: { label: "Minibar", icon: Coffee },
+  "rain-shower": { label: "Rain Shower", icon: Bath },
+  jacuzzi: { label: "Jacuzzi", icon: Bath },
+  bathrobe: { label: "Bathrobe & Slippers", icon: Star },
+  butler: { label: "Butler Service", icon: Star },
+  "air-conditioning": { label: "Air Conditioning", icon: Wind },
+  safe: { label: "In-room Safe", icon: ShieldCheck },
+  "work-desk": { label: "Work Desk", icon: Briefcase },
+  kitchenette: { label: "Kitchenette", icon: Utensils },
+  "connecting-rooms": { label: "Connecting Rooms", icon: Users },
+  "bunk-beds": { label: "Bunk Beds (children)", icon: Bed },
+  "twin-beds": { label: "Twin Beds", icon: Bed },
+  tv: { label: "Smart TV", icon: Tv },
+  wifi: { label: "High-Speed WiFi", icon: Wifi },
+  gym: { label: "Gym Access", icon: Dumbbell },
+};
 
-function featureInfo(f: string): { label: string; icon: React.ElementType } {
+function featureInfo(f: string): {
+  label: string;
+  icon: React.ComponentType<any>;
+} {
   return (
     FEATURE_MAP[f] ?? {
       label: f.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),

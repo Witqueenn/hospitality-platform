@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { router, protectedProcedure, publicProcedure } from "../trpc.js";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 
 const EXPERIENCE_CATEGORIES = [
   "FREE_WALK",

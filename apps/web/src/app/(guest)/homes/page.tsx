@@ -63,7 +63,7 @@ export default function HomesPage() {
       {/* Hero */}
       <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-20">
         <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
-        <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#e94560]/10 blur-[100px]" />
+        <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -71,7 +71,7 @@ export default function HomesPage() {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-slate-400">
-              <Home className="h-3.5 w-3.5 text-[#e94560]" />
+              <Home className="h-3.5 w-3.5 text-[#f97316]" />
               Güvenilir Konaklamalar
             </div>
             <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
@@ -100,7 +100,7 @@ export default function HomesPage() {
               onClick={() => setStayType(f.value)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
                 stayType === f.value
-                  ? "bg-[#e94560] text-white"
+                  ? "bg-[#f97316] text-white"
                   : "border border-white/10 text-slate-400 hover:border-white/20 hover:text-white"
               }`}
             >
@@ -122,7 +122,7 @@ export default function HomesPage() {
         ) : list.length === 0 ? (
           <div className="py-20 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-              <Sparkles className="h-8 w-8 text-[#e94560]" />
+              <Sparkles className="h-8 w-8 text-[#f97316]" />
             </div>
             <h3 className="mb-2 text-lg font-bold text-white">
               Konaklama bulunamadı

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createCallerFactory, type Session } from "../trpc.js";
-import { bookingRouter } from "../routers/booking.router.js";
+import { createCallerFactory, type Session } from "../trpc";
+import { bookingRouter } from "../routers/booking.router";
 
 // ── Mock @repo/db ─────────────────────────────────────────────────────────────
 vi.mock("@repo/db", () => ({

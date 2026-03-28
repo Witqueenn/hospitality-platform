@@ -35,14 +35,14 @@ function LoginContent() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#09090b] p-4">
       {/* Background glow */}
-      <div className="pointer-events-none absolute left-1/4 top-1/4 h-[400px] w-[400px] rounded-full bg-[#e94560]/10 blur-[120px]" />
+      <div className="pointer-events-none absolute left-1/4 top-1/4 h-[400px] w-[400px] rounded-full bg-[#f97316]/10 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-[#7c3aed]/10 blur-[120px]" />
 
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-[#e94560]" />
+            <MapPin className="h-5 w-5 text-[#f97316]" />
             <span className="text-2xl font-bold tracking-tighter text-white">
               Nuvoya
             </span>
@@ -79,7 +79,7 @@ function LoginContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-slate-500 outline-none transition focus:border-[#e94560]/50 focus:ring-1 focus:ring-[#e94560]/30"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-slate-500 outline-none transition focus:border-[#f97316]/50 focus:ring-1 focus:ring-[#f97316]/30"
                 placeholder="sen@ornek.com"
               />
             </div>
@@ -93,13 +93,13 @@ function LoginContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-slate-500 outline-none transition focus:border-[#e94560]/50 focus:ring-1 focus:ring-[#e94560]/30"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder-slate-500 outline-none transition focus:border-[#f97316]/50 focus:ring-1 focus:ring-[#f97316]/30"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="rounded-lg border border-[#e94560]/30 bg-[#e94560]/10 px-4 py-3 text-sm text-[#ffb2b7]">
+              <div className="rounded-lg border border-[#f97316]/30 bg-[#f97316]/10 px-4 py-3 text-sm text-[#ffb2b7]">
                 {error}
               </div>
             )}
@@ -107,7 +107,7 @@ function LoginContent() {
             <button
               type="submit"
               disabled={login.isPending}
-              className="mt-2 w-full rounded-lg bg-[#e94560] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95 disabled:opacity-60"
+              className="mt-2 w-full rounded-lg bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95 disabled:opacity-60"
             >
               {login.isPending ? "Giriş yapılıyor..." : "Giriş Yap"}
             </button>
@@ -117,7 +117,7 @@ function LoginContent() {
             Hesabın yok mu?{" "}
             <Link
               href="/register"
-              className="font-medium text-[#e94560] hover:underline"
+              className="font-medium text-[#f97316] hover:underline"
             >
               Kayıt ol
             </Link>

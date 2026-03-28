@@ -91,7 +91,7 @@ function MetricCard({
   label: string;
   value: string | number;
   sub?: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
   color?: string;
   loading?: boolean;
 }) {

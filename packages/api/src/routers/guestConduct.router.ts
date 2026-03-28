@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpc.js";
+import { router, protectedProcedure } from "../trpc";
 
 // IMPORTANT: Conduct notes are STRICTLY INTERNAL.
 // They must NEVER be exposed to guests or the public.

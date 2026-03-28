@@ -30,8 +30,8 @@ const GUIDES = [
     ],
     tags: ["Kültür", "Gastronomi", "Gece hayatı", "Tarih"],
     emoji: "🕌",
-    color: "from-[#e94560]/20 to-[#7c3aed]/10",
-    border: "border-[#e94560]/20",
+    color: "from-[#f97316]/20 to-[#7c3aed]/10",
+    border: "border-[#f97316]/20",
     accentColor: "text-[#ffb2b7]",
     readTime: "8 dk",
   },
@@ -50,7 +50,7 @@ const GUIDES = [
     ],
     tags: ["Macera", "Doğa", "Tarihi", "Romantik"],
     emoji: "🎈",
-    color: "from-[#fb923c]/20 to-[#e94560]/10",
+    color: "from-[#fb923c]/20 to-[#f97316]/10",
     border: "border-[#fb923c]/20",
     accentColor: "text-[#fb923c]",
     readTime: "6 dk",
@@ -132,7 +132,7 @@ const CATEGORIES = [
     icon: Utensils,
     label: "Gastronomi",
     color: "text-[#ffb2b7]",
-    bg: "bg-[#e94560]/10",
+    bg: "bg-[#f97316]/10",
   },
   {
     icon: Music,
@@ -171,7 +171,7 @@ export default function GuidesPage() {
     <div className="min-h-screen bg-[#09090b]">
       {/* Hero */}
       <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-20">
-        <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#e94560]/10 blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
         <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div
@@ -180,7 +180,7 @@ export default function GuidesPage() {
             transition={{ duration: 0.5 }}
           >
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-slate-400">
-              <BookOpen className="h-3.5 w-3.5 text-[#e94560]" />
+              <BookOpen className="h-3.5 w-3.5 text-[#f97316]" />
               Destinasyon Rehberleri
             </div>
             <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
@@ -296,7 +296,7 @@ export default function GuidesPage() {
           transition={{ duration: 0.5 }}
           className="mt-14 rounded-3xl border border-white/10 bg-[#0e0e10] p-10 text-center"
         >
-          <Compass className="mx-auto mb-4 h-8 w-8 text-[#e94560]" />
+          <Compass className="mx-auto mb-4 h-8 w-8 text-[#f97316]" />
           <h3 className="mb-2 text-xl font-bold text-white">
             Rehberler güncelleniyor
           </h3>
@@ -306,7 +306,7 @@ export default function GuidesPage() {
           </p>
           <Link
             href="/search"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#e94560] px-6 py-3 font-semibold text-white transition hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#f97316] px-6 py-3 font-semibold text-white transition hover:opacity-90"
           >
             Otel ara <ChevronRight className="h-4 w-4" />
           </Link>

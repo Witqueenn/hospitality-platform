@@ -1,81 +1,81 @@
-import { router } from "./trpc.js";
+import { router } from "./trpc";
 
 // ── Core ─────────────────────────────────────────────────────────
-import { authRouter } from "./routers/auth.router.js";
-import { tenantRouter } from "./routers/tenant.router.js";
-import { hotelRouter } from "./routers/hotel.router.js";
+import { authRouter } from "./routers/auth.router";
+import { tenantRouter } from "./routers/tenant.router";
+import { hotelRouter } from "./routers/hotel.router";
 import {
   roomTypeRouter,
   roomInventoryRouter,
   availabilityRouter,
-} from "./routers/roomType.router.js";
-import { bookingRouter } from "./routers/booking.router.js";
-import { venueRouter } from "./routers/venue.router.js";
-import { eventRequestRouter } from "./routers/eventRequest.router.js";
-import { supportCaseRouter } from "./routers/supportCase.router.js";
-import { reviewRouter } from "./routers/review.router.js";
-import { analyticsRouter } from "./routers/analytics.router.js";
-import { notificationRouter } from "./routers/notification.router.js";
-import { diningRouter } from "./routers/dining.router.js";
-import { nightlifeRouter } from "./routers/nightlife.router.js";
+} from "./routers/roomType.router";
+import { bookingRouter } from "./routers/booking.router";
+import { venueRouter } from "./routers/venue.router";
+import { eventRequestRouter } from "./routers/eventRequest.router";
+import { supportCaseRouter } from "./routers/supportCase.router";
+import { reviewRouter } from "./routers/review.router";
+import { analyticsRouter } from "./routers/analytics.router";
+import { notificationRouter } from "./routers/notification.router";
+import { diningRouter } from "./routers/dining.router";
+import { nightlifeRouter } from "./routers/nightlife.router";
 
 // ── VIP & Personalization ────────────────────────────────────────
-import { vipRouter } from "./routers/vip.router.js";
-import { preferenceProfileRouter } from "./routers/preferenceProfile.router.js";
+import { vipRouter } from "./routers/vip.router";
+import { preferenceProfileRouter } from "./routers/preferenceProfile.router";
 
 // ── Amenity Marketplace ──────────────────────────────────────────
 import {
   amenityRouter,
   amenityReservationRouter,
-} from "./routers/amenity.router.js";
+} from "./routers/amenity.router";
 
 // ── Tonight Deals / Flash Inventory ─────────────────────────────
 import {
   flashInventoryRouter,
   nightUseRouter,
-} from "./routers/flashInventory.router.js";
+} from "./routers/flashInventory.router";
 
 // ── Trusted Stays ────────────────────────────────────────────────
-import { trustedStayRouter } from "./routers/trustedStay.router.js";
+import { trustedStayRouter } from "./routers/trustedStay.router";
 
 // ── Mobility ─────────────────────────────────────────────────────
 import {
   mobilityRouter,
   mobilityReservationRouter,
-} from "./routers/mobility.router.js";
+} from "./routers/mobility.router";
 
 // ── City Guide & Local Experiences ──────────────────────────────
 import {
   cityGuideRouter,
   localExperienceRouter,
-} from "./routers/cityGuide.router.js";
+} from "./routers/cityGuide.router";
 
 // ── Bundle & Cross-Sell ──────────────────────────────────────────
-import { bundleRouter } from "./routers/bundle.router.js";
+import { bundleRouter } from "./routers/bundle.router";
 
 // ── Platform Finance ─────────────────────────────────────────────
-import { partnerRouter, settlementRouter } from "./routers/partner.router.js";
+import { partnerRouter, settlementRouter } from "./routers/partner.router";
 
 // ── In-Stay Experience ───────────────────────────────────────────
-import { guestStayRouter } from "./routers/guestStay.router.js";
-import { inStayMessageRouter } from "./routers/inStayMessage.router.js";
-import { hotelWifiRouter } from "./routers/hotelWifi.router.js";
-import { hotelMenuRouter } from "./routers/hotelMenu.router.js";
-import { guestServiceRequestRouter } from "./routers/guestServiceRequest.router.js";
-import { incidentRouter } from "./routers/incident.router.js";
-import { recoveryRouter } from "./routers/recovery.router.js";
-import { lostFoundRouter } from "./routers/lostFound.router.js";
+import { guestStayRouter } from "./routers/guestStay.router";
+import { inStayMessageRouter } from "./routers/inStayMessage.router";
+import { hotelWifiRouter } from "./routers/hotelWifi.router";
+import { hotelMenuRouter } from "./routers/hotelMenu.router";
+import { guestServiceRequestRouter } from "./routers/guestServiceRequest.router";
+import { incidentRouter } from "./routers/incident.router";
+import { recoveryRouter } from "./routers/recovery.router";
+import { lostFoundRouter } from "./routers/lostFound.router";
 
 // ── Staff & Reputation ───────────────────────────────────────────
-import { staffProfileRouter } from "./routers/staffProfile.router.js";
-import { staffReviewRouter } from "./routers/staffReview.router.js";
-import { guestConductRouter } from "./routers/guestConduct.router.js";
-import { staffTipRouter } from "./routers/staffTip.router.js";
-import { staffRecognitionRouter } from "./routers/staffRecognition.router.js";
+import { staffProfileRouter } from "./routers/staffProfile.router";
+import { staffReviewRouter } from "./routers/staffReview.router";
+import { guestConductRouter } from "./routers/guestConduct.router";
+import { staffTipRouter } from "./routers/staffTip.router";
+import { staffRecognitionRouter } from "./routers/staffRecognition.router";
 
 // ── Jobs & Talent ────────────────────────────────────────────────
-import { jobPostingRouter } from "./routers/jobPosting.router.js";
-import { jobApplicationRouter } from "./routers/jobApplication.router.js";
+import { jobPostingRouter } from "./routers/jobPosting.router";
+import { jobApplicationRouter } from "./routers/jobApplication.router";
 
 export const appRouter = router({
   // Core

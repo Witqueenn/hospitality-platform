@@ -1,4 +1,4 @@
-export { appRouter } from "./root.js";
-export type { AppRouter } from "./root.js";
-export { createTRPCContext } from "./trpc.js";
-export type { TRPCContext, Session } from "./trpc.js";
+export { appRouter } from "./root";
+export type { AppRouter } from "./root";
+export { createTRPCContext } from "./trpc";
+export type { TRPCContext, Session } from "./trpc";

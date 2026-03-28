@@ -32,7 +32,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_COLORS: Record<string, string> = {
   FREE_WALK: "text-[#67dc9f] border-[#67dc9f]/20 bg-[#67dc9f]/10",
   CITY_INTRO: "text-[#60a5fa] border-[#60a5fa]/20 bg-[#60a5fa]/10",
-  FOOD_TOUR: "text-[#ffb2b7] border-[#e94560]/20 bg-[#e94560]/10",
+  FOOD_TOUR: "text-[#ffb2b7] border-[#f97316]/20 bg-[#f97316]/10",
   NIGHT_TOUR: "text-[#d2bbff] border-[#7c3aed]/20 bg-[#7c3aed]/10",
   BUSINESS_HELPER: "text-[#60a5fa] border-[#60a5fa]/20 bg-[#60a5fa]/10",
   CULTURAL: "text-[#fb923c] border-[#fb923c]/20 bg-[#fb923c]/10",
@@ -80,7 +80,7 @@ export default function CityGuidePage({
         </p>
         <Link
           href="/guides"
-          className="flex items-center gap-2 text-sm font-medium text-[#e94560] hover:underline"
+          className="flex items-center gap-2 text-sm font-medium text-[#f97316] hover:underline"
         >
           <ArrowLeft className="h-4 w-4" /> Tüm rehberlere dön
         </Link>
@@ -94,7 +94,7 @@ export default function CityGuidePage({
     <div className="min-h-screen bg-[#09090b]">
       {/* Hero */}
       <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-20">
-        <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#e94560]/10 blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
         <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
 
         <div className="relative mx-auto max-w-3xl">
@@ -138,7 +138,7 @@ export default function CityGuidePage({
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div className="mb-5 flex items-center gap-2">
-              <Camera className="h-4 w-4 text-[#e94560]" />
+              <Camera className="h-4 w-4 text-[#f97316]" />
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                 Öne Çıkanlar
               </p>
@@ -221,7 +221,7 @@ export default function CityGuidePage({
             transition={{ duration: 0.5 }}
           >
             <div className="mb-5 flex items-center gap-2">
-              <Compass className="h-4 w-4 text-[#e94560]" />
+              <Compass className="h-4 w-4 text-[#f97316]" />
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
                 Deneyimler
               </p>
@@ -252,7 +252,7 @@ export default function CityGuidePage({
                             {CATEGORY_LABELS[exp.category] ?? exp.category}
                           </span>
                         </div>
-                        <span className="shrink-0 text-lg font-bold text-[#e94560]">
+                        <span className="shrink-0 text-lg font-bold text-[#f97316]">
                           {exp.isFree || exp.priceCents === 0
                             ? "Ücretsiz"
                             : exp.priceCents != null
@@ -296,9 +296,9 @@ export default function CityGuidePage({
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="rounded-3xl border border-[#e94560]/20 bg-gradient-to-br from-[#e94560]/10 to-[#7c3aed]/5 p-8 text-center"
+          className="rounded-3xl border border-[#f97316]/20 bg-gradient-to-br from-[#f97316]/10 to-[#7c3aed]/5 p-8 text-center"
         >
-          <Star className="mx-auto mb-3 h-7 w-7 text-[#e94560]" />
+          <Star className="mx-auto mb-3 h-7 w-7 text-[#f97316]" />
           <h3 className="mb-2 text-lg font-bold text-white">
             {g.cityName}&apos;da nerede kalacaksın?
           </h3>
@@ -307,7 +307,7 @@ export default function CityGuidePage({
           </p>
           <Link
             href={`/search?city=${encodeURIComponent(g.cityName)}`}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#e94560] px-6 py-3 font-semibold text-white transition hover:opacity-90"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#f97316] px-6 py-3 font-semibold text-white transition hover:opacity-90"
           >
             {g.cityName} otellerini gör <ChevronRight className="h-4 w-4" />
           </Link>

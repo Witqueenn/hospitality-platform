@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import bcrypt from "bcryptjs";
-import { createCallerFactory } from "../trpc.js";
-import { authRouter } from "../routers/auth.router.js";
+import { createCallerFactory } from "../trpc";
+import { authRouter } from "../routers/auth.router";
 
 // ── Mock @repo/db ─────────────────────────────────────────────────────────────
 vi.mock("@repo/db", () => ({

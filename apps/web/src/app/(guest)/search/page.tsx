@@ -94,7 +94,7 @@ export default function SearchPage() {
     <div className="min-h-screen bg-[#09090b]">
       {/* Hero Search */}
       <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-16">
-        <div className="pointer-events-none absolute left-1/3 top-0 h-[300px] w-[300px] rounded-full bg-[#e94560]/10 blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/3 top-0 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
         <div className="pointer-events-none absolute bottom-0 right-1/3 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
 
         <div className="relative mx-auto max-w-4xl">
@@ -104,7 +104,7 @@ export default function SearchPage() {
             transition={{ duration: 0.5 }}
             className="mb-8 text-center"
           >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#e94560]">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#f97316]">
               Nuvoya ile keşfet
             </p>
             <h1 className="text-3xl font-bold text-white md:text-5xl">
@@ -129,7 +129,7 @@ export default function SearchPage() {
                     setFilters((f) => ({ ...f, city: e.target.value }))
                   }
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  className="focus:bg-white/8 w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-[#e94560]/40"
+                  className="focus:bg-white/8 w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-[#f97316]/40"
                 />
               </div>
               <div className="relative">
@@ -140,7 +140,7 @@ export default function SearchPage() {
                   onChange={(e) =>
                     setFilters((f) => ({ ...f, checkIn: e.target.value }))
                   }
-                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#e94560]/40"
+                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#f97316]/40"
                 />
               </div>
               <div className="relative">
@@ -151,12 +151,12 @@ export default function SearchPage() {
                   onChange={(e) =>
                     setFilters((f) => ({ ...f, checkOut: e.target.value }))
                   }
-                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#e94560]/40"
+                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#f97316]/40"
                 />
               </div>
               <button
                 onClick={handleSearch}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#e94560] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95"
               >
                 <Search className="h-4 w-4" />
                 Ara
@@ -207,7 +207,7 @@ export default function SearchPage() {
                     }
                     className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                       filters.starRating === f.value
-                        ? "bg-[#e94560] text-white"
+                        ? "bg-[#f97316] text-white"
                         : "border border-white/10 text-slate-400 hover:text-white"
                     }`}
                   >
@@ -337,12 +337,12 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
           {minPrice && (
             <div className="text-right">
               <p className="text-xs text-slate-600">itibaren</p>
-              <p className="text-lg font-bold text-[#e94560]">${minPrice}</p>
+              <p className="text-lg font-bold text-[#f97316]">${minPrice}</p>
             </div>
           )}
           <Link
             href={`/hotel/${hotel.slug}`}
-            className="flex items-center gap-1.5 rounded-xl bg-[#e94560] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
+            className="flex items-center gap-1.5 rounded-xl bg-[#f97316] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
           >
             İncele <ChevronRight className="h-4 w-4" />
           </Link>
@@ -356,7 +356,7 @@ function EmptyState() {
   return (
     <div className="py-20 text-center">
       <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-        <Sparkles className="h-8 w-8 text-[#e94560]" />
+        <Sparkles className="h-8 w-8 text-[#f97316]" />
       </div>
       <h3 className="mb-2 text-lg font-bold text-white">Nereye gidiyorsun?</h3>
       <p className="text-sm text-slate-500">
@@ -365,7 +365,7 @@ function EmptyState() {
       <div className="mt-8">
         <Link
           href="/guides"
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#e94560] hover:underline"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#f97316] hover:underline"
         >
           Destinasyon rehberlerine göz at <ChevronRight className="h-4 w-4" />
         </Link>
