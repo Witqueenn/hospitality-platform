@@ -80,8 +80,8 @@ export default function StayRequestsPage() {
     { enabled: isAuthenticated() && !!stayId },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const createMutation = (trpc.guestServiceRequest.create.useMutation as any)({
+  // Type workaround: tRPC mutation inference is excessively deep on this router
+  const createMutation = trpc.guestServiceRequest.create.useMutation({
     onSuccess: () => {
       toast.success("Request submitted. We'll take care of it shortly.");
       setShowForm(false);
@@ -89,14 +89,14 @@ export default function StayRequestsPage() {
       void refetch();
     },
     onError: (err: { message: string }) => toast.error(err.message),
-  });
+  }) as { mutate: (data: object) => void; isPending: boolean };
 
   const handleSubmit = () => {
     if (!stayId) return;
     createMutation.mutate({
       stayId,
       hotelId: "", // Will be resolved server-side via stayId
-      requestType: requestType as string,
+      requestType,
       description: description || undefined,
     });
   };
