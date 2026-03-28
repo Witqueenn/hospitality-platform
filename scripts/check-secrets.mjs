@@ -144,6 +144,7 @@ const SKIP_PATTERNS = [
   /\.(test|spec)\.(ts|tsx|js|mjs)$/, // test files use fake credentials by design
   /__tests__\//, // test directories
   /HOSPITALITY_PLATFORM_SPEC\.md$/, // spec doc with intentional placeholder examples
+  /prisma\/seed\.(ts|js)$/, // seed files always contain demo credentials by design
   /\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|pdf|zip|tar|gz)$/i,
 ];
 

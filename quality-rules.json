@@ -1,41 +1,41 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-21T15:29:16.180Z",
+    "generatedAt": "2026-03-22T10:37:27.274Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-21T15:29:16.180Z"]
+    "runHistory": ["2026-03-22T10:37:27.274Z"]
   },
   "metrics": {
-    "totalFiles": 366,
-    "totalLines": 85056,
+    "totalFiles": 409,
+    "totalLines": 97529,
     "largestFile": {
       "path": "pnpm-lock.yaml",
       "lines": 12795
     },
     "byExtension": {
-      "(none)": 24,
       ".md": 76,
-      ".json": 49,
+      ".json": 48,
       ".mjs": 7,
       ".example": 1,
+      ".local": 2,
       ".yml": 3,
+      "(none)": 23,
       ".sh": 1,
-      ".local": 1,
-      ".ts": 101,
+      ".ts": 116,
       ".js": 3,
-      ".tsx": 91,
+      ".tsx": 119,
       ".css": 1,
       ".tsbuildinfo": 1,
-      ".sql": 3,
+      ".sql": 4,
       ".toml": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 192,
-      "percentage": 52
+      "tsFiles": 235,
+      "percentage": 57
     }
   },
   "detectedPatterns": {
@@ -127,9 +127,9 @@
   },
   "violations": {
     "summary": {
-      "total": 51,
+      "total": 53,
       "errors": 0,
-      "warnings": 51,
+      "warnings": 53,
       "info": 0
     },
     "items": [
@@ -225,6 +225,18 @@
       },
       {
         "file": "apps/web/src/app/(guest)/search/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/stay/menus/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/stay/page.tsx",
         "rule": "no-explicit-any",
         "message": "Uses 'any' type — prefer explicit types or 'unknown'",
         "severity": "warn"
@@ -450,7 +462,7 @@
       "count": 0,
       "items": []
     },
-    "anyTypeUsage": 50,
+    "anyTypeUsage": 52,
     "nonNullAssertions": 4,
     "consoleLogUsage": 0
   },
@@ -459,7 +471,7 @@
       "id": "REC-001",
       "priority": "high",
       "title": "Reduce 'any' type usage",
-      "description": "Found 50 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
+      "description": "Found 52 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
       "action": "Add 'no-explicit-any: error' to tooling/eslint-config/base.js"
     },
     {
