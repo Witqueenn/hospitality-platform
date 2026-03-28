@@ -463,7 +463,7 @@ export function AiConcierge() {
         const decoder = new TextDecoder();
         let accumulated = "";
 
-        while (true) {
+        while (true as boolean) {
           const { done, value } = await reader.read();
           if (done) break;
 

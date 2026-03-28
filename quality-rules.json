@@ -1,18 +1,18 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-28T06:11:38.747Z",
+    "generatedAt": "2026-03-28T08:26:45.803Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-28T06:11:38.744Z"]
+    "runHistory": ["2026-03-28T08:26:45.801Z"]
   },
   "metrics": {
-    "totalFiles": 419,
-    "totalLines": 124153,
+    "totalFiles": 421,
+    "totalLines": 125501,
     "largestFile": {
       "path": "pnpm-lock.yaml",
-      "lines": 12874
+      "lines": 13765
     },
     "byExtension": {
       "(none)": 24,
@@ -22,11 +22,12 @@
       ".example": 1,
       ".yml": 3,
       ".sh": 1,
+      ".txt": 1,
       ".local": 1,
       ".ts": 117,
       ".js": 3,
       ".png": 5,
-      ".tsx": 121,
+      ".tsx": 122,
       ".css": 1,
       ".tsbuildinfo": 1,
       ".sql": 4,
@@ -35,7 +36,7 @@
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 238,
+      "tsFiles": 239,
       "percentage": 57
     }
   },

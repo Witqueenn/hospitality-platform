@@ -95,7 +95,7 @@ export default function HotelApplicationsPage() {
     onError: (err) => toast.error(err.message),
   });
 
-  // @ts-ignore
+  // @ts-expect-error -- legacy type mismatch
   const scheduleMutation = trpc.jobApplication.scheduleInterview.useMutation({
     onSuccess: () => {
       toast.success("Interview scheduled.");
