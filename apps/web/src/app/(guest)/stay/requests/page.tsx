@@ -80,14 +80,15 @@ export default function StayRequestsPage() {
     { enabled: isAuthenticated() && !!stayId },
   );
 
-  const createMutation = trpc.guestServiceRequest.create.useMutation({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const createMutation = (trpc.guestServiceRequest.create.useMutation as any)({
     onSuccess: () => {
       toast.success("Request submitted. We'll take care of it shortly.");
       setShowForm(false);
       setDescription("");
       void refetch();
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err: { message: string }) => toast.error(err.message),
   });
 
   const handleSubmit = () => {
@@ -95,9 +96,7 @@ export default function StayRequestsPage() {
     createMutation.mutate({
       stayId,
       hotelId: "", // Will be resolved server-side via stayId
-      requestType: requestType as Parameters<
-        typeof createMutation.mutate
-      >[0]["requestType"],
+      requestType: requestType as string,
       description: description || undefined,
     });
   };
@@ -195,7 +194,7 @@ export default function StayRequestsPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {requests.map((req) => {
+          {(requests as any[]).map((req) => {
             const badge = STATUS_BADGE[req.status] ?? STATUS_BADGE["PENDING"]!;
             return (
               <div
