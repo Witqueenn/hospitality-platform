@@ -1,15 +1,15 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-21T15:25:50.095Z",
+    "generatedAt": "2026-03-21T15:29:16.180Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-21T15:25:50.095Z"]
+    "runHistory": ["2026-03-21T15:29:16.180Z"]
   },
   "metrics": {
     "totalFiles": 366,
-    "totalLines": 85047,
+    "totalLines": 85056,
     "largestFile": {
       "path": "pnpm-lock.yaml",
       "lines": 12795

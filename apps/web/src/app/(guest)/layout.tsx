@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
-import { Button } from "@/components/ui/button";
 import {
-  Hotel,
   Search,
   BookOpen,
   MessageSquare,
@@ -17,7 +15,23 @@ import {
   Compass,
   Tag,
   Crown,
+  MapPin,
+  Map,
 } from "lucide-react";
+
+const navLinks = [
+  { href: "/search", label: "Oteller", icon: Search },
+  { href: "/homes", label: "Kalacak Yerler", icon: Home },
+  { href: "/experiences", label: "Deneyimler", icon: Compass },
+  { href: "/guides", label: "Rehberler", icon: Map },
+  { href: "/offers", label: "Teklifler", icon: Tag },
+];
+
+const authLinks = [
+  { href: "/vip", label: "VIP", icon: Crown },
+  { href: "/my/bookings", label: "Rezervasyonlar", icon: BookOpen },
+  { href: "/my/support", label: "Destek", icon: MessageSquare },
+];
 
 export default function GuestLayout({
   children,
@@ -27,9 +41,13 @@ export default function GuestLayout({
   const { user, clearAuth, isAuthenticated } = useAuthStore();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleLogout = () => {
@@ -40,98 +58,109 @@ export default function GuestLayout({
   const isAuth = mounted ? isAuthenticated() : false;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-bold text-[#1a1a2e]"
-          >
-            <Hotel className="h-6 w-6" />
-            <span>HEO Platform</span>
+    <div className="min-h-screen bg-[#09090b] text-white">
+      {/* Header */}
+      <header
+        className={`sticky top-0 z-50 border-b transition-all duration-300 ${
+          scrolled
+            ? "border-white/10 bg-[#09090b]/80 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] backdrop-blur-xl"
+            : "border-transparent bg-[#09090b]"
+        }`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-[#e94560]" />
+            <span className="text-xl font-bold tracking-tighter text-white">
+              Nuvoya
+            </span>
           </Link>
 
-          <nav className="hidden items-center gap-5 md:flex">
-            <Link
-              href="/search"
-              className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-            >
-              <Search className="h-4 w-4" /> Search
-            </Link>
-            <Link
-              href="/homes"
-              className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-            >
-              <Home className="h-4 w-4" /> Stays
-            </Link>
-            <Link
-              href="/experiences"
-              className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-            >
-              <Compass className="h-4 w-4" /> Experiences
-            </Link>
-            <Link
-              href="/mobility"
-              className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-            >
-              <Car className="h-4 w-4" /> Mobility
-            </Link>
-            <Link
-              href="/offers"
-              className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-            >
-              <Tag className="h-4 w-4" /> Offers
-            </Link>
-            {isAuth && (
-              <>
+          {/* Nav */}
+          <nav className="hidden items-center gap-6 md:flex">
+            {navLinks.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-white"
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {label}
+              </Link>
+            ))}
+            {isAuth &&
+              authLinks.map(({ href, label, icon: Icon }) => (
                 <Link
-                  href="/vip"
-                  className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
+                  key={href}
+                  href={href}
+                  className="flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-white"
                 >
-                  <Crown className="h-4 w-4" /> VIP
+                  <Icon className="h-3.5 w-3.5" />
+                  {label}
                 </Link>
-                <Link
-                  href="/my/bookings"
-                  className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-                >
-                  <BookOpen className="h-4 w-4" /> Bookings
-                </Link>
-                <Link
-                  href="/my/support"
-                  className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#1a1a2e]"
-                >
-                  <MessageSquare className="h-4 w-4" /> Support
-                </Link>
-              </>
-            )}
+              ))}
           </nav>
 
+          {/* Auth */}
           <div className="flex items-center gap-3">
             {!mounted ? null : isAuth ? (
               <>
-                <span className="flex items-center gap-1.5 text-sm text-gray-600">
+                <span className="flex items-center gap-1.5 text-sm text-slate-400">
                   <User className="h-4 w-4" />
                   {user?.name}
                 </span>
-                <Button variant="outline" size="sm" onClick={handleLogout}>
-                  <LogOut className="mr-1.5 h-4 w-4" />
-                  Logout
-                </Button>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-sm text-slate-400 transition hover:border-white/20 hover:text-white"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  Çıkış
+                </button>
               </>
             ) : (
-              <Link href="/login">
-                <Button size="sm">Sign In</Button>
+              <Link
+                href="/login"
+                className="rounded-full bg-[#e94560] px-5 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:opacity-90 active:scale-95"
+              >
+                Giriş Yap
               </Link>
             )}
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">{children}</main>
+      {/* Content */}
+      <main>{children}</main>
 
-      <footer className="mt-16 border-t bg-white py-8 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} Hospitality Experience Orchestration
-        Platform
+      {/* Footer */}
+      <footer className="mt-24 border-t border-white/5 bg-[#09090b] px-6 py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+          <div>
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-[#e94560]" />
+              <span className="text-lg font-bold tracking-tighter text-white">
+                Nuvoya
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-slate-600">
+              Her konaklama bir maceradır.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="transition hover:text-white"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          <p className="text-xs text-slate-700">
+            © {new Date().getFullYear()} Nuvoya. Tüm hakları saklıdır.
+          </p>
+        </div>
       </footer>
     </div>
   );

@@ -7,8 +7,9 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "HEO — Hospitality Experience Orchestration",
-  description: "The complete hospitality management platform",
+  title: "Nuvoya — Her Konaklama Bir Maceradır",
+  description:
+    "Yeni topraklar, yeni hikayeler. Nuvoya ile her konaklamayı bir macerayla yaşa.",
 };
 
 export default function RootLayout({

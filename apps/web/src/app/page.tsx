@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -12,6 +13,14 @@ import {
   Shield,
   Zap,
   Heart,
+  MapPin,
+  Star,
+  Utensils,
+  Music,
+  Waves,
+  TreePine,
+  Mountain,
+  Coffee,
 } from "lucide-react";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
@@ -57,35 +66,113 @@ const agents = [
   },
 ];
 
-const features = [
+const moods = [
   {
-    title: "Stay OS",
-    desc: "A core engine handling the complexities of guest stays with real-time inventory sync, automated check-ins, and zero-friction bookings.",
-    icon: Building2,
-    color: "from-[#ffb2b7] to-[#fc536d]",
-    textColor: "text-[#ffb2b7]",
+    label: "Şehrin Kalbinde",
+    sublabel: "Urban Pulse",
+    icon: Coffee,
+    gradient: "from-[#e94560]/30 to-[#7c3aed]/20",
+    border: "border-[#e94560]/20",
+    iconColor: "text-[#ffb2b7]",
+    desc: "Işıkların hiç söndüğü yerde, tarihin dokusuna dokunarak uyan.",
+    image: "/images/urban_pulse.png",
   },
   {
-    title: "Event OS",
-    desc: "From weddings to corporate galas, manage every logistics touchpoint in a single unified timeline with AI-generated BEOs.",
+    label: "Sahil Sakinliği",
+    sublabel: "Coastal Escape",
+    icon: Waves,
+    gradient: "from-[#60a5fa]/20 to-[#67dc9f]/10",
+    border: "border-[#60a5fa]/20",
+    iconColor: "text-[#67dc9f]",
+    desc: "Dalgaların sesi uyanışın müziği olsun. Her sabah yeniden başla.",
+    image: "/images/coastal_escape.png",
+  },
+  {
+    label: "Dağ Kaçamağı",
+    sublabel: "Alpine Retreat",
+    icon: Mountain,
+    gradient: "from-[#d2bbff]/20 to-[#60a5fa]/10",
+    border: "border-[#d2bbff]/20",
+    iconColor: "text-[#d2bbff]",
+    desc: "Sessizliğin en saf hali. Zirvede nefes al, aşağıda bırak her şeyi.",
+    image: "/images/alpine_retreat.png",
+  },
+  {
+    label: "Orman Sığınağı",
+    sublabel: "Forest Hideaway",
+    icon: TreePine,
+    gradient: "from-[#67dc9f]/20 to-[#60a5fa]/10",
+    border: "border-[#67dc9f]/20",
+    iconColor: "text-[#67dc9f]",
+    desc: "Ekranlardan uzak, ağaçların arasında gerçekten dinlen.",
+    image: "/images/forest_hideaway.png",
+  },
+];
+
+const experiences = [
+  {
+    icon: Utensils,
+    title: "Gastronomi",
+    desc: "Otelin şefiyle buluş, yerel lezzetleri keşfet, damağının macerası başlasın.",
+    color: "text-[#ffb2b7]",
+    bg: "bg-[#e94560]/10",
+    border: "border-[#e94560]/20",
+  },
+  {
+    icon: Music,
+    title: "Gece Hayatı",
+    desc: "Curated rooftop barlar, canlı performanslar, şehrin nabzını hisset.",
+    color: "text-[#d2bbff]",
+    bg: "bg-[#7c3aed]/10",
+    border: "border-[#7c3aed]/20",
+  },
+  {
     icon: CalendarDays,
-    color: "from-[#d2bbff] to-[#6001d1]",
-    textColor: "text-[#d2bbff]",
+    title: "Etkinlikler",
+    desc: "Özel davetler, kurumsal zirveler ya da unutulmaz bir düğün — hepsi burada.",
+    color: "text-[#67dc9f]",
+    bg: "bg-[#25a46d]/10",
+    border: "border-[#67dc9f]/20",
   },
   {
-    title: "Experience OS",
-    desc: "Curated dining, vibrant nightlife, and personalized guest experiences powered by smart preference tracking.",
-    icon: Sparkles,
-    color: "from-[#67dc9f] to-[#25a46d]",
-    textColor: "text-[#67dc9f]",
+    icon: Star,
+    title: "VIP Deneyim",
+    desc: "Öncelikli erişim, kişisel konsiyerj, sınırlı teklifler. Farkı hisset.",
+    color: "text-[#fb923c]",
+    bg: "bg-[#fb923c]/10",
+    border: "border-[#fb923c]/20",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Bu sadece bir otel rezervasyonu değildi. Kapıdan girmeden önce her şey hazırdı — tercihlerim, masa rezervasyonum, hatta odamdaki müzik listesi.",
+    name: "Elif K.",
+    location: "İstanbul → Kapadokya",
+    rating: 5,
+  },
+  {
+    quote:
+      "İlk kez bir platforma güvenerek seyahat ettim. Şikayet etmem gerektiğinde yapay zeka beni saatlerce beklettirmedi, 10 dakikada çözüldü.",
+    name: "Marcus T.",
+    location: "Berlin → Bodrum",
+    rating: 5,
+  },
+  {
+    quote:
+      "Gece 23:00'da bir restoran rezervasyonu, sabah erken çıkış için valiz servisi, özel doğum günü sürprizi. Hepsi tek platformdan.",
+    name: "Aisha M.",
+    location: "Dubai → İzmir",
+    rating: 5,
   },
 ];
 
 const stats = [
-  { value: 500, suffix: "+", label: "Hotels" },
-  { value: 2, suffix: "M+", label: "Bookings" },
-  { value: 98, suffix: "%", label: "Uptime" },
-  { value: 12, suffix: "", label: "AI Agents" },
+  { value: 500, suffix: "+", label: "Destinasyon" },
+  { value: 2, suffix: "M+", label: "Misafir" },
+  { value: 48, suffix: "K+", label: "Deneyim" },
+  { value: 12, suffix: "", label: "AI Ajan" },
 ];
 
 export default function HomePage() {
@@ -95,35 +182,51 @@ export default function HomePage() {
       <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#09090b]/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4 text-sm">
           <div className="text-xl font-bold tracking-tighter text-white">
-            HEO
+            Nuvoya
           </div>
           <div className="hidden items-center gap-8 text-slate-400 md:flex">
-            <span className="cursor-default border-b border-[#e94560] pb-0.5 text-white">
-              Platform
-            </span>
             <Link href="/search" className="transition-colors hover:text-white">
-              Hotels
+              Oteller
             </Link>
-            <span className="cursor-default transition-colors hover:text-white">
-              AI Agents
-            </span>
-            <span className="cursor-default transition-colors hover:text-white">
-              Pricing
-            </span>
+            <Link
+              href="/experiences"
+              className="transition-colors hover:text-white"
+            >
+              Deneyimler
+            </Link>
+            <Link
+              href="/tonight"
+              className="transition-colors hover:text-white"
+            >
+              Bu Gece
+            </Link>
+            <Link href="/vip" className="transition-colors hover:text-white">
+              VIP
+            </Link>
           </div>
           <Link
             href="/hotel/login"
             className="rounded-full bg-[#e94560] px-6 py-2 text-xs font-bold uppercase tracking-widest text-white transition-all hover:opacity-90 active:scale-95"
           >
-            Hotel Portal
+            Otel Portali
           </Link>
         </nav>
       </header>
 
       {/* Hero */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20">
-        <div className="pointer-events-none absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-[#e94560]/20 blur-[120px]" />
-        <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[500px] w-[500px] rounded-full bg-[#7c3aed]/20 blur-[120px]" />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/hero_bg.png"
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-40 mix-blend-overlay"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/80 via-[#09090b]/40 to-[#09090b]" />
+        </div>
+        <div className="pointer-events-none absolute left-1/4 top-1/4 h-[600px] w-[600px] rounded-full bg-[#e94560]/15 blur-[140px]" />
+        <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-[600px] w-[600px] rounded-full bg-[#7c3aed]/15 blur-[140px]" />
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
 
         <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
@@ -132,17 +235,20 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className="mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-300 backdrop-blur-md">
-              ✨ Where Hotels Meet Their Guests
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-300 backdrop-blur-md">
+              <MapPin className="h-3.5 w-3.5 text-[#e94560]" />
+              Her konaklama bir maceradır
             </div>
-            <h1 className="mb-8 text-5xl font-bold leading-[0.95] tracking-tighter text-white md:text-8xl">
-              Hospitality Experience <br />
-              <span className="text-gradient">Orchestration</span>
+            <h1 className="mb-6 text-5xl font-bold leading-[0.92] tracking-tighter text-white md:text-8xl">
+              Sıradanı bırak, <br />
+              <span className="text-gradient">olağanüstüyü</span>
+              <br />
+              yaşa.
             </h1>
             <p className="mx-auto mb-12 max-w-2xl text-lg font-medium leading-relaxed text-slate-400 md:text-xl">
-              HEO bridges the gap between world-class hotels and the guests who
-              deserve extraordinary experiences — powered by AI, built for
-              scale.
+              Bir oda rezervasyonundan fazlası — sabahın ilk ışığından geceye
+              uzanan, kişiselleştirilmiş, yapay zeka destekli bir konaklama
+              macerası.
             </p>
           </motion.div>
 
@@ -150,7 +256,7 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col items-center justify-center gap-6 sm:flex-row"
+            className="flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <Link href="/search">
               <ShimmerButton
@@ -159,14 +265,14 @@ export default function HomePage() {
                 borderRadius="8px"
                 className="gap-2 px-10 py-5 text-lg font-bold"
               >
-                Find a Hotel <ChevronRight className="h-5 w-5" />
+                Maceraya Başla <ChevronRight className="h-5 w-5" />
               </ShimmerButton>
             </Link>
             <Link
-              href="/hotel/login"
+              href="/tonight"
               className="rounded-lg border border-white/20 px-10 py-5 text-lg font-bold text-white transition-all hover:bg-white/5 active:scale-95"
             >
-              For Hotels
+              Bu Gece Kaçamak ⚡
             </Link>
           </motion.div>
         </div>
@@ -197,6 +303,117 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* Mood / Destination Cards */}
+      <section className="mx-auto max-w-7xl px-6 py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 text-center"
+        >
+          <p className="heo-label mb-4">Ruhuna göre seç</p>
+          <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
+            Hangi macera seni çağırıyor?
+          </h2>
+          <p className="mx-auto max-w-xl text-lg text-slate-400">
+            Her konaklama bir his taşır. Seninkini bul.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {moods.map((mood, i) => (
+            <motion.div
+              key={mood.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              className={`group cursor-pointer rounded-3xl border ${mood.border} relative overflow-hidden bg-[#0e0e10] p-8 transition-all duration-500`}
+            >
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={mood.image}
+                  alt={mood.label}
+                  fill
+                  className="object-cover opacity-30 transition-all duration-700 group-hover:scale-105 group-hover:opacity-60"
+                />
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${mood.gradient} mix-blend-overlay`}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e10] via-[#0e0e10]/80 to-transparent" />
+              </div>
+
+              <div className="relative z-10">
+                <div
+                  className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 backdrop-blur-md`}
+                >
+                  <mood.icon className={`h-6 w-6 ${mood.iconColor}`} />
+                </div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-slate-500">
+                  {mood.sublabel}
+                </p>
+                <h3 className="mb-3 text-xl font-bold text-white">
+                  {mood.label}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  {mood.desc}
+                </p>
+                <div className="mt-6 flex items-center gap-2 text-xs font-bold text-slate-400 transition-all group-hover:gap-3 group-hover:text-white">
+                  Keşfet <ArrowRight className="h-3.5 w-3.5" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Experience Showcase */}
+      <section className="border-y border-white/5 bg-[#0e0e10] py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-16 text-center"
+          >
+            <p className="heo-label mb-4">Bir odadan fazlası</p>
+            <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
+              Konaklama boyunca her an{" "}
+              <span className="text-gradient">senin için</span>
+            </h2>
+            <p className="mx-auto max-w-xl text-lg text-slate-400">
+              Check-in'den check-out'a kadar her detay düşünüldü.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {experiences.map((exp, i) => (
+              <motion.div
+                key={exp.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className={`rounded-2xl border ${exp.border} ${exp.bg} p-8`}
+              >
+                <div className="mb-5">
+                  <exp.icon className={`h-8 w-8 ${exp.color}`} />
+                </div>
+                <h3 className="mb-3 text-lg font-bold text-white">
+                  {exp.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  {exp.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Value Props — For Hotels / For Guests */}
       <section className="mx-auto max-w-7xl px-6 py-32">
         <motion.div
@@ -207,10 +424,10 @@ export default function HomePage() {
           className="mb-16 text-center"
         >
           <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
-            One platform, two sides
+            İki taraf, tek platform
           </h2>
           <p className="mx-auto max-w-xl text-lg text-slate-400">
-            Hotels get operational excellence. Guests get extraordinary stays.
+            Oteller mükemmelliği yönetir. Misafirler macerayı yaşar.
           </p>
         </motion.div>
 
@@ -223,57 +440,21 @@ export default function HomePage() {
             className="glass-card rounded-3xl border border-white/10 p-10 transition-all duration-500 hover:bg-white/5"
           >
             <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#e94560]/30 bg-[#e94560]/20">
-              <Building2 className="h-7 w-7 text-[#e94560]" />
+              <Heart className="h-7 w-7 text-[#e94560]" />
             </div>
-            <h3 className="mb-3 text-2xl font-bold text-white">For Hotels</h3>
+            <h3 className="mb-3 text-2xl font-bold text-white">
+              Misafirler için
+            </h3>
             <p className="mb-8 leading-relaxed text-slate-400">
-              Manage bookings, events, and guest experiences from one
-              intelligent platform. Let AI handle the operational complexity.
+              Kapıdan girmeden önce seni tanıyoruz. Oda tercihinden yemek
+              alerjine, gece planından sabah rutinine kadar her şey hazır.
             </p>
             <ul className="space-y-3">
               {[
-                "AI-powered operations",
-                "Real-time guest insights",
-                "Automated support & recovery",
-              ].map((item: any) => (
-                <li
-                  key={item}
-                  className="flex items-center gap-3 text-sm text-slate-300"
-                >
-                  <Zap className="h-4 w-4 shrink-0 text-[#e94560]" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/hotel/login"
-              className="mt-8 inline-flex items-center gap-2 font-bold text-[#e94560] transition-all hover:gap-3"
-            >
-              Join as Hotel Partner <ArrowRight className="h-4 w-4" />
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="glass-card rounded-3xl border border-white/10 p-10 transition-all duration-500 hover:bg-white/5"
-          >
-            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#7c3aed]/30 bg-[#7c3aed]/20">
-              <Heart className="h-7 w-7 text-[#d2bbff]" />
-            </div>
-            <h3 className="mb-3 text-2xl font-bold text-white">For Guests</h3>
-            <p className="mb-8 leading-relaxed text-slate-400">
-              Discover and book extraordinary hotel experiences — rooms, events,
-              dining, and nightlife — all in one place.
-            </p>
-            <ul className="space-y-3">
-              {[
-                "Personalized recommendations",
-                "Seamless booking",
-                "24/7 AI concierge",
-              ].map((item: any) => (
+                "Kişiselleştirilmiş öneri motoru",
+                "Gerçek zamanlı AI konsiyerj",
+                "Tek tıkla tüm konaklama deneyimi",
+              ].map((item) => (
                 <li
                   key={item}
                   className="flex items-center gap-3 text-sm text-slate-300"
@@ -287,41 +468,47 @@ export default function HomePage() {
               href="/search"
               className="mt-8 inline-flex items-center gap-2 font-bold text-[#d2bbff] transition-all hover:gap-3"
             >
-              Explore Hotels <ArrowRight className="h-4 w-4" />
+              Maceraya başla <ArrowRight className="h-4 w-4" />
             </Link>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Feature Cards */}
-      <section className="mx-auto max-w-7xl px-6 pb-32">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {features.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="glass-card group rounded-3xl border border-white/5 p-10 transition-all duration-500 hover:bg-white/5"
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="glass-card rounded-3xl border border-white/10 p-10 transition-all duration-500 hover:bg-white/5"
+          >
+            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#7c3aed]/30 bg-[#7c3aed]/20">
+              <Building2 className="h-7 w-7 text-[#d2bbff]" />
+            </div>
+            <h3 className="mb-3 text-2xl font-bold text-white">Oteller için</h3>
+            <p className="mb-8 leading-relaxed text-slate-400">
+              Operasyonel karmaşayı bize bırak. Rezervasyon, etkinlik, destek ve
+              gelir yönetimi — tek akıllı platformda.
+            </p>
+            <ul className="space-y-3">
+              {[
+                "AI destekli operasyon yönetimi",
+                "Gerçek zamanlı misafir içgörüleri",
+                "Otomatik destek ve telafi sistemi",
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center gap-3 text-sm text-slate-300"
+                >
+                  <Zap className="h-4 w-4 shrink-0 text-[#e94560]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/hotel/login"
+              className="mt-8 inline-flex items-center gap-2 font-bold text-[#e94560] transition-all hover:gap-3"
             >
-              <div
-                className={`h-16 w-16 rounded-full bg-gradient-to-br ${item.color} mb-8 flex items-center justify-center shadow-lg transition-transform group-hover:scale-110`}
-              >
-                <item.icon className="h-7 w-7 text-white" />
-              </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">
-                {item.title}
-              </h3>
-              <p className="mb-8 leading-relaxed text-slate-400">{item.desc}</p>
-              <span
-                className={`inline-flex items-center gap-2 ${item.textColor} text-sm font-bold`}
-              >
-                Learn more <ArrowRight className="h-4 w-4" />
-              </span>
-            </motion.div>
-          ))}
+              Otel partneri ol <ArrowRight className="h-4 w-4" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -336,19 +523,19 @@ export default function HomePage() {
             className="relative"
           >
             <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 bg-[#e94560]/10 blur-[100px]" />
+            <p className="heo-label mb-6">Sahne arkası</p>
             <h2 className="mb-8 text-4xl font-bold leading-tight text-white md:text-6xl">
-              Powered by 12 specialized{" "}
-              <span className="text-gradient italic">AI agents</span>
+              12 AI ajan, <span className="text-gradient italic">her an</span>{" "}
+              senin için çalışıyor
             </h2>
             <p className="mb-12 text-lg text-slate-400">
-              Instead of one general chatbot, HEO deploys a coordinated swarm of
-              domain-specific agents — each trained on the nuances of luxury
-              hospitality.
+              Genel bir chatbot değil — lüks konaklama dünyasının her nüansını
+              bilen, birbirleriyle koordineli 12 uzmandan oluşan bir ekip.
             </p>
             <div className="flex w-fit items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-6 py-4">
               <Bot className="h-5 w-5 text-[#e94560]" />
               <span className="text-sm font-bold text-white">
-                12 agents, always on
+                Nuvoya AI — 12 ajan, 7/24 aktif
               </span>
             </div>
           </motion.div>
@@ -385,78 +572,66 @@ export default function HomePage() {
                 </div>
               ))}
             </Marquee>
-            {/* fade masks */}
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#0e0e10] to-transparent" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0e0e10] to-transparent" />
           </motion.div>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Testimonials */}
       <section className="mx-auto max-w-7xl px-6 py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-20 text-center"
+          className="mb-16 text-center"
         >
+          <p className="heo-label mb-4">Gerçek hikayeler</p>
           <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
-            How it works
+            Onlar yaşadı, sen de yaşa
           </h2>
-          <p className="text-lg text-slate-400">
-            Three steps to extraordinary hospitality.
-          </p>
         </motion.div>
 
-        <div className="relative grid gap-8 md:grid-cols-3">
-          <div className="absolute left-1/3 right-1/3 top-10 hidden h-px bg-gradient-to-r from-transparent via-white/20 to-transparent md:block" />
-          {[
-            {
-              step: "01",
-              title: "Hotel joins HEO",
-              desc: "Set up your property, rooms, venues, and configure AI policies in minutes.",
-              icon: Building2,
-            },
-            {
-              step: "02",
-              title: "Guest discovers & books",
-              desc: "Guests find and book personalized experiences matched to their preferences.",
-              icon: Heart,
-            },
-            {
-              step: "03",
-              title: "AI orchestrates",
-              desc: "12 agents coordinate every detail — from check-in to checkout and beyond.",
-              icon: Bot,
-            },
-          ].map((item, i) => (
+        <div className="grid gap-6 md:grid-cols-3">
+          {testimonials.map((t, i) => (
             <motion.div
-              key={item.step}
+              key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="glass-card rounded-3xl border border-white/10 p-8 text-center"
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="glass-card rounded-3xl border border-white/10 p-8"
             >
-              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#e94560] to-[#7c3aed]">
-                <span className="text-lg font-bold text-white">
-                  {item.step}
-                </span>
+              <div className="mb-6 flex gap-1">
+                {Array.from({ length: t.rating }).map((_, j) => (
+                  <Star
+                    key={j}
+                    className="h-4 w-4 fill-[#fb923c] text-[#fb923c]"
+                  />
+                ))}
               </div>
-              <h3 className="mb-3 text-xl font-bold text-white">
-                {item.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-slate-400">
-                {item.desc}
+              <p className="mb-8 text-sm italic leading-relaxed text-slate-300">
+                &ldquo;{t.quote}&rdquo;
               </p>
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#e94560] to-[#7c3aed] text-xs font-bold text-white">
+                  {t.name[0]}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">{t.name}</p>
+                  <p className="flex items-center gap-1 text-xs text-slate-500">
+                    <MapPin className="h-3 w-3" /> {t.location}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section className="px-6 pb-32">
+      {/* Adventure CTA */}
+      <section className="px-6 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -472,26 +647,28 @@ export default function HomePage() {
           />
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#e94560]/20 blur-[100px]" />
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-[#7c3aed]/20 blur-[100px]" />
-          <Shield className="relative z-10 mx-auto mb-6 h-10 w-10 text-[#e94560]" />
+          <p className="heo-label relative z-10 mb-6">Sıra sende</p>
           <h2 className="relative z-10 mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
-            Ready to transform <br /> your hotel?
+            Bir sonraki maceran
+            <br />
+            <span className="text-gradient">seni bekliyor.</span>
           </h2>
           <p className="relative z-10 mb-10 text-lg text-slate-400">
-            Join hundreds of hotels already delivering extraordinary guest
-            experiences.
+            Nereye gideceğini bilmesen de olur — biz sana göre bir deneyim
+            buluruz.
           </p>
-          <div className="relative z-10 flex flex-col items-center justify-center gap-6 sm:flex-row">
+          <div className="relative z-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/hotel/login"
+              href="/search"
               className="w-full rounded-lg bg-[#e94560] px-10 py-5 text-lg font-bold text-white transition-all hover:shadow-[0_0_30px_rgba(233,69,96,0.3)] active:scale-95 sm:w-auto"
             >
-              Get Started
+              Keşfetmeye Başla
             </Link>
             <Link
-              href="/register"
+              href="/hotel/login"
               className="w-full rounded-lg border border-white/20 px-10 py-5 text-lg font-bold text-white transition-all hover:bg-white/5 sm:w-auto"
             >
-              Create Guest Account
+              Otel Ortağı Ol
             </Link>
           </div>
         </motion.div>
@@ -500,28 +677,42 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-white/5 bg-[#09090b] px-6 py-16">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
-          <div className="text-2xl font-bold tracking-tighter text-white">
-            HEO
+          <div>
+            <div className="mb-2 text-2xl font-bold tracking-tighter text-white">
+              Nuvoya
+            </div>
+            <p className="text-xs text-slate-600">
+              Her konaklama bir maceradır.
+            </p>
           </div>
           <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-500">
-            <span className="cursor-pointer transition-colors hover:text-white">
-              Privacy Policy
-            </span>
-            <span className="cursor-pointer transition-colors hover:text-white">
-              Terms of Service
-            </span>
             <Link href="/search" className="transition-colors hover:text-white">
-              Explore Hotels
+              Oteller
+            </Link>
+            <Link
+              href="/experiences"
+              className="transition-colors hover:text-white"
+            >
+              Deneyimler
+            </Link>
+            <Link
+              href="/tonight"
+              className="transition-colors hover:text-white"
+            >
+              Bu Gece
+            </Link>
+            <Link href="/vip" className="transition-colors hover:text-white">
+              VIP
             </Link>
             <Link
               href="/hotel/login"
               className="transition-colors hover:text-white"
             >
-              Hotel Portal
+              Otel Portali
             </Link>
           </div>
           <p className="text-sm text-slate-600">
-            © 2026 HEO. All rights reserved.
+            © 2026 Nuvoya. Tüm hakları saklıdır.
           </p>
         </div>
       </footer>

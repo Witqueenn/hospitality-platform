@@ -2181,6 +2181,7 @@ async function main() {
           flashPriceCents: Math.round(invToday.pricePerNight * 0.65),
           availableCount: invToday.availableCount ?? 1,
           currency: "USD",
+          bookingTypeTarget: "ROOM" as any,
         },
       });
     }

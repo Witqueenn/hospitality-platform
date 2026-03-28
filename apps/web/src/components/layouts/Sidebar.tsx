@@ -27,7 +27,7 @@ export function Sidebar({
     <aside className="flex min-h-screen w-64 flex-col bg-[#1a1a2e] text-white">
       <div className="border-b border-white/10 px-6 py-5">
         <h1 className="text-lg font-bold" style={{ color: accentColor }}>
-          HEO
+          Nuvoya
         </h1>
         <p className="mt-0.5 text-xs text-gray-400">{title}</p>
       </div>
