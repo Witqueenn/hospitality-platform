@@ -104,7 +104,7 @@ function Lightbox({
     >
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute right-4 top-4 rounded-full p-2"
       >
         <X className="h-5 w-5" />
       </button>
@@ -113,7 +113,7 @@ function Lightbox({
           e.stopPropagation();
           prev();
         }}
-        className="absolute left-4 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute left-4 rounded-full p-3"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
@@ -128,7 +128,7 @@ function Lightbox({
           e.stopPropagation();
           next();
         }}
-        className="absolute right-4 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute right-4 rounded-full p-3"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
@@ -181,7 +181,7 @@ export default function NightlifeDetailPage() {
   if (error || !data) {
     return (
       <div className="py-20 text-center">
-        <p className="text-gray-500">Nightlife experience not found.</p>
+        <p className="text-nv-dim">Nightlife experience not found.</p>
         <Button
           variant="outline"
           className="mt-4"
@@ -212,7 +212,7 @@ export default function NightlifeDetailPage() {
         {/* Back */}
         <Link
           href={`/hotel/${slug}?tab=nightlife`}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800"
+          className="text-nv-dim hover:text-nv-text inline-flex items-center gap-1.5 text-sm"
         >
           <ArrowLeft className="h-4 w-4" /> Back to {hotel.name}
         </Link>
@@ -258,7 +258,7 @@ export default function NightlifeDetailPage() {
             {photos.length > 1 && (
               <button
                 onClick={() => setLightboxIdx(0)}
-                className="absolute bottom-3 right-3 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-gray-700 shadow backdrop-blur hover:bg-white"
+                className="bg-nv-surface border-nv-border/10 text-nv-dim hover:bg-nv-surface absolute bottom-3 right-3 rounded-lg px-3 py-1.5 text-xs font-medium shadow backdrop-blur"
               >
                 Show all {photos.length} photos
               </button>
@@ -274,7 +274,7 @@ export default function NightlifeDetailPage() {
             {/* Header block */}
             <div className="border-b pb-4">
               <div className="flex flex-wrap items-start gap-3">
-                <h1 className="text-3xl font-bold text-gray-900">{n.name}</h1>
+                <h1 className="text-nv-text text-3xl font-bold">{n.name}</h1>
                 <span
                   className={`mt-1 rounded-full px-3 py-1 text-sm font-medium ${NIGHT_COLORS[n.experienceType] ?? "bg-gray-100 text-gray-600"}`}
                 >
@@ -291,17 +291,17 @@ export default function NightlifeDetailPage() {
 
             {/* Description */}
             {n.description && (
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+                <h2 className="text-nv-text mb-3 text-lg font-semibold">
                   About this event
                 </h2>
-                <p className="leading-relaxed text-gray-600">{n.description}</p>
+                <p className="text-nv-muted leading-relaxed">{n.description}</p>
               </div>
             )}
 
             {/* Details grid */}
-            <div className="rounded-xl border bg-white p-6">
-              <h2 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+              <h2 className="text-nv-text mb-4 text-lg font-semibold">
                 Event Details
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -309,10 +309,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Date
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
+                      <p className="text-nv-dim mt-0.5 text-sm">
                         {formatDate(n.date)}
                       </p>
                     </div>
@@ -322,10 +322,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Time
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
+                      <p className="text-nv-dim mt-0.5 text-sm">
                         {n.startTime ?? ""}
                         {n.startTime && n.endTime ? " – " : ""}
                         {n.endTime ?? ""}
@@ -337,10 +337,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <Users className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Capacity
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
+                      <p className="text-nv-dim mt-0.5 text-sm">
                         {n.capacity} guests
                       </p>
                     </div>
@@ -350,12 +350,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Minimum Age
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
-                        {n.minAge}+
-                      </p>
+                      <p className="text-nv-dim mt-0.5 text-sm">{n.minAge}+</p>
                     </div>
                   </div>
                 )}
@@ -363,10 +361,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <Star className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Dress Code
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-700">
+                      <p className="text-nv-dim mt-0.5 text-sm">
                         {n.dressCode}
                       </p>
                     </div>
@@ -376,10 +374,10 @@ export default function NightlifeDetailPage() {
                   <div className="flex items-start gap-3">
                     <Ticket className="mt-0.5 h-4 w-4 shrink-0 text-[#1a1a2e]" />
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                      <p className="text-nv-muted text-xs font-medium uppercase tracking-wide">
                         Ticket Price
                       </p>
-                      <p className="mt-0.5 text-sm font-semibold text-gray-700">
+                      <p className="text-nv-dim mt-0.5 text-sm font-semibold">
                         ${(n.priceCents / 100).toFixed(2)}
                       </p>
                     </div>
@@ -390,8 +388,8 @@ export default function NightlifeDetailPage() {
 
             {/* Features */}
             {features.length > 0 && (
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+                <h2 className="text-nv-text mb-3 text-lg font-semibold">
                   Features
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -428,15 +426,15 @@ export default function NightlifeDetailPage() {
 
               {/* Hotel card */}
               <div
-                className="cursor-pointer rounded-xl border bg-white p-5 shadow-sm transition hover:shadow-md"
+                className="border-nv-border/10 bg-nv-surface cursor-pointer rounded-xl border p-5 shadow-sm transition hover:shadow-md"
                 onClick={() => router.push(`/hotel/${slug}`)}
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    <p className="text-nv-muted text-xs font-semibold uppercase tracking-wide">
                       Property
                     </p>
-                    <p className="mt-0.5 font-semibold text-gray-900">
+                    <p className="text-nv-text mt-0.5 font-semibold">
                       {hotel.name}
                     </p>
                     {hotel.starRating && (
@@ -445,9 +443,9 @@ export default function NightlifeDetailPage() {
                       </p>
                     )}
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300" />
+                  <ChevronRight className="text-nv-muted h-4 w-4" />
                 </div>
-                <p className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                <p className="text-nv-dim mt-2 flex items-center gap-1 text-xs">
                   <MapPin className="h-3 w-3" />
                   {hotel.address?.city}, {hotel.address?.country}
                 </p>

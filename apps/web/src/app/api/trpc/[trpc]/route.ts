@@ -7,6 +7,7 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     createContext: (opts) => createTRPCContext(opts),
+    allowMethodOverride: true,
     onError:
       process.env["NODE_ENV"] === "development"
         ? ({ path, error }) => {

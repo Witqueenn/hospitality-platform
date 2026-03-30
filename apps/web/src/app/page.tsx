@@ -63,8 +63,8 @@ const agents = [
   {
     name: "BEO Automation",
     desc: "Auto-generated Banquet Event Orders and run-of-show.",
-    color: "#fb923c",
-    shadow: "#fb923c",
+    color: "#f97316",
+    shadow: "#f97316",
   },
   {
     name: "Insight Agent",
@@ -79,7 +79,7 @@ const moods = [
     label: "Şehrin Kalbinde",
     sublabel: "Urban Pulse",
     icon: Coffee,
-    gradient: "from-[#f97316]/30 to-[#7c3aed]/20",
+    gradient: "from-[#f97316]/30 to-[#f97316]/10",
     border: "border-[#f97316]/20",
     iconColor: "text-[#ffb2b7]",
     desc: "Işıkların hiç söndüğü yerde, tarihin dokusuna dokunarak uyan.",
@@ -122,7 +122,7 @@ const experiences = [
     icon: Utensils,
     title: "Gastronomi",
     desc: "Otelin şefiyle buluş, yerel lezzetleri keşfet, damağının macerası başlasın.",
-    color: "text-[#ffb2b7]",
+    color: "text-[#f97316]",
     bg: "bg-[#f97316]/10",
     border: "border-[#f97316]/20",
   },
@@ -146,9 +146,9 @@ const experiences = [
     icon: Star,
     title: "VIP Deneyim",
     desc: "Öncelikli erişim, kişisel konsiyerj, sınırlı teklifler. Farkı hisset.",
-    color: "text-[#fb923c]",
-    bg: "bg-[#fb923c]/10",
-    border: "border-[#fb923c]/20",
+    color: "text-[#f97316]",
+    bg: "bg-[#f97316]/10",
+    border: "border-[#f97316]/20",
   },
 ];
 
@@ -603,7 +603,7 @@ export default function HomePage() {
                 {Array.from({ length: t.rating }).map((_, j) => (
                   <Star
                     key={j}
-                    className="h-4 w-4 fill-[#fb923c] text-[#fb923c]"
+                    className="h-4 w-4 fill-[#f97316] text-[#f97316]"
                   />
                 ))}
               </div>
@@ -611,7 +611,7 @@ export default function HomePage() {
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#f97316] to-[#7c3aed] text-xs font-bold text-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#f97316] to-[#fb923c] text-xs font-bold text-white">
                   {t.name[0]}
                 </div>
                 <div>
@@ -637,7 +637,7 @@ export default function HomePage() {
         >
           <BorderBeam
             colorFrom="#f97316"
-            colorTo="#7c3aed"
+            colorTo="#fb923c"
             duration={8}
             size={120}
           />

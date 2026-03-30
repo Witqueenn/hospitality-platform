@@ -1,15 +1,15 @@
 {
   "$schema": "./quality-rules.schema.json",
   "meta": {
-    "generatedAt": "2026-03-28T08:26:45.803Z",
+    "generatedAt": "2026-03-30T17:09:44.206Z",
     "generatedBy": "scripts/analyze-project.mjs",
     "version": "1.0.0",
     "description": "Auto-generated quality rules and codebase analysis. Do not edit manually — re-run `pnpm analyze` to regenerate.",
-    "runHistory": ["2026-03-28T08:26:45.801Z"]
+    "runHistory": ["2026-03-30T17:09:44.203Z"]
   },
   "metrics": {
-    "totalFiles": 421,
-    "totalLines": 125501,
+    "totalFiles": 427,
+    "totalLines": 129811,
     "largestFile": {
       "path": "pnpm-lock.yaml",
       "lines": 13765
@@ -24,19 +24,20 @@
       ".sh": 1,
       ".txt": 1,
       ".local": 1,
-      ".ts": 117,
+      ".ts": 120,
       ".js": 3,
       ".png": 5,
-      ".tsx": 122,
+      ".tsx": 124,
       ".css": 1,
       ".tsbuildinfo": 1,
       ".sql": 4,
+      ".html": 1,
       ".toml": 1,
       ".prisma": 1,
       ".yaml": 2
     },
     "typeScriptCoverage": {
-      "tsFiles": 239,
+      "tsFiles": 244,
       "percentage": 57
     }
   },
@@ -129,9 +130,9 @@
   },
   "violations": {
     "summary": {
-      "total": 52,
+      "total": 54,
       "errors": 0,
-      "warnings": 52,
+      "warnings": 54,
       "info": 0
     },
     "items": [
@@ -185,6 +186,12 @@
       },
       {
         "file": "apps/web/src/app/(guest)/hotel/[slug]/dining/[diningId]/page.tsx",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
+      },
+      {
+        "file": "apps/web/src/app/(guest)/hotel/[slug]/rooms/[roomTypeId]/page.tsx",
         "rule": "no-explicit-any",
         "message": "Uses 'any' type — prefer explicit types or 'unknown'",
         "severity": "warn"
@@ -446,6 +453,12 @@
         "rule": "no-direct-env",
         "message": "Direct process.env access — centralize env vars in a typed env module",
         "severity": "warn"
+      },
+      {
+        "file": "packages/db/prisma/seed-guest-portal.ts",
+        "rule": "no-explicit-any",
+        "message": "Uses 'any' type — prefer explicit types or 'unknown'",
+        "severity": "warn"
       }
     ]
   },
@@ -458,8 +471,8 @@
       "count": 0,
       "items": []
     },
-    "anyTypeUsage": 51,
-    "nonNullAssertions": 4,
+    "anyTypeUsage": 53,
+    "nonNullAssertions": 5,
     "consoleLogUsage": 0
   },
   "recommendations": [
@@ -467,7 +480,7 @@
       "id": "REC-001",
       "priority": "high",
       "title": "Reduce 'any' type usage",
-      "description": "Found 51 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
+      "description": "Found 53 files using 'any'. Enable @typescript-eslint/no-explicit-any as an error to enforce explicit types.",
       "action": "Add 'no-explicit-any: error' to tooling/eslint-config/base.js"
     },
     {

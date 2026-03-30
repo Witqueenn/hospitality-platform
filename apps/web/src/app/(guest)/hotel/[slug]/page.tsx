@@ -3,11 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Star,
   Wifi,
@@ -15,28 +12,60 @@ import {
   Users,
   Bed,
   Maximize2,
-  MessageSquare,
   ArrowLeft,
   ChevronRight,
+  UtensilsCrossed,
+  Music,
+  MessageSquare,
+  Shield,
 } from "lucide-react";
 
-const SENTIMENT_BADGE: Record<string, string> = {
-  positive: "bg-green-100 text-green-700",
-  negative: "bg-red-100 text-red-700",
-  neutral: "bg-gray-100 text-gray-600",
-};
+// Placeholder images for each section
+const HOTEL_PLACEHOLDERS = [
+  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&q=80",
+  "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&q=80",
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80",
+  "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80",
+  "https://images.unsplash.com/photo-1455587734955-081b22074882?w=1200&q=80",
+];
+const ROOM_PLACEHOLDERS = [
+  "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+  "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80",
+  "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=800&q=80",
+  "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+];
+const DINING_PLACEHOLDERS = [
+  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+  "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
+  "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80",
+];
+const NIGHT_PLACEHOLDERS = [
+  "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=800&q=80",
+  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80",
+  "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80",
+];
 
-const WIFI_BADGE: Record<string, string> = {
-  excellent: "bg-green-100 text-green-700",
-  good: "bg-blue-100 text-blue-700",
-  fair: "bg-yellow-100 text-yellow-700",
-  poor: "bg-red-100 text-red-700",
+const TABS = ["Odalar", "Yeme & İçme", "Gece Hayatı", "Yorumlar"] as const;
+type Tab = (typeof TABS)[number];
+
+const WIFI_COLORS: Record<string, string> = {
+  excellent: "rgba(103,220,159,0.15)",
+  good: "rgba(96,165,250,0.15)",
+  fair: "rgba(251,191,36,0.15)",
+  poor: "rgba(239,68,68,0.15)",
+};
+const WIFI_TEXT: Record<string, string> = {
+  excellent: "#67dc9f",
+  good: "#60a5fa",
+  fair: "#fbbf24",
+  poor: "#ef4444",
 };
 
 export default function HotelDetailPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
+  const [activeTab, setActiveTab] = useState<Tab>("Odalar");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guestCount, setGuestCount] = useState(1);
@@ -49,33 +78,56 @@ export default function HotelDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <Skeleton className="h-64 w-full rounded-2xl" />
-        <Skeleton className="h-8 w-1/3" />
-        <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-4 w-1/2" />
+      <div
+        className="min-h-screen"
+        style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+      >
+        <div
+          className="h-[55vh] animate-pulse"
+          style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+        />
+        <div className="mx-auto max-w-5xl space-y-4 px-6 py-10">
+          <div
+            className="h-9 w-64 animate-pulse rounded-xl"
+            style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+          />
+          <div
+            className="h-5 w-48 animate-pulse rounded-lg"
+            style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+          />
+          <div
+            className="h-32 animate-pulse rounded-2xl"
+            style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+          />
+        </div>
       </div>
     );
   }
 
   if (error || !hotel) {
     return (
-      <div className="py-20 text-center">
-        <p className="text-gray-500">Hotel not found.</p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => router.back()}
+      <div
+        className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+        style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+      >
+        <h2
+          className="mb-3 text-xl font-bold"
+          style={{ color: "rgb(var(--nv-text))" }}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
-        </Button>
+          Otel bulunamadı
+        </h2>
+        <button
+          onClick={() => router.push("/search")}
+          className="mt-2 flex items-center gap-1.5 text-sm hover:underline"
+          style={{ color: "#f97316" }}
+        >
+          <ArrowLeft className="h-4 w-4" /> Sonuçlara dön
+        </button>
       </div>
     );
   }
 
   type HotelPhoto = { url: string; thumb: string; alt: string; credit: string };
-
-  // Narrow the deeply nested Prisma return type to avoid TS2589
   type HotelDetail = {
     id: string;
     name: string;
@@ -95,6 +147,7 @@ export default function HotelDetailPage() {
       capacity: number;
       sizeSqm: number | null;
       description: string | null;
+      baseRateCents?: number;
       features: unknown;
       photos: HotelPhoto[];
     }[];
@@ -125,453 +178,718 @@ export default function HotelDetailPage() {
       guest: { name: string | null; avatarUrl: string | null } | null;
     }[];
   };
-  const hotelData = hotel as unknown as HotelDetail;
 
-  const addr = hotelData.address;
-  const scores: number[] = hotelData.reviews.map((r) => r.overallScore);
+  const h = hotel as unknown as HotelDetail;
+  const addr = h.address;
   const avgScore =
-    scores.length > 0
-      ? (scores.reduce((s, v) => s + v, 0) / scores.length).toFixed(1)
+    h.reviews.length > 0
+      ? (
+          h.reviews.reduce((s, r) => s + r.overallScore, 0) / h.reviews.length
+        ).toFixed(1)
       : null;
 
-  return (
-    <div className="space-y-8">
-      {/* Back */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => router.push("/search")}
-        className="text-gray-500"
-      >
-        <ArrowLeft className="mr-1.5 h-4 w-4" /> Back to results
-      </Button>
+  const heroPhotos: string[] =
+    h.photos?.length > 0 ? h.photos.map((p) => p.url) : HOTEL_PLACEHOLDERS;
 
-      {/* Hero */}
-      <div className="overflow-hidden rounded-2xl border bg-white">
-        {/* Photo gallery */}
-        {hotelData.photos?.length > 0 ? (
-          <div className="grid h-72 grid-cols-4 grid-rows-2 gap-1 overflow-hidden">
-            {/* Main photo — spans 2 cols × 2 rows */}
-            <div className="relative col-span-2 row-span-2 overflow-hidden">
-              <img
-                src={hotelData.photos[0]?.url}
-                alt={hotelData.photos[0]?.alt}
-                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              />
-            </div>
-            {/* Up to 4 thumbnails */}
-            {hotelData.photos.slice(1, 5).map((p, i) => (
-              <div key={i} className="relative overflow-hidden">
-                <img
-                  src={p.thumb}
-                  alt={p.alt}
-                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-                {/* "See all" overlay on last visible thumb */}
-                {i === 3 && hotelData.photos.length > 5 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                    <span className="text-sm font-semibold text-white">
-                      +{hotelData.photos.length - 5} more
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="h-48 bg-gradient-to-br from-[#1a1a2e] to-[#16213e]" />
-        )}
-        <div className="p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {hotelData.name}
-                </h1>
-                {hotelData.starRating && (
-                  <div className="flex text-amber-400">
-                    {Array.from({ length: hotelData.starRating }).map(
-                      (_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-current" />
-                      ),
-                    )}
-                  </div>
-                )}
-              </div>
-              <p className="mt-1 flex items-center gap-1 text-gray-500">
-                <MapPin className="h-4 w-4" />
-                {addr.city}, {addr.country}
-              </p>
-              {avgScore && (
-                <p className="mt-2 text-sm text-gray-600">
-                  ⭐ {avgScore}/10 · {hotelData.reviews.length} reviews
-                </p>
+  return (
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
+      {/* ── Photo Hero ── */}
+      <div
+        className="relative h-[60vh] min-h-[420px] overflow-hidden"
+        style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+      >
+        {/* Main image */}
+        <img
+          src={heroPhotos[0]}
+          alt={h.name}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Thumbnail grid — bottom right */}
+        <div className="absolute bottom-6 right-6 hidden gap-2 md:grid md:grid-cols-2">
+          {heroPhotos.slice(1, 5).map((src, i) => (
+            <div
+              key={i}
+              className="relative h-20 w-32 overflow-hidden rounded-xl border-2 border-white/20 shadow-xl"
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" />
+              {i === 3 && heroPhotos.length > 5 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                  <span className="text-xs font-bold text-white">
+                    +{heroPhotos.length - 5}
+                  </span>
+                </div>
               )}
             </div>
-            <Button
-              variant="outline"
-              onClick={() =>
-                router.push(`/support/new?hotelId=${hotelData.id}`)
-              }
-            >
-              <MessageSquare className="mr-2 h-4 w-4" /> Report Issue
-            </Button>
+          ))}
+        </div>
+
+        {/* Back button */}
+        <div className="absolute left-6 top-6">
+          <button
+            onClick={() => router.push("/search")}
+            className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm text-white backdrop-blur-sm transition hover:bg-black/60"
+            style={{
+              backgroundColor: "rgba(0,0,0,0.4)",
+              border: "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            <ArrowLeft className="h-4 w-4" /> Geri
+          </button>
+        </div>
+
+        {/* Title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 px-8 pb-8">
+          <div className="mx-auto max-w-5xl">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                {h.starRating && (
+                  <div className="mb-2 flex">
+                    {Array.from({ length: h.starRating }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                  </div>
+                )}
+                <h1 className="text-3xl font-bold text-white drop-shadow-lg md:text-4xl">
+                  {h.name}
+                </h1>
+                <p className="mt-2 flex items-center gap-1.5 text-sm text-white/80">
+                  <MapPin className="h-4 w-4" />
+                  {addr.city}, {addr.country}
+                </p>
+              </div>
+              {avgScore && (
+                <div
+                  className="flex flex-col items-center rounded-2xl bg-black/50 px-5 py-3 backdrop-blur-sm"
+                  style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+                >
+                  <span className="text-3xl font-bold text-white">
+                    {avgScore}
+                  </span>
+                  <span className="text-xs text-white/60">
+                    /10 · {h.reviews.length} yorum
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
+        </div>
+      </div>
 
-          {hotelData.shortDescription && (
-            <p className="mt-4 text-gray-600">{hotelData.shortDescription}</p>
-          )}
-
-          {/* Transparency Panel */}
-          <div className="mt-5 flex flex-wrap gap-3 rounded-xl bg-gray-50 p-4">
-            {hotelData.wifiQuality && (
+      {/* ── Content ── */}
+      <div className="mx-auto max-w-5xl px-6 py-10">
+        {/* Quick info bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div
+            className="mb-8 flex flex-wrap items-center gap-3 rounded-2xl p-5"
+            style={{
+              backgroundColor: "rgb(var(--nv-surface))",
+              border: "1px solid rgb(var(--nv-border) / 0.08)",
+              boxShadow: "0 2px 16px rgb(var(--nv-shadow) / 0.07)",
+            }}
+          >
+            {h.wifiQuality && (
               <span
-                className={`rounded-full px-3 py-1 text-sm font-medium ${WIFI_BADGE[hotelData.wifiQuality] ?? "bg-gray-100 text-gray-600"}`}
+                className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium"
+                style={{
+                  backgroundColor:
+                    WIFI_COLORS[h.wifiQuality] ?? "rgba(148,163,184,0.1)",
+                  color: WIFI_TEXT[h.wifiQuality] ?? "rgb(var(--nv-muted))",
+                }}
               >
-                <Wifi className="mr-1 inline h-3.5 w-3.5" />
-                WiFi: {hotelData.wifiQuality}
+                <Wifi className="h-3.5 w-3.5" /> WiFi: {h.wifiQuality}
               </span>
             )}
-            {hotelData.noiseNotes && (
-              <span className="rounded-full bg-yellow-50 px-3 py-1 text-sm text-yellow-700">
-                🔊 {hotelData.noiseNotes}
+            {h.noiseNotes && (
+              <span
+                className="rounded-full px-3 py-1.5 text-xs"
+                style={{
+                  backgroundColor: "rgba(251,191,36,0.12)",
+                  color: "#fbbf24",
+                }}
+              >
+                🔊 {h.noiseNotes}
               </span>
             )}
-            {Array.isArray(hotelData.amenities) &&
-              (hotelData.amenities as string[]).slice(0, 5).map((a) => (
-                <Badge key={a} variant="secondary">
+            {Array.isArray(h.amenities) &&
+              (h.amenities as string[]).slice(0, 6).map((a) => (
+                <span
+                  key={a}
+                  className="rounded-full px-3 py-1.5 text-xs"
+                  style={{
+                    border: "1px solid rgb(var(--nv-border) / 0.1)",
+                    color: "rgb(var(--nv-muted))",
+                  }}
+                >
                   {a}
-                </Badge>
+                </span>
               ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Date selector */}
-      <div className="flex flex-wrap items-end gap-4 rounded-xl border bg-white p-5">
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Check-in
-          </label>
-          <input
-            type="date"
-            value={checkIn}
-            min={new Date().toISOString().split("T")[0]}
-            onChange={(e) => setCheckIn(e.target.value)}
-            className="rounded-lg border px-3 py-2 text-sm"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Check-out
-          </label>
-          <input
-            type="date"
-            value={checkOut}
-            min={checkIn || new Date().toISOString().split("T")[0]}
-            onChange={(e) => setCheckOut(e.target.value)}
-            className="rounded-lg border px-3 py-2 text-sm"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">
-            Guests
-          </label>
-          <select
-            value={guestCount}
-            onChange={(e) => setGuestCount(Number(e.target.value))}
-            className="rounded-lg border px-3 py-2 text-sm"
+        {/* Description */}
+        {h.shortDescription && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="mb-8 text-base leading-relaxed"
+            style={{ color: "rgb(var(--nv-muted))" }}
           >
-            {[1, 2, 3, 4, 5, 6].map((n) => (
-              <option key={n} value={n}>
-                {n} guest{n > 1 ? "s" : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+            {h.shortDescription}
+          </motion.p>
+        )}
 
-      {/* Tabs */}
-      <Tabs defaultValue="rooms">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="rooms">
-            Rooms ({hotelData.roomTypes.length})
-          </TabsTrigger>
-          <TabsTrigger value="dining">
-            Dining ({hotelData.diningExperiences.length})
-          </TabsTrigger>
-          <TabsTrigger value="nightlife">
-            Nightlife ({hotelData.nightExperiences.length})
-          </TabsTrigger>
-          <TabsTrigger value="reviews">
-            Reviews ({hotelData.reviews.length})
-          </TabsTrigger>
-        </TabsList>
+        {/* Date selector */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+        >
+          <div
+            className="mb-8 flex flex-wrap items-end gap-4 rounded-2xl p-5"
+            style={{
+              backgroundColor: "rgb(var(--nv-surface))",
+              border: "1px solid rgb(var(--nv-border) / 0.08)",
+            }}
+          >
+            <div>
+              <label
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              >
+                Giriş
+              </label>
+              <input
+                type="date"
+                value={checkIn}
+                min={new Date().toISOString().split("T")[0]}
+                onChange={(e) => setCheckIn(e.target.value)}
+                className="rounded-xl px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/40"
+                style={{
+                  backgroundColor: "rgb(var(--nv-surface-2))",
+                  border: "1px solid rgb(var(--nv-border) / 0.12)",
+                  color: "rgb(var(--nv-text))",
+                }}
+              />
+            </div>
+            <div>
+              <label
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              >
+                Çıkış
+              </label>
+              <input
+                type="date"
+                value={checkOut}
+                min={checkIn || new Date().toISOString().split("T")[0]}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="rounded-xl px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-orange-400/40"
+                style={{
+                  backgroundColor: "rgb(var(--nv-surface-2))",
+                  border: "1px solid rgb(var(--nv-border) / 0.12)",
+                  color: "rgb(var(--nv-text))",
+                }}
+              />
+            </div>
+            <div>
+              <label
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wider"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              >
+                Misafir
+              </label>
+              <select
+                value={guestCount}
+                onChange={(e) => setGuestCount(Number(e.target.value))}
+                className="rounded-xl px-3 py-2 text-sm outline-none"
+                style={{
+                  backgroundColor: "rgb(var(--nv-surface-2))",
+                  border: "1px solid rgb(var(--nv-border) / 0.12)",
+                  color: "rgb(var(--nv-text))",
+                }}
+              >
+                {[1, 2, 3, 4, 5, 6].map((n) => (
+                  <option key={n} value={n}>
+                    {n} misafir
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </motion.div>
 
-        {/* Rooms */}
-        <TabsContent value="rooms" className="mt-4">
-          {hotelData.roomTypes.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">
-              No rooms available.
-            </p>
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {hotelData.roomTypes.map((room) => (
-                <Link
-                  key={room.id}
-                  href={`/hotel/${slug}/rooms/${room.id}`}
-                  className="group overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
+        {/* ── Tabs ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          {/* Tab nav */}
+          <div
+            className="mb-6 flex gap-1 rounded-xl p-1"
+            style={{
+              backgroundColor: "rgb(var(--nv-surface))",
+              border: "1px solid rgb(var(--nv-border) / 0.08)",
+            }}
+          >
+            {TABS.map((tab) => {
+              const count =
+                tab === "Odalar"
+                  ? h.roomTypes.length
+                  : tab === "Yeme & İçme"
+                    ? h.diningExperiences.length
+                    : tab === "Gece Hayatı"
+                      ? h.nightExperiences.length
+                      : h.reviews.length;
+              const active = activeTab === tab;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className="flex-1 rounded-lg px-3 py-2.5 text-sm font-medium transition-all"
+                  style={{
+                    backgroundColor: active ? "#f97316" : "transparent",
+                    color: active ? "white" : "rgb(var(--nv-muted))",
+                  }}
                 >
-                  {/* Room photo */}
-                  {room.photos?.length > 0 ? (
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={room.photos[0]?.url}
-                        alt={room.photos[0]?.alt}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      {room.photos.length > 1 && (
-                        <div className="absolute bottom-2 right-2 flex gap-1">
-                          {room.photos.slice(1, 4).map((p, i) => (
-                            <img
-                              key={i}
-                              src={p.thumb}
-                              alt={p.alt}
-                              className="h-10 w-10 rounded-md border-2 border-white object-cover shadow"
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200" />
-                  )}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-semibold text-gray-900 group-hover:text-[#1a1a2e]">
-                          {room.name}
-                        </h3>
-                        <p className="mt-1 flex items-center gap-3 text-sm text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <Bed className="h-3.5 w-3.5" /> {room.bedType}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Users className="h-3.5 w-3.5" /> {room.capacity}{" "}
-                            guests
-                          </span>
-                          {room.sizeSqm && (
-                            <span className="flex items-center gap-1">
-                              <Maximize2 className="h-3.5 w-3.5" />{" "}
-                              {String(room.sizeSqm)}m²
+                  {tab}{" "}
+                  <span className="ml-1 text-xs opacity-60">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* ── Rooms ── */}
+          {activeTab === "Odalar" && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {h.roomTypes.length === 0 ? (
+                <p
+                  className="col-span-2 py-8 text-center"
+                  style={{ color: "rgb(var(--nv-muted))" }}
+                >
+                  Oda bilgisi mevcut değil.
+                </p>
+              ) : (
+                h.roomTypes.map((room, idx) => {
+                  const photo =
+                    room.photos?.[0]?.url ??
+                    ROOM_PLACEHOLDERS[idx % ROOM_PLACEHOLDERS.length];
+                  return (
+                    <Link
+                      key={room.id}
+                      href={`/hotel/${slug}/rooms/${room.id}`}
+                      className="group block overflow-hidden rounded-2xl transition-all"
+                      style={{
+                        border: "1px solid rgb(var(--nv-border) / 0.08)",
+                        backgroundColor: "rgb(var(--nv-surface))",
+                        boxShadow: "0 2px 12px rgb(var(--nv-shadow) / 0.06)",
+                      }}
+                    >
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={photo}
+                          alt={room.name}
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        {room.baseRateCents && (
+                          <div className="absolute bottom-3 right-3 rounded-xl bg-black/70 px-3 py-1.5 backdrop-blur-sm">
+                            <span className="text-sm font-bold text-white">
+                              ${(room.baseRateCents / 100).toFixed(0)}
                             </span>
+                            <span className="text-xs text-white/70">
+                              {" "}
+                              / gece
+                            </span>
+                          </div>
+                        )}
+                        {/* Thumbnail strip */}
+                        {room.photos?.length > 1 && (
+                          <div className="absolute bottom-3 left-3 flex gap-1">
+                            {room.photos.slice(1, 4).map((p, i) => (
+                              <img
+                                key={i}
+                                src={p.thumb}
+                                alt=""
+                                className="h-10 w-10 rounded-lg border-2 border-white/40 object-cover shadow"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3
+                              className="font-semibold"
+                              style={{ color: "rgb(var(--nv-text))" }}
+                            >
+                              {room.name}
+                            </h3>
+                            <p
+                              className="mt-1.5 flex flex-wrap items-center gap-3 text-xs"
+                              style={{ color: "rgb(var(--nv-dim))" }}
+                            >
+                              <span className="flex items-center gap-1">
+                                <Bed className="h-3.5 w-3.5" /> {room.bedType}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Users className="h-3.5 w-3.5" />{" "}
+                                {room.capacity} kişi
+                              </span>
+                              {room.sizeSqm && (
+                                <span className="flex items-center gap-1">
+                                  <Maximize2 className="h-3.5 w-3.5" />{" "}
+                                  {String(room.sizeSqm)}m²
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                          <ChevronRight
+                            className="mt-1 h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          />
+                        </div>
+                        {room.description && (
+                          <p
+                            className="mt-2 line-clamp-2 text-sm"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          >
+                            {room.description}
+                          </p>
+                        )}
+                        {Array.isArray(room.features) &&
+                          (room.features as string[]).length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-1.5">
+                              {(room.features as string[])
+                                .slice(0, 4)
+                                .map((f) => (
+                                  <span
+                                    key={f}
+                                    className="rounded-full px-2.5 py-1 text-xs"
+                                    style={{
+                                      border:
+                                        "1px solid rgb(var(--nv-border) / 0.1)",
+                                      color: "rgb(var(--nv-muted))",
+                                    }}
+                                  >
+                                    {f.replace(/-/g, " ")}
+                                  </span>
+                                ))}
+                            </div>
                           )}
+                      </div>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          )}
+
+          {/* ── Dining ── */}
+          {activeTab === "Yeme & İçme" && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {h.diningExperiences.length === 0 ? (
+                <p
+                  className="col-span-2 py-8 text-center"
+                  style={{ color: "rgb(var(--nv-muted))" }}
+                >
+                  Yeme & içme deneyimi mevcut değil.
+                </p>
+              ) : (
+                h.diningExperiences.map((d, idx) => {
+                  const photo =
+                    d.photos?.[0]?.url ??
+                    DINING_PLACEHOLDERS[idx % DINING_PLACEHOLDERS.length];
+                  return (
+                    <Link
+                      key={d.id}
+                      href={`/hotel/${slug}/dining/${d.id}`}
+                      className="group block overflow-hidden rounded-2xl transition-all"
+                      style={{
+                        border: "1px solid rgb(var(--nv-border) / 0.08)",
+                        backgroundColor: "rgb(var(--nv-surface))",
+                        boxShadow: "0 2px 12px rgb(var(--nv-shadow) / 0.06)",
+                      }}
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={photo}
+                          alt={d.name}
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        <span className="absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                          {d.diningType}
+                        </span>
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-start justify-between">
+                          <h3
+                            className="font-semibold"
+                            style={{ color: "rgb(var(--nv-text))" }}
+                          >
+                            {d.name}
+                          </h3>
+                          <UtensilsCrossed
+                            className="h-4 w-4 shrink-0"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          />
+                        </div>
+                        {d.description && (
+                          <p
+                            className="mt-2 line-clamp-2 text-sm"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          >
+                            {d.description}
+                          </p>
+                        )}
+                        <div
+                          className="mt-3 flex items-center gap-3 text-xs"
+                          style={{ color: "rgb(var(--nv-dim))" }}
+                        >
+                          {d.capacity && <span>{d.capacity} kişilik</span>}
+                          {d.priceRange && <span>{d.priceRange}</span>}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          )}
+
+          {/* ── Nightlife ── */}
+          {activeTab === "Gece Hayatı" && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {h.nightExperiences.length === 0 ? (
+                <p
+                  className="col-span-2 py-8 text-center"
+                  style={{ color: "rgb(var(--nv-muted))" }}
+                >
+                  Gece hayatı deneyimi mevcut değil.
+                </p>
+              ) : (
+                h.nightExperiences.map((n, idx) => {
+                  const photo =
+                    n.photos?.[0]?.url ??
+                    NIGHT_PLACEHOLDERS[idx % NIGHT_PLACEHOLDERS.length];
+                  return (
+                    <Link
+                      key={n.id}
+                      href={`/hotel/${slug}/nightlife/${n.id}`}
+                      className="group block overflow-hidden rounded-2xl transition-all"
+                      style={{
+                        border: "1px solid rgb(var(--nv-border) / 0.08)",
+                        backgroundColor: "rgb(var(--nv-surface))",
+                        boxShadow: "0 2px 12px rgb(var(--nv-shadow) / 0.06)",
+                      }}
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={photo}
+                          alt={n.name}
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        {n.priceCents && (
+                          <div className="absolute bottom-3 right-3 rounded-xl bg-black/70 px-3 py-1.5 backdrop-blur-sm">
+                            <span className="text-sm font-bold text-white">
+                              ${(n.priceCents / 100).toFixed(0)}
+                            </span>
+                            <span className="text-xs text-white/70">
+                              {" "}
+                              bilet
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-start justify-between">
+                          <h3
+                            className="font-semibold"
+                            style={{ color: "rgb(var(--nv-text))" }}
+                          >
+                            {n.name}
+                          </h3>
+                          <Music
+                            className="h-4 w-4 shrink-0"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          />
+                        </div>
+                        <span
+                          className="mt-1 inline-block rounded-full px-2.5 py-0.5 text-xs"
+                          style={{
+                            backgroundColor: "rgba(139,92,246,0.15)",
+                            color: "#a78bfa",
+                          }}
+                        >
+                          {n.experienceType}
+                        </span>
+                        {n.description && (
+                          <p
+                            className="mt-2 line-clamp-2 text-sm"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          >
+                            {n.description}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          )}
+
+          {/* ── Reviews ── */}
+          {activeTab === "Yorumlar" && (
+            <div className="space-y-4">
+              {h.reviews.length === 0 ? (
+                <p
+                  className="py-8 text-center"
+                  style={{ color: "rgb(var(--nv-muted))" }}
+                >
+                  Henüz yorum yok.
+                </p>
+              ) : (
+                h.reviews.map((r) => (
+                  <div
+                    key={r.id}
+                    className="rounded-2xl p-5"
+                    style={{
+                      border: "1px solid rgb(var(--nv-border) / 0.08)",
+                      backgroundColor: "rgb(var(--nv-surface))",
+                      boxShadow: "0 2px 12px rgb(var(--nv-shadow) / 0.05)",
+                    }}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, #f97316, #fb923c)",
+                          }}
+                        >
+                          {(r.guest?.name ?? "M")[0]}
+                        </div>
+                        <div>
+                          <p
+                            className="text-sm font-semibold"
+                            style={{ color: "rgb(var(--nv-text))" }}
+                          >
+                            {r.guest?.name ?? "Misafir"}
+                          </p>
+                          {r.title && (
+                            <p
+                              className="text-xs"
+                              style={{ color: "rgb(var(--nv-dim))" }}
+                            >
+                              {r.title}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className="flex items-center gap-1.5 rounded-xl px-3 py-1.5"
+                        style={{
+                          backgroundColor: "rgba(249,115,22,0.12)",
+                          border: "1px solid rgba(249,115,22,0.2)",
+                        }}
+                      >
+                        <Star className="h-3.5 w-3.5 fill-[#f97316] text-[#f97316]" />
+                        <span
+                          className="text-sm font-bold"
+                          style={{ color: "rgb(var(--nv-text))" }}
+                        >
+                          {r.overallScore}
+                          <span className="text-xs font-normal opacity-60">
+                            /10
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    {r.text && (
+                      <p
+                        className="mt-3 text-sm leading-relaxed"
+                        style={{ color: "rgb(var(--nv-muted))" }}
+                      >
+                        {r.text}
+                      </p>
+                    )}
+                    {r.hotelResponse && (
+                      <div
+                        className="mt-3 rounded-xl p-3"
+                        style={{
+                          backgroundColor: "rgb(var(--nv-surface-2))",
+                          border: "1px solid rgb(var(--nv-border) / 0.08)",
+                        }}
+                      >
+                        <p
+                          className="flex items-center gap-1.5 text-xs font-semibold"
+                          style={{ color: "#60a5fa" }}
+                        >
+                          <Shield className="h-3 w-3" /> Otel yanıtı
+                        </p>
+                        <p
+                          className="mt-1 text-sm"
+                          style={{ color: "rgb(var(--nv-muted))" }}
+                        >
+                          {r.hotelResponse}
                         </p>
                       </div>
-                      <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1a1a2e]" />
-                    </div>
-                    {room.description && (
-                      <p className="mt-2 line-clamp-2 text-sm text-gray-500">
-                        {room.description}
-                      </p>
                     )}
-                    {Array.isArray(room.features) &&
-                      room.features.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-1.5">
-                          {(room.features as string[]).slice(0, 4).map((f) => (
-                            <Badge
-                              key={f}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {f.replace(/-/g, " ")}
-                            </Badge>
-                          ))}
-                          {(room.features as string[]).length > 4 && (
-                            <Badge
-                              variant="outline"
-                              className="text-xs text-gray-400"
-                            >
-                              +{(room.features as string[]).length - 4}
-                            </Badge>
-                          )}
-                        </div>
-                      )}
-                    <div className="mt-4 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1a1a2e]">
-                        View details & book →
-                      </p>
-                    </div>
                   </div>
-                </Link>
-              ))}
+                ))
+              )}
             </div>
           )}
-        </TabsContent>
+        </motion.div>
 
-        {/* Dining */}
-        <TabsContent value="dining" className="mt-4">
-          {hotelData.diningExperiences.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">
-              No dining experiences listed.
-            </p>
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {hotelData.diningExperiences.map((d) => (
-                <Link
-                  key={d.id}
-                  href={`/hotel/${slug}/dining/${d.id}`}
-                  className="group cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
-                >
-                  {d.photos?.length > 0 && (
-                    <div className="h-36 overflow-hidden">
-                      <img
-                        src={d.photos[0]?.url}
-                        alt={d.photos[0]?.alt}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a1a2e]">
-                        {d.name}
-                      </h3>
-                      <Badge variant="secondary">{d.diningType}</Badge>
-                    </div>
-                    {d.description && (
-                      <p className="mt-2 line-clamp-2 text-sm text-gray-500">
-                        {d.description}
-                      </p>
-                    )}
-                    <p className="mt-3 text-sm text-gray-600">
-                      {d.capacity ? `Capacity: ${d.capacity}` : ""}
-                      {d.priceRange ? ` · ${d.priceRange}` : ""}
-                    </p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1a1a2e]">
-                        View details →
-                      </p>
-                      <ChevronRight className="h-4 w-4 text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1a1a2e]" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
+        {/* About section */}
+        {h.description && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <div
+              className="mt-8 rounded-2xl p-6"
+              style={{
+                border: "1px solid rgb(var(--nv-border) / 0.08)",
+                backgroundColor: "rgb(var(--nv-surface))",
+              }}
+            >
+              <h2
+                className="mb-3 text-lg font-semibold"
+                style={{ color: "rgb(var(--nv-text))" }}
+              >
+                Otel Hakkında
+              </h2>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgb(var(--nv-muted))" }}
+              >
+                {h.description}
+              </p>
             </div>
-          )}
-        </TabsContent>
-
-        {/* Nightlife */}
-        <TabsContent value="nightlife" className="mt-4">
-          {hotelData.nightExperiences.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">
-              No nightlife experiences listed.
-            </p>
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {hotelData.nightExperiences.map((n) => (
-                <Link
-                  key={n.id}
-                  href={`/hotel/${slug}/nightlife/${n.id}`}
-                  className="group cursor-pointer overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
-                >
-                  {n.photos?.length > 0 && (
-                    <div className="h-36 overflow-hidden">
-                      <img
-                        src={n.photos[0]?.url}
-                        alt={n.photos[0]?.alt}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a1a2e]">
-                        {n.name}
-                      </h3>
-                      <Badge variant="secondary">{n.experienceType}</Badge>
-                    </div>
-                    {n.description && (
-                      <p className="mt-2 line-clamp-2 text-sm text-gray-500">
-                        {n.description}
-                      </p>
-                    )}
-                    {n.priceCents && (
-                      <p className="mt-3 text-sm font-medium text-gray-700">
-                        Ticket: ${(n.priceCents / 100).toFixed(0)}
-                      </p>
-                    )}
-                    <div className="mt-3 flex items-center justify-between">
-                      <p className="text-sm font-semibold text-[#1a1a2e]">
-                        View details →
-                      </p>
-                      <ChevronRight className="h-4 w-4 text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#1a1a2e]" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-
-        {/* Reviews */}
-        <TabsContent value="reviews" className="mt-4">
-          {hotelData.reviews.length === 0 ? (
-            <p className="py-8 text-center text-gray-400">No reviews yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {hotelData.reviews.map((r) => (
-                <div key={r.id} className="rounded-xl border bg-white p-5">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {r.guest?.name ?? "Guest"}
-                      </p>
-                      {r.title && (
-                        <p className="text-sm font-semibold text-gray-700">
-                          {r.title}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="rounded-lg bg-[#1a1a2e] px-2 py-1 text-sm font-bold text-white">
-                        {r.overallScore}/10
-                      </span>
-                      {r.sentiment && (
-                        <span
-                          className={`rounded-full px-2 py-1 text-xs ${SENTIMENT_BADGE[r.sentiment] ?? ""}`}
-                        >
-                          {r.sentiment}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  {r.text && (
-                    <p className="mt-2 text-sm text-gray-600">{r.text}</p>
-                  )}
-                  {r.hotelResponse && (
-                    <div className="mt-3 rounded-lg bg-blue-50 p-3">
-                      <p className="text-xs font-semibold text-blue-800">
-                        Hotel Response
-                      </p>
-                      <p className="mt-1 text-sm text-blue-700">
-                        {r.hotelResponse}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      {hotelData.description && (
-        <div className="rounded-xl border bg-white p-6">
-          <h2 className="mb-3 text-lg font-semibold text-gray-900">About</h2>
-          <p className="text-gray-600">{hotelData.description}</p>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }

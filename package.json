@@ -17,6 +17,8 @@
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate",
     "db:seed": "turbo db:seed",
+    "db:seed:all": "pnpm --filter @repo/db db:seed:all",
+    "db:seed:testing": "pnpm --filter @repo/db db:seed:testing",
     "prepare": "husky",
     "analyze": "node scripts/analyze-project.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",

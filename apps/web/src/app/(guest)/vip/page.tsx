@@ -1,16 +1,36 @@
 "use client";
 
 import { trpc } from "@/lib/trpc";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 import { Crown, Check, Zap, Star } from "lucide-react";
 
-const TIER_COLORS: Record<string, string> = {
-  CORE: "from-slate-400 to-slate-600",
-  COMFORT: "from-blue-500 to-blue-700",
-  SIGNATURE: "from-amber-400 to-amber-600",
+const TIER_HEADER_STYLES: Record<string, React.CSSProperties> = {
+  CORE: {
+    background:
+      "linear-gradient(135deg, rgba(100,116,139,0.85), rgba(71,85,105,0.85))",
+    color: "white",
+  },
+  COMFORT: {
+    background:
+      "linear-gradient(135deg, rgba(59,130,246,0.85), rgba(99,102,241,0.85))",
+    color: "white",
+  },
+  SIGNATURE: {
+    background:
+      "linear-gradient(135deg, rgba(245,158,11,0.90), rgba(217,119,6,0.90))",
+    color: "white",
+  },
+};
+
+const TIER_BORDER_STYLES: Record<string, React.CSSProperties> = {
+  CORE: {},
+  COMFORT: {},
+  SIGNATURE: {
+    border: "2px solid #f59e0b",
+    boxShadow:
+      "0 0 0 1px rgba(245,158,11,0.2), 0 8px 32px rgba(245,158,11,0.12)",
+  },
 };
 
 const TIER_ICONS: Record<string, React.ReactNode> = {
@@ -28,7 +48,7 @@ export default function VipPage() {
 
   const enrollMutation = (trpc.vip.enrollMembership as any).useMutation({
     onSuccess: () =>
-      toast.success("Welcome to VIP! Your membership is now active."),
+      toast.success("VIP'e hoş geldiniz! Üyeliğiniz aktif edildi."),
     onError: (e: { message: string }) => toast.error(e.message),
   });
 
@@ -42,139 +62,242 @@ export default function VipPage() {
 
   if (plansLoading || membershipLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-32 w-full rounded-2xl" />
-        <div className="grid gap-4 md:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-80 rounded-2xl" />
-          ))}
+      <div
+        className="min-h-screen px-6 py-16"
+        style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+      >
+        <div className="mx-auto max-w-5xl space-y-6">
+          <div
+            className="h-32 animate-pulse rounded-2xl"
+            style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+          />
+          <div className="grid gap-4 md:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-80 animate-pulse rounded-2xl"
+                style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-10">
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
       {/* Current membership banner */}
       {membership && (
-        <div className="rounded-2xl bg-gradient-to-r from-amber-400 to-amber-600 p-6 text-white">
-          <div className="flex items-center gap-3">
-            <Crown className="h-8 w-8" />
-            <div>
-              <p className="text-sm font-medium uppercase tracking-wide text-white/80">
-                Your Membership
-              </p>
-              <h2 className="text-2xl font-bold">
-                {(membership.vipPlan as any)?.name}
-              </h2>
+        <div
+          style={{
+            background:
+              "linear-gradient(to right, rgba(245,158,11,0.90), rgba(217,119,6,0.90))",
+          }}
+          className="px-6 py-4"
+        >
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Crown className="h-6 w-6 text-white" />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-white/80">
+                  Üyeliğiniz
+                </p>
+                <p className="font-bold text-white">
+                  {(membership.vipPlan as any)?.name}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full bg-white/20 px-3 py-0.5 text-sm font-semibold text-white">
+                Aktif
+              </span>
+              <span className="text-sm text-white/70">
+                Başlangıç:{" "}
+                {new Date(membership.startsAt).toLocaleDateString("tr")}
+              </span>
             </div>
           </div>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Badge className="bg-white/20 text-white hover:bg-white/20">
-              {membership.status}
-            </Badge>
-            <span className="text-sm text-white/70">
-              Active since {new Date(membership.startsAt).toLocaleDateString()}
-            </span>
-          </div>
         </div>
       )}
 
-      {/* Header */}
-      <div className="text-center">
-        <div className="mb-4 flex justify-center">
-          <Crown className="h-12 w-12 text-amber-500" />
+      {/* Hero — centered crown */}
+      <div className="nv-hero dot-grid relative overflow-hidden px-6 py-20">
+        <div
+          className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(124 58 237 / 0.08)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(245 158 11 / 0.10)" }}
+        />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="mb-6 flex justify-center">
+              <div
+                className="flex h-20 w-20 items-center justify-center rounded-2xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(245,158,11,0.20), rgba(217,119,6,0.10))",
+                  border: "1px solid rgb(245 158 11 / 0.25)",
+                }}
+              >
+                <Crown className="h-10 w-10" style={{ color: "#f59e0b" }} />
+              </div>
+            </div>
+            <h1
+              className="mb-4 text-4xl font-bold md:text-6xl"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
+              VIP <span className="text-gradient">Üyelik</span>
+            </h1>
+            <p
+              className="mx-auto max-w-xl text-lg"
+              style={{ color: "rgb(var(--nv-muted))" }}
+            >
+              Tüm ağımızda özel avantajlar, öncelikli erişim ve özel deneyimler
+            </p>
+          </motion.div>
         </div>
-        <h1 className="text-4xl font-bold text-gray-900">VIP Membership</h1>
-        <p className="mx-auto mt-2 max-w-xl text-gray-500">
-          Unlock exclusive benefits, priority access, and curated experiences
-          across our entire network
-        </p>
       </div>
 
-      {/* Plans */}
-      {!plans || plans.length === 0 ? (
-        <p className="text-center text-gray-400">
-          No membership plans available yet.
-        </p>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-3">
-          {plans.map((plan) => {
-            const tier = plan.tier as string;
-            const benefits = (plan.benefits ?? []) as {
-              id: string;
-              name: string;
-              description: string | null;
-            }[];
-            const isCurrentPlan = (membership?.vipPlan as any)?.id === plan.id;
+      <div className="mx-auto max-w-5xl px-6 py-12">
+        {!plans || plans.length === 0 ? (
+          <div className="py-20 text-center">
+            <p style={{ color: "rgb(var(--nv-muted))" }}>
+              Üyelik planı bulunamadı
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-3">
+            {plans.map((plan, i) => {
+              const tier = plan.tier as string;
+              const benefits = (plan.benefits ?? []) as {
+                id: string;
+                name: string;
+                description: string | null;
+              }[];
+              const isCurrentPlan =
+                (membership?.vipPlan as any)?.id === plan.id;
+              const isSignature = tier === "SIGNATURE";
 
-            return (
-              <div
-                key={plan.id}
-                className={`overflow-hidden rounded-2xl border-2 bg-white shadow-sm transition hover:shadow-lg ${
-                  isCurrentPlan ? "border-amber-400" : "border-gray-100"
-                }`}
-              >
-                {/* Tier header */}
-                <div
-                  className={`bg-gradient-to-br ${TIER_COLORS[tier] ?? "from-gray-400 to-gray-600"} p-6 text-white`}
+              return (
+                <motion.div
+                  key={plan.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="nv-card overflow-hidden"
+                  style={
+                    isSignature
+                      ? TIER_BORDER_STYLES.SIGNATURE
+                      : isCurrentPlan
+                        ? { border: "2px solid #f59e0b" }
+                        : {}
+                  }
                 >
-                  <div className="flex items-center justify-between">
-                    {TIER_ICONS[tier] ?? <Star className="h-6 w-6" />}
-                    {isCurrentPlan && (
-                      <Badge className="bg-white/20 text-white">Current</Badge>
+                  {/* Tier header */}
+                  <div
+                    className="p-6"
+                    style={TIER_HEADER_STYLES[tier] ?? TIER_HEADER_STYLES.CORE}
+                  >
+                    <div className="flex items-center justify-between">
+                      {TIER_ICONS[tier] ?? <Star className="h-6 w-6" />}
+                      {isCurrentPlan && (
+                        <span className="rounded-full bg-white/20 px-3 py-0.5 text-xs font-semibold text-white">
+                          Mevcut Plan
+                        </span>
+                      )}
+                      {isSignature && !isCurrentPlan && (
+                        <span className="rounded-full bg-white/20 px-3 py-0.5 text-xs font-semibold text-white">
+                          En Popüler
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-3 text-xl font-bold">{plan.name}</h3>
+                    {plan.monthlyPriceCents ? (
+                      <p className="mt-1 text-2xl font-bold">
+                        ${(plan.monthlyPriceCents / 100).toFixed(0)}
+                        <span className="text-sm font-normal opacity-70">
+                          {" "}
+                          / ay
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-lg font-semibold opacity-70">
+                        Bizimle iletişime geçin
+                      </p>
                     )}
                   </div>
-                  <h3 className="mt-3 text-xl font-bold">{plan.name}</h3>
-                  {plan.monthlyPriceCents ? (
-                    <p className="mt-1 text-2xl font-bold">
-                      ${(plan.monthlyPriceCents / 100).toFixed(0)}
-                      <span className="text-sm font-normal text-white/70">
-                        {" "}
-                        / month
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="mt-1 text-lg font-semibold text-white/70">
-                      Contact us
-                    </p>
-                  )}
-                </div>
 
-                <div className="space-y-4 p-6">
-                  {plan.description && (
-                    <p className="text-sm text-gray-500">{plan.description}</p>
-                  )}
+                  <div className="space-y-4 p-6">
+                    {plan.description && (
+                      <p
+                        className="text-sm"
+                        style={{ color: "rgb(var(--nv-muted))" }}
+                      >
+                        {plan.description}
+                      </p>
+                    )}
 
-                  {benefits.length > 0 && (
-                    <ul className="space-y-2">
-                      {benefits.map((b) => (
-                        <li
-                          key={b.id}
-                          className="flex items-start gap-2 text-sm text-gray-700"
+                    {benefits.length > 0 && (
+                      <div>
+                        <p
+                          className="mb-2 text-xs font-semibold uppercase tracking-widest"
+                          style={{ color: "rgb(var(--nv-dim))" }}
                         >
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                          <span>{b.name}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                          Avantajlar
+                        </p>
+                        <ul className="space-y-2">
+                          {benefits.map((b) => (
+                            <li
+                              key={b.id}
+                              className="flex items-start gap-2 text-sm"
+                              style={{ color: "rgb(var(--nv-muted))" }}
+                            >
+                              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#22c55e]" />
+                              <span>{b.name}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                  <Button
-                    className="w-full"
-                    variant={isCurrentPlan ? "outline" : "default"}
-                    style={!isCurrentPlan ? { backgroundColor: "#1a1a2e" } : {}}
-                    disabled={isCurrentPlan || enrollMutation.isPending}
-                    onClick={() => !isCurrentPlan && handleEnroll(plan.id)}
-                  >
-                    {isCurrentPlan ? "Current Plan" : "Get Started"}
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+                    <button
+                      className="w-full rounded-xl py-2.5 text-sm font-semibold transition active:scale-95"
+                      style={
+                        isCurrentPlan
+                          ? {
+                              border: "1px solid rgb(var(--nv-border) / 0.12)",
+                              color: "rgb(var(--nv-muted))",
+                              cursor: "default",
+                            }
+                          : {
+                              backgroundColor: isSignature
+                                ? "#f59e0b"
+                                : "#f97316",
+                              color: "white",
+                            }
+                      }
+                      disabled={isCurrentPlan || enrollMutation.isPending}
+                      onClick={() => !isCurrentPlan && handleEnroll(plan.id)}
+                    >
+                      {isCurrentPlan ? "Mevcut Plan" : "Başla"}
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

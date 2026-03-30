@@ -84,7 +84,7 @@ function Lightbox({
     >
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute right-4 top-4 rounded-full p-2"
       >
         <X className="h-5 w-5" />
       </button>
@@ -93,7 +93,7 @@ function Lightbox({
           e.stopPropagation();
           prev();
         }}
-        className="absolute left-4 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute left-4 rounded-full p-3"
       >
         <ChevronLeft className="h-6 w-6" />
       </button>
@@ -108,7 +108,7 @@ function Lightbox({
           e.stopPropagation();
           next();
         }}
-        className="absolute right-4 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+        className="bg-nv-border/10 text-nv-text hover:bg-nv-border/20 absolute right-4 rounded-full p-3"
       >
         <ChevronRight className="h-6 w-6" />
       </button>
@@ -161,7 +161,7 @@ export default function DiningDetailPage() {
   if (error || !data) {
     return (
       <div className="py-20 text-center">
-        <p className="text-gray-500">Dining experience not found.</p>
+        <p className="text-nv-dim">Dining experience not found.</p>
         <Button
           variant="outline"
           className="mt-4"
@@ -195,7 +195,7 @@ export default function DiningDetailPage() {
         {/* Back */}
         <Link
           href={`/hotel/${slug}?tab=dining`}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800"
+          className="text-nv-dim hover:text-nv-text inline-flex items-center gap-1.5 text-sm"
         >
           <ArrowLeft className="h-4 w-4" /> Back to {hotel.name}
         </Link>
@@ -241,7 +241,7 @@ export default function DiningDetailPage() {
             {photos.length > 1 && (
               <button
                 onClick={() => setLightboxIdx(0)}
-                className="absolute bottom-3 right-3 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-gray-700 shadow backdrop-blur hover:bg-white"
+                className="bg-nv-surface border-nv-border/10 text-nv-dim hover:bg-nv-surface absolute bottom-3 right-3 rounded-lg px-3 py-1.5 text-xs font-medium shadow backdrop-blur"
               >
                 Show all {photos.length} photos
               </button>
@@ -257,20 +257,20 @@ export default function DiningDetailPage() {
             {/* Header block */}
             <div className="border-b pb-4">
               <div className="flex flex-wrap items-start gap-3">
-                <h1 className="text-3xl font-bold text-gray-900">{d.name}</h1>
+                <h1 className="text-nv-text text-3xl font-bold">{d.name}</h1>
                 <span
                   className={`mt-1 rounded-full px-3 py-1 text-sm font-medium ${TYPE_COLORS[d.diningType] ?? "bg-gray-100 text-gray-600"}`}
                 >
                   {TYPE_LABELS[d.diningType] ?? d.diningType}
                 </span>
                 {d.priceRange && (
-                  <span className="mt-1 rounded-full bg-gray-100 px-3 py-1 font-mono text-sm font-bold text-gray-600">
+                  <span className="bg-nv-surface text-nv-muted mt-1 rounded-full px-3 py-1 font-mono text-sm font-bold">
                     {d.priceRange}
                   </span>
                 )}
               </div>
               {d.capacity && (
-                <p className="mt-2 flex items-center gap-1.5 text-sm text-gray-500">
+                <p className="text-nv-dim mt-2 flex items-center gap-1.5 text-sm">
                   <Users className="h-4 w-4" /> Capacity: {d.capacity} covers
                 </p>
               )}
@@ -278,18 +278,18 @@ export default function DiningDetailPage() {
 
             {/* Description */}
             {d.description && (
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+                <h2 className="text-nv-text mb-3 text-lg font-semibold">
                   About this experience
                 </h2>
-                <p className="leading-relaxed text-gray-600">{d.description}</p>
+                <p className="text-nv-muted leading-relaxed">{d.description}</p>
               </div>
             )}
 
             {/* Cuisine tags */}
             {cuisine.length > 0 && (
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+                <h2 className="text-nv-text mb-3 text-lg font-semibold">
                   Cuisine
                 </h2>
                 <div className="flex flex-wrap gap-2">
@@ -304,16 +304,13 @@ export default function DiningDetailPage() {
 
             {/* Menu highlights */}
             {menuHighlights.length > 0 && (
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-6">
+                <h2 className="text-nv-text mb-3 text-lg font-semibold">
                   Menu Highlights
                 </h2>
                 <ul className="space-y-2">
                   {menuHighlights.map((h: any) => (
-                    <li
-                      key={h}
-                      className="flex items-center gap-2 text-gray-700"
-                    >
+                    <li key={h} className="text-nv-dim flex items-center gap-2">
                       <span className="text-emerald-500">•</span>
                       {h}
                     </li>
@@ -323,11 +320,11 @@ export default function DiningDetailPage() {
             )}
 
             {/* Opening hours placeholder */}
-            <div className="rounded-xl border bg-gray-50 p-5">
-              <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-700">
+            <div className="border-nv-border/10 bg-nv-surface/50 rounded-xl border p-5">
+              <h2 className="text-nv-dim mb-3 flex items-center gap-2 text-sm font-semibold">
                 <Clock className="h-4 w-4" /> Opening Hours
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-nv-dim text-sm">
                 Please contact the hotel for current opening hours and
                 reservations.
               </p>
@@ -338,15 +335,15 @@ export default function DiningDetailPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-6 space-y-4">
               <div
-                className="cursor-pointer rounded-xl border bg-white p-5 shadow-sm transition hover:shadow-md"
+                className="border-nv-border/10 bg-nv-surface cursor-pointer rounded-xl border p-5 shadow-sm transition hover:shadow-md"
                 onClick={() => router.push(`/hotel/${slug}`)}
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    <p className="text-nv-muted text-xs font-semibold uppercase tracking-wide">
                       Property
                     </p>
-                    <p className="mt-0.5 font-semibold text-gray-900">
+                    <p className="text-nv-text mt-0.5 font-semibold">
                       {hotel.name}
                     </p>
                     {hotel.starRating && (
@@ -355,9 +352,9 @@ export default function DiningDetailPage() {
                       </p>
                     )}
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300" />
+                  <ChevronRight className="text-nv-muted h-4 w-4" />
                 </div>
-                <p className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                <p className="text-nv-dim mt-2 flex items-center gap-1 text-xs">
                   <MapPin className="h-3 w-3" />
                   {hotel.address?.city}, {hotel.address?.country}
                 </p>
@@ -367,25 +364,25 @@ export default function DiningDetailPage() {
               </div>
 
               {/* Quick info card */}
-              <div className="rounded-xl border bg-white p-5">
-                <h3 className="mb-4 text-sm font-semibold text-gray-700">
+              <div className="border-nv-border/10 bg-nv-surface rounded-xl border p-5">
+                <h3 className="text-nv-dim mb-4 text-sm font-semibold">
                   Quick Info
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="text-nv-muted flex items-center gap-2 text-sm">
                     <UtensilsCrossed className="h-4 w-4 text-[#1a1a2e]" />
                     <span>
                       {TYPE_LABELS[d.diningType] ?? d.diningType} experience
                     </span>
                   </div>
                   {d.capacity && (
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="text-nv-muted flex items-center gap-2 text-sm">
                       <Users className="h-4 w-4 text-[#1a1a2e]" />
                       <span>Up to {d.capacity} covers</span>
                     </div>
                   )}
                   {hotel.starRating && (
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="text-nv-muted flex items-center gap-2 text-sm">
                       <Star className="h-4 w-4 text-amber-500" />
                       <span>{hotel.starRating}-star property</span>
                     </div>

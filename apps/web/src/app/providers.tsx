@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpBatchStreamLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuthStore } from "@/stores/authStore";
@@ -12,7 +12,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
     () =>
       new QueryClient({
         defaultOptions: {
-          queries: { retry: 1, staleTime: 30 * 1000 },
+          queries: {
+            retry: (failureCount, error: unknown) => {
+              // UNAUTHORIZED veya FORBIDDEN hatalarında retry yapma, logout yap
+              const code = (error as { data?: { code?: string } })?.data?.code;
+              if (code === "UNAUTHORIZED" || code === "FORBIDDEN") {
+                useAuthStore.getState().clearAuth();
+                if (typeof window !== "undefined") {
+                  window.location.href = "/login";
+                }
+                return false;
+              }
+              return failureCount < 1;
+            },
+            staleTime: 30 * 1000,
+          },
         },
       }),
   );
@@ -20,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
+        httpBatchStreamLink({
           url: "/api/trpc",
           headers() {
             const token = useAuthStore.getState().token;
@@ -34,12 +48,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <NextThemesProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
         </NextThemesProvider>
       </QueryClientProvider>

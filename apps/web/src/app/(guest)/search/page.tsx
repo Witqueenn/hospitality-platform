@@ -11,18 +11,17 @@ import {
   ChevronRight,
   SlidersHorizontal,
   Calendar,
-  Users,
   Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const POPULAR_DESTINATIONS = [
-  { label: "İstanbul", emoji: "🕌" },
-  { label: "Kapadokya", emoji: "🎈" },
-  { label: "Bodrum", emoji: "⛵" },
-  { label: "Antalya", emoji: "🌊" },
-  { label: "İzmir", emoji: "☀️" },
-  { label: "Trabzon", emoji: "🏔️" },
+  { label: "Istanbul", display: "İstanbul", emoji: "🕌" },
+  { label: "Kapadokya", display: "Kapadokya", emoji: "🎈" },
+  { label: "Bodrum", display: "Bodrum", emoji: "⛵" },
+  { label: "Antalya", display: "Antalya", emoji: "🌊" },
+  { label: "Izmir", display: "İzmir", emoji: "☀️" },
+  { label: "Trabzon", display: "Trabzon", emoji: "🏔️" },
 ];
 
 const STAR_FILTERS = [
@@ -46,7 +45,7 @@ type HotelResult = {
   amenities: string[];
   wifiQuality?: string;
   reviews: { overallScore: number }[];
-  roomTypes: { baseRateCents: number }[];
+  roomTypes: { inventory: { pricePerNight: number }[] }[];
 };
 
 export default function SearchPage() {
@@ -63,6 +62,7 @@ export default function SearchPage() {
     checkIn: "",
     checkOut: "",
     guestCount: 1,
+    starRating: undefined as number | undefined,
   });
 
   const [hasSearched, setHasSearched] = useState(false);
@@ -72,30 +72,53 @@ export default function SearchPage() {
     checkIn: search.checkIn || undefined,
     checkOut: search.checkOut || undefined,
     guestCount: search.guestCount,
+    starRating: search.starRating,
   });
 
   const data = rawData as { items: HotelResult[]; total: number } | undefined;
 
-  const filteredItems = (data?.items ?? []).filter((h) =>
-    filters.starRating ? h.starRating === filters.starRating : true,
-  );
+  const filteredItems = data?.items ?? [];
+
+  const normalizeCity = (c: string) =>
+    c
+      .replace(/İ/g, "I")
+      .replace(/ı/g, "i")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/I/g, "I");
 
   const handleSearch = () => {
     setSearch({
-      city: filters.city,
+      city: filters.city ? normalizeCity(filters.city) : "",
       checkIn: filters.checkIn,
       checkOut: filters.checkOut,
       guestCount: filters.guestCount,
+      starRating: filters.starRating,
     });
     setHasSearched(true);
   };
 
+  const inputStyle = {
+    backgroundColor: "rgb(var(--nv-surface))",
+    border: "1px solid rgb(var(--nv-border) / 0.12)",
+    color: "rgb(var(--nv-text))",
+  };
+
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
       {/* Hero Search */}
-      <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-16">
-        <div className="pointer-events-none absolute left-1/3 top-0 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
-        <div className="pointer-events-none absolute bottom-0 right-1/3 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
+      <div className="nv-hero dot-grid relative overflow-hidden px-6 py-16">
+        <div
+          className="pointer-events-none absolute left-1/3 top-0 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(249 115 22 / 0.08)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-1/3 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(var(--nv-border) / 0.06)" }}
+        />
 
         <div className="relative mx-auto max-w-4xl">
           <motion.div
@@ -104,10 +127,16 @@ export default function SearchPage() {
             transition={{ duration: 0.5 }}
             className="mb-8 text-center"
           >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#f97316]">
+            <p
+              className="mb-2 text-xs font-semibold uppercase tracking-widest"
+              style={{ color: "#f97316" }}
+            >
               Nuvoya ile keşfet
             </p>
-            <h1 className="text-3xl font-bold text-white md:text-5xl">
+            <h1
+              className="text-3xl font-bold md:text-5xl"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
               Bir sonraki maceranı bul
             </h1>
           </motion.div>
@@ -117,11 +146,19 @@ export default function SearchPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-white/10 bg-[#09090b]/80 p-3 backdrop-blur-md"
+            className="rounded-2xl p-3"
+            style={{
+              backgroundColor: "rgb(var(--nv-surface))",
+              border: "1px solid rgb(var(--nv-border) / 0.10)",
+              boxShadow: "0 4px 24px rgb(var(--nv-shadow) / 0.08)",
+            }}
           >
             <div className="grid grid-cols-1 gap-2 md:grid-cols-4">
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                <MapPin
+                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+                  style={{ color: "rgb(var(--nv-dim))" }}
+                />
                 <input
                   placeholder="Şehir veya destinasyon"
                   value={filters.city}
@@ -129,34 +166,43 @@ export default function SearchPage() {
                     setFilters((f) => ({ ...f, city: e.target.value }))
                   }
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  className="focus:bg-white/8 w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white placeholder-slate-500 outline-none transition focus:border-[#f97316]/40"
+                  className="w-full rounded-xl py-3 pl-9 pr-4 text-sm outline-none transition"
+                  style={{ ...inputStyle, borderRadius: "0.75rem" }}
                 />
               </div>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                <Calendar
+                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+                  style={{ color: "rgb(var(--nv-dim))" }}
+                />
                 <input
                   type="date"
                   value={filters.checkIn}
                   onChange={(e) =>
                     setFilters((f) => ({ ...f, checkIn: e.target.value }))
                   }
-                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#f97316]/40"
+                  className="w-full rounded-xl py-3 pl-9 pr-4 text-sm outline-none transition"
+                  style={{ ...inputStyle, borderRadius: "0.75rem" }}
                 />
               </div>
               <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                <Calendar
+                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+                  style={{ color: "rgb(var(--nv-dim))" }}
+                />
                 <input
                   type="date"
                   value={filters.checkOut}
                   onChange={(e) =>
                     setFilters((f) => ({ ...f, checkOut: e.target.value }))
                   }
-                  className="w-full rounded-xl border border-white/5 bg-white/5 py-3 pl-9 pr-4 text-sm text-white outline-none transition [color-scheme:dark] focus:border-[#f97316]/40"
+                  className="w-full rounded-xl py-3 pl-9 pr-4 text-sm outline-none transition"
+                  style={{ ...inputStyle, borderRadius: "0.75rem" }}
                 />
               </div>
               <button
                 onClick={handleSearch}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#f97316] py-3 font-semibold text-white transition hover:opacity-90 active:scale-95"
+                className="nv-btn-primary rounded-xl py-3"
               >
                 <Search className="h-4 w-4" />
                 Ara
@@ -171,19 +217,21 @@ export default function SearchPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-5 flex flex-wrap items-center justify-center gap-2"
           >
-            <span className="text-xs text-slate-600">Popüler:</span>
+            <span className="text-xs" style={{ color: "rgb(var(--nv-dim))" }}>
+              Popüler:
+            </span>
             {POPULAR_DESTINATIONS.map((dest) => (
               <button
                 key={dest.label}
                 onClick={() => {
-                  setFilters((f) => ({ ...f, city: dest.label }));
+                  setFilters((f) => ({ ...f, city: dest.display }));
                   setSearch((s) => ({ ...s, city: dest.label }));
                   setHasSearched(true);
                 }}
-                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:border-white/20 hover:text-white"
+                className="nv-pill flex items-center gap-1.5"
               >
                 <span>{dest.emoji}</span>
-                {dest.label}
+                {dest.display}
               </button>
             ))}
           </motion.div>
@@ -196,20 +244,34 @@ export default function SearchPage() {
         {hasSearched && (
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="h-4 w-4 text-slate-500" />
-              <span className="text-sm text-slate-400">Filtrele:</span>
+              <SlidersHorizontal
+                className="h-4 w-4"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              />
+              <span
+                className="text-sm"
+                style={{ color: "rgb(var(--nv-muted))" }}
+              >
+                Filtrele:
+              </span>
               <div className="flex gap-2">
                 {STAR_FILTERS.map((f) => (
                   <button
                     key={f.label}
-                    onClick={() =>
-                      setFilters((prev) => ({ ...prev, starRating: f.value }))
-                    }
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+                    onClick={() => {
+                      setFilters((prev) => ({ ...prev, starRating: f.value }));
+                      setSearch((prev) => ({ ...prev, starRating: f.value }));
+                    }}
+                    className="nv-pill text-xs"
+                    style={
                       filters.starRating === f.value
-                        ? "bg-[#f97316] text-white"
-                        : "border border-white/10 text-slate-400 hover:text-white"
-                    }`}
+                        ? {
+                            backgroundColor: "#f97316",
+                            borderColor: "transparent",
+                            color: "white",
+                          }
+                        : {}
+                    }
                   >
                     {f.label}
                   </button>
@@ -217,7 +279,7 @@ export default function SearchPage() {
               </div>
             </div>
             {data && (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm" style={{ color: "rgb(var(--nv-dim))" }}>
                 {filteredItems.length} otel bulundu
               </p>
             )}
@@ -253,23 +315,28 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
         ) / 10
       : null;
 
-  const minPrice =
-    hotel.roomTypes.length > 0
-      ? Math.min(...hotel.roomTypes.map((r) => r.baseRateCents)) / 100
-      : null;
+  const allPrices = hotel.roomTypes.flatMap((r) =>
+    r.inventory.map((inv) => inv.pricePerNight),
+  );
+  const minPrice = allPrices.length > 0 ? Math.min(...allPrices) / 100 : null;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="group rounded-2xl border border-white/5 bg-[#0e0e10] p-5 transition-all hover:border-white/10 hover:bg-[#141416]"
+      className="nv-card p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           {/* Name & Stars */}
           <div className="mb-1.5 flex flex-wrap items-center gap-2">
-            <h2 className="text-lg font-bold text-white">{hotel.name}</h2>
+            <h2
+              className="text-lg font-bold"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
+              {hotel.name}
+            </h2>
             {hotel.starRating && (
               <div className="flex">
                 {Array.from({ length: hotel.starRating }).map((_, i) => (
@@ -288,7 +355,10 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
           </div>
 
           {/* Location */}
-          <p className="mb-2 flex items-center gap-1 text-sm text-slate-500">
+          <p
+            className="mb-2 flex items-center gap-1 text-sm"
+            style={{ color: "rgb(var(--nv-dim))" }}
+          >
             <MapPin className="h-3.5 w-3.5" />
             {(hotel.address as Record<string, string>)?.city},{" "}
             {(hotel.address as Record<string, string>)?.country}
@@ -296,7 +366,10 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
 
           {/* Description */}
           {hotel.shortDescription && (
-            <p className="mb-3 line-clamp-2 text-sm text-slate-400">
+            <p
+              className="mb-3 line-clamp-2 text-sm"
+              style={{ color: "rgb(var(--nv-muted))" }}
+            >
               {hotel.shortDescription}
             </p>
           )}
@@ -311,7 +384,12 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
             {(hotel.amenities as string[]).slice(0, 3).map((a) => (
               <span
                 key={a}
-                className="rounded-full border border-white/5 bg-white/5 px-2.5 py-1 text-xs text-slate-400"
+                className="rounded-full px-2.5 py-1 text-xs"
+                style={{
+                  border: "1px solid rgb(var(--nv-border) / 0.08)",
+                  backgroundColor: "rgb(var(--nv-border) / 0.04)",
+                  color: "rgb(var(--nv-muted))",
+                }}
               >
                 {a}
               </span>
@@ -324,26 +402,35 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
           {avgScore && (
             <div className="text-right">
               <div className="flex items-baseline gap-0.5">
-                <span className="text-2xl font-bold text-white">
+                <span
+                  className="text-2xl font-bold"
+                  style={{ color: "rgb(var(--nv-text))" }}
+                >
                   {avgScore}
                 </span>
-                <span className="text-sm text-slate-500">/10</span>
+                <span
+                  className="text-sm"
+                  style={{ color: "rgb(var(--nv-dim))" }}
+                >
+                  /10
+                </span>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs" style={{ color: "rgb(var(--nv-dim))" }}>
                 {hotel.reviews.length} yorum
               </p>
             </div>
           )}
           {minPrice && (
             <div className="text-right">
-              <p className="text-xs text-slate-600">itibaren</p>
-              <p className="text-lg font-bold text-[#f97316]">${minPrice}</p>
+              <p className="text-xs" style={{ color: "rgb(var(--nv-dim))" }}>
+                itibaren
+              </p>
+              <p className="text-lg font-bold" style={{ color: "#f97316" }}>
+                ${minPrice}
+              </p>
             </div>
           )}
-          <Link
-            href={`/hotel/${hotel.slug}`}
-            className="flex items-center gap-1.5 rounded-xl bg-[#f97316] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
-          >
+          <Link href={`/hotel/${hotel.slug}`} className="nv-btn-primary">
             İncele <ChevronRight className="h-4 w-4" />
           </Link>
         </div>
@@ -355,17 +442,29 @@ function HotelCard({ hotel, index }: { hotel: HotelResult; index: number }) {
 function EmptyState() {
   return (
     <div className="py-20 text-center">
-      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-        <Sparkles className="h-8 w-8 text-[#f97316]" />
+      <div
+        className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+        style={{
+          border: "1px solid rgb(var(--nv-border) / 0.12)",
+          backgroundColor: "rgb(var(--nv-border) / 0.05)",
+        }}
+      >
+        <Sparkles className="h-8 w-8" style={{ color: "#f97316" }} />
       </div>
-      <h3 className="mb-2 text-lg font-bold text-white">Nereye gidiyorsun?</h3>
-      <p className="text-sm text-slate-500">
+      <h3
+        className="mb-2 text-lg font-bold"
+        style={{ color: "rgb(var(--nv-text))" }}
+      >
+        Nereye gidiyorsun?
+      </h3>
+      <p className="text-sm" style={{ color: "rgb(var(--nv-dim))" }}>
         Bir şehir yaz veya yukarıdan popüler destinasyonlardan birini seç.
       </p>
       <div className="mt-8">
         <Link
           href="/guides"
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#f97316] hover:underline"
+          className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+          style={{ color: "#f97316" }}
         >
           Destinasyon rehberlerine göz at <ChevronRight className="h-4 w-4" />
         </Link>
@@ -380,7 +479,11 @@ function LoadingState() {
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="h-36 animate-pulse rounded-2xl border border-white/5 bg-[#0e0e10]"
+          className="h-36 animate-pulse rounded-2xl"
+          style={{
+            border: "1px solid rgb(var(--nv-border) / 0.08)",
+            backgroundColor: "rgb(var(--nv-surface))",
+          }}
         />
       ))}
     </div>
@@ -390,13 +493,22 @@ function LoadingState() {
 function NoResultsState({ city }: { city: string }) {
   return (
     <div className="py-20 text-center">
-      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-        <MapPin className="h-8 w-8 text-slate-500" />
+      <div
+        className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+        style={{
+          border: "1px solid rgb(var(--nv-border) / 0.12)",
+          backgroundColor: "rgb(var(--nv-border) / 0.05)",
+        }}
+      >
+        <MapPin className="h-8 w-8" style={{ color: "rgb(var(--nv-dim))" }} />
       </div>
-      <h3 className="mb-2 text-lg font-bold text-white">
+      <h3
+        className="mb-2 text-lg font-bold"
+        style={{ color: "rgb(var(--nv-text))" }}
+      >
         {city ? `"${city}" için sonuç bulunamadı` : "Sonuç bulunamadı"}
       </h3>
-      <p className="text-sm text-slate-500">
+      <p className="text-sm" style={{ color: "rgb(var(--nv-dim))" }}>
         Farklı bir şehir dene veya tarihleri değiştir.
       </p>
     </div>

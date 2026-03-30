@@ -241,7 +241,7 @@ function SupportCaseCard({
 }: Record<string, unknown>) {
   const priorityColors: Record<string, string> = {
     CRITICAL: "text-red-600",
-    HIGH: "text-orange-500",
+    HIGH: "text-[#f97316]",
     MEDIUM: "text-yellow-600",
     LOW: "text-gray-500",
   };
@@ -324,7 +324,7 @@ function ActionList({ title, items }: Record<string, unknown>) {
       <ul className="space-y-1.5">
         {itms.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-sm">
-            <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-[10px] text-white">
+            <span className="mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-[#f97316] text-[10px] text-white">
               {i + 1}
             </span>
             <div>
@@ -546,7 +546,7 @@ export function AiConcierge() {
       {/* Floating trigger button */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#1a1a2e] text-2xl text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#f97316] text-2xl text-white shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-transform hover:scale-105 active:scale-95"
         aria-label="Open AI Concierge"
       >
         {open ? "✕" : "✨"}
@@ -556,8 +556,8 @@ export function AiConcierge() {
       {open && (
         <div className="fixed bottom-24 right-6 z-50 flex h-[600px] w-[400px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl">
           {/* Header */}
-          <div className="flex items-center gap-3 border-b bg-[#1a1a2e] px-4 py-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-lg">
+          <div className="flex items-center gap-3 border-b bg-[#f97316] px-4 py-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-lg shadow-[0_0_15px_rgba(255,255,255,0.2)]">
               ✨
             </div>
             <div>
@@ -577,14 +577,14 @@ export function AiConcierge() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 {msg.role === "assistant" && (
-                  <div className="mr-2 mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-xs text-white">
+                  <div className="mr-2 mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#f97316] text-xs text-white">
                     ✨
                   </div>
                 )}
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
                     msg.role === "user"
-                      ? "rounded-tr-sm bg-[#1a1a2e] text-white"
+                      ? "rounded-tr-sm bg-[#f97316] text-white"
                       : "rounded-tl-sm bg-gray-50"
                   }`}
                 >
@@ -617,7 +617,7 @@ export function AiConcierge() {
                   <button
                     key={q}
                     onClick={() => void sendMessage(q)}
-                    className="rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-600 transition-colors hover:border-[#1a1a2e] hover:text-[#1a1a2e]"
+                    className="rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-600 transition-colors hover:border-[#f97316] hover:text-[#f97316]"
                   >
                     {q}
                   </button>
@@ -637,7 +637,7 @@ export function AiConcierge() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Aria anything..."
               disabled={isStreaming}
-              className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none transition focus:border-[#1a1a2e] disabled:opacity-50"
+              className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none transition focus:border-[#f97316] disabled:opacity-50"
             />
             {isStreaming ? (
               <button
@@ -651,7 +651,7 @@ export function AiConcierge() {
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1a1a2e] text-white transition-opacity disabled:opacity-40"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f97316] text-white transition-opacity disabled:opacity-40"
               >
                 ↑
               </button>

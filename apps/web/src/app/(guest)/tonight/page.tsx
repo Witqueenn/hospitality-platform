@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Zap, Clock, Tag, Users } from "lucide-react";
 
 export default function TonightDealsPage() {
@@ -20,148 +18,244 @@ export default function TonightDealsPage() {
   const deals = dealsRaw as any[] | undefined;
 
   return (
-    <div className="space-y-8">
-      {/* Hero */}
-      <div className="rounded-2xl bg-gradient-to-r from-[#1a1a2e] to-[#16213e] px-8 py-10 text-white">
-        <div className="flex items-center gap-3">
-          <Zap className="h-8 w-8 text-amber-400" />
-          <div>
-            <h1 className="text-3xl font-bold">Tonight&apos;s Flash Deals</h1>
-            <p className="mt-1 text-white/70">
-              Exclusive same-night & night-use rates — updated live
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
+      {/* Hero — urgent, amber-infused */}
+      <div className="nv-hero dot-grid relative overflow-hidden px-6 py-20">
+        <div
+          className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(245 158 11 / 0.12)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(249 115 22 / 0.10)" }}
+        />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="nv-badge mb-6 inline-flex">
+              <Zap className="h-3.5 w-3.5" style={{ color: "#f97316" }} />
+              Flaş Fırsatlar
+            </div>
+            <h1
+              className="mb-4 text-4xl font-bold md:text-6xl"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
+              Bu Gece <span className="text-gradient">Fırsatları</span>
+            </h1>
+            <p
+              className="mx-auto max-w-xl text-lg"
+              style={{ color: "rgb(var(--nv-muted))" }}
+            >
+              Aynı gece ve gece kullanımı için özel fiyatlar — canlı
+              güncelleniyor
             </p>
-          </div>
-        </div>
-        <div className="mt-6 flex gap-6 text-sm text-white/60">
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" /> Limited time offers
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Tag className="h-4 w-4" /> Instant confirmation
-          </span>
+            <div
+              className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm"
+              style={{ color: "rgb(var(--nv-dim))" }}
+            >
+              <span className="flex items-center gap-1.5">
+                <Tag className="h-4 w-4" /> Anlık onay
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-4 w-4" /> Sınırlı süre
+              </span>
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Deals grid */}
-      {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} className="h-64 rounded-2xl" />
-          ))}
-        </div>
-      ) : !deals || deals.length === 0 ? (
-        <div className="py-20 text-center">
-          <Zap className="mx-auto mb-4 h-12 w-12 text-gray-200" />
-          <p className="text-lg font-semibold text-gray-600">
-            No active deals right now
-          </p>
-          <p className="mt-1 text-sm text-gray-400">
-            Check back later — new flash deals are posted throughout the day
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {deals.map((deal) => {
-            const snapshot = deal.rateSnapshots?.[0];
-            const hotel = deal.hotel as {
-              name: string;
-              slug: string;
-              starRating?: number | null;
-            };
-            const roomType = deal.roomType as {
-              name: string;
-              capacity?: number | null;
-            };
-            const discountPct = snapshot
-              ? Math.round(
-                  ((snapshot.originalPriceCents - snapshot.flashPriceCents) /
-                    snapshot.originalPriceCents) *
-                    100,
-                )
-              : 0;
-
-            return (
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        {isLoading ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
-                key={deal.id}
-                className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg"
-              >
-                {/* Header band */}
-                <div className="bg-gradient-to-r from-[#1a1a2e] to-[#16213e] px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-white/70">
-                      {deal.isVipEarlyAccess
-                        ? "VIP Early Access"
-                        : "Flash Deal"}
-                    </span>
-                    {discountPct > 0 && (
-                      <Badge className="bg-amber-400 text-amber-900 hover:bg-amber-400">
-                        -{discountPct}%
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="mt-1 text-lg font-bold text-white">
-                    {deal.name}
-                  </p>
-                </div>
+                key={i}
+                className="h-64 animate-pulse rounded-2xl"
+                style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+              />
+            ))}
+          </div>
+        ) : !deals || deals.length === 0 ? (
+          <div className="py-20 text-center">
+            <div
+              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+              style={{
+                border: "1px solid rgb(var(--nv-border) / 0.12)",
+                backgroundColor: "rgb(var(--nv-border) / 0.05)",
+              }}
+            >
+              <Zap
+                className="h-8 w-8"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              />
+            </div>
+            <h3
+              className="mb-2 text-lg font-bold"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
+              Aktif fırsat bulunamadı
+            </h3>
+            <p className="text-sm" style={{ color: "rgb(var(--nv-muted))" }}>
+              Gün içinde yeni fırsatlar ekleniyor
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {deals.map((deal, i) => {
+              const snapshot = deal.rateSnapshots?.[0];
+              const hotel = deal.hotel as {
+                name: string;
+                slug: string;
+                starRating?: number | null;
+              };
+              const roomType = deal.roomType as {
+                name: string;
+                capacity?: number | null;
+              };
+              const discountPct = snapshot
+                ? Math.round(
+                    ((snapshot.originalPriceCents - snapshot.flashPriceCents) /
+                      snapshot.originalPriceCents) *
+                      100,
+                  )
+                : 0;
 
-                <div className="space-y-3 p-4">
-                  <div>
-                    <p className="font-semibold text-gray-900">{hotel.name}</p>
-                    {hotel.starRating && (
-                      <p className="text-sm text-amber-500">
-                        {"★".repeat(hotel.starRating)}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="rounded-lg bg-gray-50 px-3 py-2">
-                    <p className="text-xs text-gray-500">{roomType.name}</p>
-                    {roomType.capacity && (
-                      <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-400">
-                        <Users className="h-3 w-3" /> Up to {roomType.capacity}{" "}
-                        guests
-                      </p>
-                    )}
-                  </div>
-
-                  {snapshot && (
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold text-[#1a1a2e]">
-                        ${(snapshot.flashPriceCents / 100).toFixed(0)}
+              return (
+                <motion.div
+                  key={deal.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.06 }}
+                  className="nv-card overflow-hidden"
+                >
+                  {/* Header band — amber gradient */}
+                  <div
+                    className="px-4 py-3"
+                    style={{
+                      background:
+                        "linear-gradient(to right, rgb(249 115 22 / 0.15), rgb(245 158 11 / 0.10))",
+                      borderBottom: "1px solid rgb(var(--nv-border) / 0.06)",
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span
+                        className="text-xs font-semibold uppercase tracking-wide"
+                        style={{ color: "rgb(var(--nv-muted))" }}
+                      >
+                        {deal.isVipEarlyAccess
+                          ? "VIP Erken Erişim"
+                          : "Flaş Fırsat"}
                       </span>
                       {discountPct > 0 && (
-                        <span className="text-sm text-gray-400 line-through">
-                          ${(snapshot.originalPriceCents / 100).toFixed(0)}
+                        <span className="rounded-full bg-[#f59e0b] px-2 py-0.5 text-xs font-bold text-white">
+                          -{discountPct}%
                         </span>
                       )}
-                      <span className="text-xs text-gray-400">/ night</span>
                     </div>
-                  )}
-
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="flex items-center gap-1 text-xs text-gray-400">
-                      <Clock className="h-3 w-3" />
-                      Ends{" "}
-                      {new Date(deal.endsAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                    <Link href={`/hotel/${hotel.slug}`}>
-                      <Button
-                        size="sm"
-                        className="bg-[#1a1a2e] text-xs hover:bg-[#16213e]"
-                      >
-                        Book Now
-                      </Button>
-                    </Link>
+                    <p
+                      className="mt-1 text-lg font-bold"
+                      style={{ color: "rgb(var(--nv-text))" }}
+                    >
+                      {deal.name}
+                    </p>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+
+                  <div className="space-y-3 p-4">
+                    <div>
+                      <p
+                        className="font-semibold"
+                        style={{ color: "rgb(var(--nv-text))" }}
+                      >
+                        {hotel.name}
+                      </p>
+                      {hotel.starRating && (
+                        <p className="text-sm text-[#f59e0b]">
+                          {"★".repeat(hotel.starRating)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div
+                      className="rounded-lg px-3 py-2"
+                      style={{
+                        backgroundColor: "rgb(var(--nv-bg))",
+                        border: "1px solid rgb(var(--nv-border) / 0.06)",
+                      }}
+                    >
+                      <p
+                        className="text-xs"
+                        style={{ color: "rgb(var(--nv-muted))" }}
+                      >
+                        {roomType.name}
+                      </p>
+                      {roomType.capacity && (
+                        <p
+                          className="mt-0.5 flex items-center gap-1 text-xs"
+                          style={{ color: "rgb(var(--nv-dim))" }}
+                        >
+                          <Users className="h-3 w-3" /> En fazla{" "}
+                          {roomType.capacity} misafir
+                        </p>
+                      )}
+                    </div>
+
+                    {snapshot && (
+                      <div className="flex items-baseline gap-2">
+                        <span
+                          className="text-2xl font-bold"
+                          style={{ color: "#f97316" }}
+                        >
+                          ${(snapshot.flashPriceCents / 100).toFixed(0)}
+                        </span>
+                        {discountPct > 0 && (
+                          <span
+                            className="text-sm line-through"
+                            style={{ color: "rgb(var(--nv-dim))" }}
+                          >
+                            ${(snapshot.originalPriceCents / 100).toFixed(0)}
+                          </span>
+                        )}
+                        <span
+                          className="text-xs"
+                          style={{ color: "rgb(var(--nv-dim))" }}
+                        >
+                          / gece
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between pt-1">
+                      <span
+                        className="flex items-center gap-1 text-xs"
+                        style={{ color: "rgb(var(--nv-dim))" }}
+                      >
+                        <Clock className="h-3 w-3" />
+                        Bitiş{" "}
+                        {new Date(deal.endsAt).toLocaleTimeString("tr", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                      <Link
+                        href={`/hotel/${hotel.slug}`}
+                        className="nv-btn-primary rounded-lg px-3 py-1.5 text-xs"
+                      >
+                        Rezervasyon Yap
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -12,8 +12,16 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
-    "db:seed": "ts-node --esm prisma/seed.ts",
-    "db:seed:sup": "ts-node --esm prisma/seed-supplementary.ts",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed:sup": "tsx prisma/seed-supplementary.ts",
+    "db:seed:rich": "tsx prisma/seed-rich.ts",
+    "db:seed:massive": "tsx prisma/seed-massive.ts",
+    "db:seed:photos": "tsx prisma/seed-photos.ts",
+    "db:seed:nuvoya": "tsx prisma/seed-nuvoya.ts",
+    "db:seed:testing": "tsx prisma/seed-testing.ts",
+    "db:seed:guest-portal": "tsx prisma/seed-guest-portal.ts",
+    "db:seed:hotels-extra": "tsx prisma/seed-hotels-extra.ts",
+    "db:seed:all": "tsx prisma/seed.ts && tsx prisma/seed-supplementary.ts && tsx prisma/seed-rich.ts && tsx prisma/seed-massive.ts && tsx prisma/seed-photos.ts && tsx prisma/seed-nuvoya.ts && tsx prisma/seed-testing.ts && tsx prisma/seed-guest-portal.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {

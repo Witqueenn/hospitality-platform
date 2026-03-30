@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,6 +12,15 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        // Nuvoya theme-aware tokens
+        "nv-bg": "rgb(var(--nv-bg) / <alpha-value>)",
+        "nv-surface": "rgb(var(--nv-surface) / <alpha-value>)",
+        "nv-border": "rgb(var(--nv-border) / <alpha-value>)",
+        "nv-text": "rgb(var(--nv-text) / <alpha-value>)",
+        "nv-muted": "rgb(var(--nv-muted) / <alpha-value>)",
+        "nv-dim": "rgb(var(--nv-dim) / <alpha-value>)",
+        "nv-surface-2": "rgb(var(--nv-surface-2) / <alpha-value>)",
+        "nv-accent": "rgb(var(--nv-accent) / <alpha-value>)",
         primary: {
           DEFAULT: "#1a1a2e",
           foreground: "#ffffff",

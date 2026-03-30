@@ -4,16 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { trpc } from "@/lib/trpc";
 import { motion } from "framer-motion";
-import {
-  Home,
-  Star,
-  MapPin,
-  Calendar,
-  ChevronRight,
-  Shield,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { Home, Star, MapPin, Shield, Sparkles } from "lucide-react";
 
 const STAY_TYPE_LABELS: Record<string, string> = {
   APARTMENT: "Daire",
@@ -22,13 +13,6 @@ const STAY_TYPE_LABELS: Record<string, string> = {
   HOSTEL: "Hostel",
   GUESTHOUSE: "Misafir Evi",
   RESORT: "Resort",
-};
-
-const STAY_TERM_LABELS: Record<string, string> = {
-  DAILY: "Gecelik",
-  WEEKLY: "Haftalık",
-  MONTHLY: "Aylık",
-  FLEX: "Esnek",
 };
 
 const TYPE_FILTERS = [
@@ -59,26 +43,41 @@ export default function HomesPage() {
   const list = (units as any[]) ?? [];
 
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-20">
-        <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
-        <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
+      <div className="nv-hero dot-grid relative overflow-hidden px-6 py-20">
+        <div
+          className="pointer-events-none absolute left-1/4 top-0 h-[320px] w-[320px] rounded-full blur-[120px]"
+          style={{ backgroundColor: "rgb(var(--nv-accent-glow) / 0.08)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-1/4 h-[280px] w-[280px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(var(--nv-border) / 0.06)" }}
+        />
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-slate-400">
-              <Home className="h-3.5 w-3.5 text-[#f97316]" />
+            <div className="nv-badge mb-6 inline-flex">
+              <Home className="h-3.5 w-3.5" style={{ color: "#f97316" }} />
               Güvenilir Konaklamalar
             </div>
-            <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
+            <h1
+              className="mb-4 text-4xl font-bold md:text-6xl"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
               Ev gibi hisset,{" "}
               <span className="text-gradient">macera yaşa.</span>
             </h1>
-            <p className="mx-auto max-w-xl text-lg text-slate-400">
+            <p
+              className="mx-auto max-w-xl text-lg"
+              style={{ color: "rgb(var(--nv-muted))" }}
+            >
               Doğrulanmış ev sahipleriyle butik daireler, villalar ve misafir
               evleri — uzun konaklamalar için ideal.
             </p>
@@ -98,11 +97,16 @@ export default function HomesPage() {
             <button
               key={f.value}
               onClick={() => setStayType(f.value)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+              className="nv-pill"
+              style={
                 stayType === f.value
-                  ? "bg-[#f97316] text-white"
-                  : "border border-white/10 text-slate-400 hover:border-white/20 hover:text-white"
-              }`}
+                  ? {
+                      backgroundColor: "#f97316",
+                      borderColor: "transparent",
+                      color: "white",
+                    }
+                  : {}
+              }
             >
               {f.label}
             </button>
@@ -115,19 +119,31 @@ export default function HomesPage() {
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className="h-72 animate-pulse rounded-2xl bg-[#0e0e10]"
+                className="h-80 animate-pulse rounded-2xl"
+                style={{ backgroundColor: "rgb(var(--nv-surface))" }}
               />
             ))}
           </div>
         ) : list.length === 0 ? (
           <div className="py-20 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
-              <Sparkles className="h-8 w-8 text-[#f97316]" />
+            <div
+              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+              style={{
+                border: "1px solid rgb(var(--nv-border) / 0.12)",
+                backgroundColor: "rgb(var(--nv-border) / 0.05)",
+              }}
+            >
+              <Sparkles className="h-8 w-8" style={{ color: "#f97316" }} />
             </div>
-            <h3 className="mb-2 text-lg font-bold text-white">
+            <h3
+              className="mb-2 text-lg font-bold"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
               Konaklama bulunamadı
             </h3>
-            <p className="text-sm text-slate-500">Farklı bir filtre dene.</p>
+            <p className="text-sm" style={{ color: "rgb(var(--nv-dim))" }}>
+              Farklı bir filtre dene.
+            </p>
           </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -144,21 +160,25 @@ export default function HomesPage() {
                 >
                   <Link
                     href={`/homes/${unit.id}`}
-                    className="group block overflow-hidden rounded-2xl border border-white/5 bg-[#0e0e10] transition hover:border-white/10"
+                    className="nv-card group block overflow-hidden"
                   >
-                    {/* Photo */}
-                    <div className="relative h-48 overflow-hidden bg-[#141416]">
+                    <div
+                      className="relative h-56 overflow-hidden"
+                      style={{ backgroundColor: "rgb(var(--nv-surface-2))" }}
+                    >
                       <img
                         src={photo}
                         alt={unit.name}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      {/* Verified badge */}
                       {unit.host?.verificationStatus === "VERIFIED" && (
                         <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full border border-[#67dc9f]/30 bg-[#67dc9f]/20 px-2.5 py-1 text-xs font-semibold text-[#67dc9f] backdrop-blur-sm">
                           <Shield className="h-3 w-3" /> Doğrulandı
                         </span>
                       )}
+                      {/* Price badge on image */}
                       {unit.ratePlans?.[0] && (
                         <div className="absolute bottom-3 right-3">
                           <span className="rounded-xl bg-black/70 px-3 py-1.5 text-sm font-bold text-white backdrop-blur-sm">
@@ -171,34 +191,43 @@ export default function HomesPage() {
                           </span>
                         </div>
                       )}
+                      {/* Type pill on image */}
+                      <div className="absolute bottom-3 left-3">
+                        <span className="rounded-full bg-black/50 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-sm">
+                          {STAY_TYPE_LABELS[unit.stayType] ?? unit.stayType}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="p-4">
-                      <div className="mb-1 flex items-start justify-between gap-2">
-                        <p className="line-clamp-1 font-semibold text-white">
+                    <div className="p-5">
+                      {/* Title + rating row */}
+                      <div className="mb-2 flex items-start justify-between gap-2">
+                        <p
+                          className="line-clamp-1 font-semibold"
+                          style={{ color: "rgb(var(--nv-text))" }}
+                        >
                           {unit.name}
                         </p>
                         {unit.ratingAggregate != null && (
-                          <div className="flex shrink-0 items-center gap-1 text-sm font-semibold text-white">
+                          <div
+                            className="flex shrink-0 items-center gap-1 text-sm font-semibold"
+                            style={{ color: "rgb(var(--nv-text))" }}
+                          >
                             <Star className="h-3.5 w-3.5 fill-[#fb923c] text-[#fb923c]" />
                             {Number(unit.ratingAggregate).toFixed(1)}
                           </div>
                         )}
                       </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 text-xs text-slate-500">
-                          {unit.city && (
-                            <span className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" /> {unit.city}
-                            </span>
-                          )}
-                          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5">
-                            {STAY_TYPE_LABELS[unit.stayType] ?? unit.stayType}
-                          </span>
+                      {/* Location + type row */}
+                      {unit.city && (
+                        <div
+                          className="flex items-center gap-1 text-xs"
+                          style={{ color: "rgb(var(--nv-dim))" }}
+                        >
+                          <MapPin className="h-3 w-3" />
+                          {unit.city}
                         </div>
-                        <ChevronRight className="h-4 w-4 text-slate-600 transition group-hover:text-white" />
-                      </div>
+                      )}
                     </div>
                   </Link>
                 </motion.div>

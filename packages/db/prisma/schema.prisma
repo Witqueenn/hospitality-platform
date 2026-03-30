@@ -485,46 +485,70 @@ model Tenant {
   bookings Booking[]
 
   // In-Stay
-  guestStaySessions          GuestStaySession[]
-  hotelWifiCredentials       HotelWifiCredential[]
-  inStayMessages             InStayMessage[]
-  hotelVenueMenus            HotelVenueMenu[]
-  guestServiceRequests       GuestServiceRequest[]
-  serviceTaskAssignments     ServiceTaskAssignment[]
-  taskCompletionLogs         TaskCompletionLog[]
+  guestStaySessions           GuestStaySession[]
+  hotelWifiCredentials        HotelWifiCredential[]
+  inStayMessages              InStayMessage[]
+  hotelVenueMenus             HotelVenueMenu[]
+  guestServiceRequests        GuestServiceRequest[]
+  serviceTaskAssignments      ServiceTaskAssignment[]
+  taskCompletionLogs          TaskCompletionLog[]
   // Incidents
-  serviceIncidents           ServiceIncident[]
-  serviceResolutions         ServiceResolution[]
-  recoveryOffers             RecoveryOffer[]
-  recoveryActionLogs         RecoveryActionLog[]
+  serviceIncidents            ServiceIncident[]
+  serviceResolutions          ServiceResolution[]
+  recoveryOffers              RecoveryOffer[]
+  recoveryActionLogs          RecoveryActionLog[]
   // Lost & Found
-  lostFoundItems             LostFoundItem[]
-  lostFoundClaims            LostFoundClaim[]
+  lostFoundItems              LostFoundItem[]
+  lostFoundClaims             LostFoundClaim[]
   // Staff
-  staffProfiles              StaffProfile[]
-  staffGuestReviews          StaffGuestReview[]
-  staffGuestConductNotes     StaffGuestConductNote[]
-  staffTips                  StaffTip[]
-  staffBadges                StaffBadge[]
-  staffRecognitionLogs       StaffRecognitionLog[]
-  gratitudeWallEntries       GratitudeWallEntry[]
+  staffProfiles               StaffProfile[]
+  staffGuestReviews           StaffGuestReview[]
+  staffGuestConductNotes      StaffGuestConductNote[]
+  staffTips                   StaffTip[]
+  staffBadges                 StaffBadge[]
+  staffRecognitionLogs        StaffRecognitionLog[]
+  gratitudeWallEntries        GratitudeWallEntry[]
   // Jobs
-  jobPostings                JobPosting[]
-  jobApplications            JobApplication[]
-  jobInterviews              JobInterview[]
-  applicationStatusHistories ApplicationStatusHistory[]
-  recruiterNotes             RecruiterNote[]
+  jobPostings                 JobPosting[]
+  jobApplications             JobApplication[]
+  jobInterviews               JobInterview[]
+  applicationStatusHistories  ApplicationStatusHistory[]
+  recruiterNotes              RecruiterNote[]
   // Career
-  careerPassports            CareerPassport[]
+  careerPassports             CareerPassport[]
   // Talent
-  talentProfiles             TalentProfile[]
-  talentApplications         TalentApplication[]
+  talentProfiles              TalentProfile[]
+  talentApplications          TalentApplication[]
   // Learning
-  staffCourseEnrollments     StaffCourseEnrollment[]
-  staffCertificates          StaffCertificate[]
+  staffCourseEnrollments      StaffCourseEnrollment[]
+  staffCertificates           StaffCertificate[]
   // Shifts
-  shiftPostings              ShiftPosting[]
-  shiftClaims                ShiftClaim[]
+  shiftPostings               ShiftPosting[]
+  shiftClaims                 ShiftClaim[]
+  // VIP
+  vipPlans                    VipPlan[]
+  userVipMemberships          UserVipMembership[]
+  vipOffers                   VipOffer[]
+  // Flash Inventory
+  inventoryFlashWindows       InventoryFlashWindow[]
+  nightUsePolicies            NightUsePolicy[]
+  // Trusted Stay
+  trustedStayHosts            TrustedStayHost[]
+  trustedStayUnits            TrustedStayUnit[]
+  trustedStayVerifications    TrustedStayVerification[]
+  // Amenity
+  amenityAssets               AmenityAsset[]
+  amenityReservations         AmenityReservation[]
+  // Bundle
+  bundleOffers                BundleOffer[]
+  // Mobility
+  mobilityProviders           MobilityProvider[]
+  mobilityProducts            MobilityProduct[]
+  mobilityReservations        MobilityReservation[]
+  // City Guide & Experiences
+  cityGuides                  CityGuide[]
+  localExperiences            LocalExperience[]
+  localExperienceReservations LocalExperienceReservation[]
 
   @@map("tenants")
 }
@@ -546,19 +570,22 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  tenant               Tenant              @relation(fields: [tenantId], references: [id])
-  hotel                Hotel?              @relation(fields: [hotelId], references: [id])
-  bookings             Booking[]
-  supportCasesAsGuest  SupportCase[]       @relation("GuestCases")
-  supportCasesAssigned SupportCase[]       @relation("AssignedCases")
-  reviews              Review[]
-  eventRequests        EventRequest[]
-  approvals            ApprovalRequest[]   @relation("Approver")
-  sessions             Session[]
-  diningReservations   DiningReservation[]
-  nightReservations    NightReservation[]
-  guestStaySessions    GuestStaySession[]  @relation("GuestStaySessions")
-  staffProfile         StaffProfile?       @relation("StaffUserProfile")
+  tenant                      Tenant                       @relation(fields: [tenantId], references: [id])
+  hotel                       Hotel?                       @relation(fields: [hotelId], references: [id])
+  bookings                    Booking[]
+  supportCasesAsGuest         SupportCase[]                @relation("GuestCases")
+  supportCasesAssigned        SupportCase[]                @relation("AssignedCases")
+  reviews                     Review[]
+  eventRequests               EventRequest[]
+  approvals                   ApprovalRequest[]            @relation("Approver")
+  sessions                    Session[]
+  diningReservations          DiningReservation[]
+  nightReservations           NightReservation[]
+  guestStaySessions           GuestStaySession[]           @relation("GuestStaySessions")
+  staffProfile                StaffProfile?                @relation("StaffUserProfile")
+  amenityReservations         AmenityReservation[]
+  mobilityReservations        MobilityReservation[]
+  localExperienceReservations LocalExperienceReservation[]
 
   @@unique([tenantId, email])
   @@index([tenantId])
@@ -638,19 +665,36 @@ model Hotel {
   hotelInsights     HotelInsight[]
 
   // In-Stay
-  guestStaySessions    GuestStaySession[]
-  hotelWifiCredentials HotelWifiCredential[]
-  hotelVenueMenus      HotelVenueMenu[]
-  guestServiceRequests GuestServiceRequest[]
-  serviceIncidents     ServiceIncident[]
-  lostFoundItems       LostFoundItem[]
+  guestStaySessions     GuestStaySession[]
+  hotelWifiCredentials  HotelWifiCredential[]
+  hotelVenueMenus       HotelVenueMenu[]
+  guestServiceRequests  GuestServiceRequest[]
+  serviceIncidents      ServiceIncident[]
+  lostFoundItems        LostFoundItem[]
   // Staff
-  staffProfiles        StaffProfile[]
-  gratitudeWallEntries GratitudeWallEntry[]
+  staffProfiles         StaffProfile[]
+  gratitudeWallEntries  GratitudeWallEntry[]
   // Jobs
-  jobPostings          JobPosting[]
+  jobPostings           JobPosting[]
   // Shifts
-  shiftPostings        ShiftPosting[]
+  shiftPostings         ShiftPosting[]
+  // VIP
+  vipOffers             VipOffer[]
+  // Flash Inventory
+  inventoryFlashWindows InventoryFlashWindow[]
+  nightUsePolicies      NightUsePolicy[]
+  // Trusted Stay
+  trustedStayUnits      TrustedStayUnit[]
+  // Amenity
+  amenityAssets         AmenityAsset[]
+  amenityReservations   AmenityReservation[]
+  // Bundle
+  bundleOffers          BundleOffer[]
+  // Mobility
+  mobilityProducts      MobilityProduct[]
+  mobilityReservations  MobilityReservation[]
+  // Local Experience
+  localExperiences      LocalExperience[]
 
   @@unique([tenantId, slug])
   @@index([tenantId])
@@ -681,9 +725,10 @@ model RoomType {
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  hotel        Hotel           @relation(fields: [hotelId], references: [id])
-  inventory    RoomInventory[]
-  bookingItems BookingItem[]
+  hotel                 Hotel                  @relation(fields: [hotelId], references: [id])
+  inventory             RoomInventory[]
+  bookingItems          BookingItem[]
+  inventoryFlashWindows InventoryFlashWindow[]
 
   @@index([hotelId])
   @@index([tenantId])
@@ -2183,4 +2228,757 @@ model ShiftClaim {
   @@index([tenantId])
   @@index([shiftId])
   @@map("shift_claims")
+}
+
+// ─────────────────────────────────────────────
+// VIP SYSTEM
+// ─────────────────────────────────────────────
+
+enum VipTier {
+  CORE
+  COMFORT
+  SIGNATURE
+}
+
+enum VipMembershipStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+  TRIAL
+}
+
+model VipPlan {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  code              String
+  name              String
+  tier              VipTier  @default(CORE)
+  description       String?  @db.Text
+  monthlyPriceCents Int?     @map("monthly_price_cents")
+  yearlyPriceCents  Int?     @map("yearly_price_cents")
+  currency          String   @default("USD") @db.VarChar(3)
+  benefitConfig     Json     @default("{}") @map("benefit_config")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant              @relation(fields: [tenantId], references: [id])
+  benefits    VipBenefit[]
+  memberships UserVipMembership[]
+  vipOffers   VipOffer[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@map("vip_plans")
+}
+
+model VipBenefit {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  vipPlanId   String   @map("vip_plan_id") @db.Uuid
+  name        String
+  description String?  @db.Text
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  vipPlan VipPlan @relation(fields: [vipPlanId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([vipPlanId])
+  @@map("vip_benefits")
+}
+
+model UserVipMembership {
+  id        String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId  String              @map("tenant_id") @db.Uuid
+  userId    String              @map("user_id") @db.Uuid
+  vipPlanId String              @map("vip_plan_id") @db.Uuid
+  status    VipMembershipStatus @default(TRIAL)
+  startsAt  DateTime            @map("starts_at")
+  endsAt    DateTime?           @map("ends_at")
+  autoRenew Boolean             @default(true) @map("auto_renew")
+  source    String              @default("purchase")
+  createdAt DateTime            @default(now()) @map("created_at")
+  updatedAt DateTime            @updatedAt @map("updated_at")
+
+  tenant  Tenant  @relation(fields: [tenantId], references: [id])
+  vipPlan VipPlan @relation(fields: [vipPlanId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@map("user_vip_memberships")
+}
+
+model UserBenefitWallet {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId   String    @map("tenant_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  benefitKey String    @map("benefit_key")
+  balance    Decimal   @default(0) @db.Decimal(12, 2)
+  expiresAt  DateTime? @map("expires_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@index([tenantId])
+  @@index([userId])
+  @@map("user_benefit_wallets")
+}
+
+model VipOffer {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String    @map("tenant_id") @db.Uuid
+  hotelId     String?   @map("hotel_id") @db.Uuid
+  vipPlanId   String?   @map("vip_plan_id") @db.Uuid
+  title       String
+  description String?   @db.Text
+  offerType   String    @map("offer_type")
+  config      Json      @default("{}")
+  isActive    Boolean   @default(true) @map("is_active")
+  startsAt    DateTime? @map("starts_at")
+  endsAt      DateTime? @map("ends_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  tenant  Tenant   @relation(fields: [tenantId], references: [id])
+  hotel   Hotel?   @relation(fields: [hotelId], references: [id])
+  vipPlan VipPlan? @relation(fields: [vipPlanId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("vip_offers")
+}
+
+// ─────────────────────────────────────────────
+// FLASH INVENTORY
+// ─────────────────────────────────────────────
+
+enum FlashWindowStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+model InventoryFlashWindow {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId         String            @map("tenant_id") @db.Uuid
+  hotelId          String            @map("hotel_id") @db.Uuid
+  roomTypeId       String            @map("room_type_id") @db.Uuid
+  name             String
+  status           FlashWindowStatus @default(DRAFT)
+  startsAt         DateTime          @map("starts_at")
+  endsAt           DateTime          @map("ends_at")
+  visibilityRule   Json              @default("{}") @map("visibility_rule")
+  pricingRule      Json              @default("{}") @map("pricing_rule")
+  isVipEarlyAccess Boolean           @default(false) @map("is_vip_early_access")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+
+  tenant        Tenant              @relation(fields: [tenantId], references: [id])
+  hotel         Hotel               @relation(fields: [hotelId], references: [id])
+  roomType      RoomType            @relation(fields: [roomTypeId], references: [id])
+  rateSnapshots FlashRateSnapshot[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([status])
+  @@map("inventory_flash_windows")
+}
+
+model FlashRateSnapshot {
+  id                     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId               String   @map("tenant_id") @db.Uuid
+  inventoryFlashWindowId String   @map("inventory_flash_window_id") @db.Uuid
+  roomInventoryId        String   @map("room_inventory_id") @db.Uuid
+  inventoryDate          DateTime @map("inventory_date") @db.Date
+  originalPriceCents     Int      @map("original_price_cents")
+  flashPriceCents        Int      @map("flash_price_cents")
+  availableCount         Int      @map("available_count")
+  bookingTypeTarget      String   @map("booking_type_target")
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  inventoryFlashWindow InventoryFlashWindow @relation(fields: [inventoryFlashWindowId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([inventoryFlashWindowId])
+  @@map("flash_rate_snapshots")
+}
+
+model NightUsePolicy {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+  hotelId             String   @map("hotel_id") @db.Uuid
+  roomTypeId          String?  @map("room_type_id") @db.Uuid
+  checkInFrom         String   @map("check_in_from")
+  checkOutUntil       String   @map("check_out_until")
+  minHours            Int?     @map("min_hours")
+  maxHours            Int?     @map("max_hours")
+  baseDiscountPercent Int?     @map("base_discount_percent")
+  ruleConfig          Json     @default("{}") @map("rule_config")
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  hotel  Hotel  @relation(fields: [hotelId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("night_use_policies")
+}
+
+// ─────────────────────────────────────────────
+// TRUSTED STAY
+// ─────────────────────────────────────────────
+
+enum TrustedStayType {
+  APARTMENT
+  ROOM
+  STUDIO
+  SERVICED_APARTMENT
+  VILLA
+  OTHER
+}
+
+enum StayTerm {
+  DAILY
+  WEEKLY
+  MONTHLY
+  FLEX
+}
+
+enum TrustedStayVerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+model TrustedStayHost {
+  id                 String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String                        @map("tenant_id") @db.Uuid
+  displayName        String                        @map("display_name")
+  legalName          String?                       @map("legal_name")
+  email              String?
+  phone              String?
+  hostType           String?                       @map("host_type")
+  verificationStatus TrustedStayVerificationStatus @default(PENDING) @map("verification_status")
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+
+  tenant        Tenant                    @relation(fields: [tenantId], references: [id])
+  units         TrustedStayUnit[]
+  verifications TrustedStayVerification[]
+
+  @@index([tenantId])
+  @@map("trusted_stay_hosts")
+}
+
+model TrustedStayUnit {
+  id                 String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String                        @map("tenant_id") @db.Uuid
+  hostId             String                        @map("host_id") @db.Uuid
+  hotelId            String?                       @map("hotel_id") @db.Uuid
+  slug               String
+  name               String
+  trustedStayType    TrustedStayType               @map("trusted_stay_type")
+  stayTerm           StayTerm                      @map("stay_term")
+  description        String?                       @db.Text
+  address            Json
+  geo                Json?
+  city               String?
+  roomCount          Int?                          @map("room_count")
+  guestCapacity      Int?                          @map("guest_capacity")
+  amenities          Json                          @default("[]")
+  houseRules         Json                          @default("{}") @map("house_rules")
+  tags               Json                          @default("[]")
+  photos             Json                          @default("[]")
+  ratingAggregate    Decimal?                      @map("rating_aggregate") @db.Decimal(3, 2)
+  isActive           Boolean                       @default(true) @map("is_active")
+  verificationStatus TrustedStayVerificationStatus @default(PENDING) @map("verification_status")
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+
+  tenant        Tenant                    @relation(fields: [tenantId], references: [id])
+  host          TrustedStayHost           @relation(fields: [hostId], references: [id])
+  hotel         Hotel?                    @relation(fields: [hotelId], references: [id])
+  ratePlans     TrustedStayRatePlan[]
+  availability  TrustedStayAvailability[]
+  verifications TrustedStayVerification[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@map("trusted_stay_units")
+}
+
+model TrustedStayRatePlan {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  trustedStayUnitId  String   @map("trusted_stay_unit_id") @db.Uuid
+  code               String
+  name               String
+  stayTerm           StayTerm @map("stay_term")
+  nightlyPriceCents  Int?     @map("nightly_price_cents")
+  weeklyPriceCents   Int?     @map("weekly_price_cents")
+  monthlyPriceCents  Int?     @map("monthly_price_cents")
+  baseRateCents      Int?     @map("base_rate_cents")
+  depositCents       Int?     @map("deposit_cents")
+  cancellationPolicy Json     @default("{}") @map("cancellation_policy")
+  isActive           Boolean  @default(true) @map("is_active")
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([trustedStayUnitId])
+  @@map("trusted_stay_rate_plans")
+}
+
+model TrustedStayAvailability {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String   @map("tenant_id") @db.Uuid
+  trustedStayUnitId String   @map("trusted_stay_unit_id") @db.Uuid
+  date              DateTime @db.Date
+  isAvailable       Boolean  @default(true) @map("is_available")
+  priceCents        Int?     @map("price_cents")
+  minNights         Int?     @map("min_nights")
+  maxNights         Int?     @map("max_nights")
+
+  trustedStayUnit TrustedStayUnit @relation(fields: [trustedStayUnitId], references: [id], onDelete: Cascade)
+
+  @@unique([trustedStayUnitId, date])
+  @@index([tenantId])
+  @@map("trusted_stay_availability")
+}
+
+model TrustedStayVerification {
+  id                String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String                        @map("tenant_id") @db.Uuid
+  hostId            String?                       @map("host_id") @db.Uuid
+  trustedStayUnitId String?                       @map("trusted_stay_unit_id") @db.Uuid
+  verificationType  String                        @map("verification_type")
+  status            TrustedStayVerificationStatus @default(PENDING)
+  evidence          Json                          @default("{}")
+  notes             String?                       @db.Text
+  verifiedAt        DateTime?                     @map("verified_at")
+  createdAt         DateTime                      @default(now()) @map("created_at")
+
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  host            TrustedStayHost? @relation(fields: [hostId], references: [id])
+  trustedStayUnit TrustedStayUnit? @relation(fields: [trustedStayUnitId], references: [id])
+
+  @@index([tenantId])
+  @@map("trusted_stay_verifications")
+}
+
+// ─────────────────────────────────────────────
+// AMENITY MARKETPLACE
+// ─────────────────────────────────────────────
+
+enum AmenityType {
+  GYM
+  POOL
+  TENNIS
+  SPA
+  SAUNA
+  HAMMAM
+  CO_WORKING
+  KIDS_CLUB
+  BEACH_ACCESS
+  OTHER
+}
+
+enum AccessUnit {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+model AmenityAsset {
+  id                   String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId             String      @map("tenant_id") @db.Uuid
+  hotelId              String      @map("hotel_id") @db.Uuid
+  code                 String
+  name                 String
+  amenityType          AmenityType @map("amenity_type")
+  description          String?     @db.Text
+  locationLabel        String?     @map("location_label")
+  capacity             Int?
+  isExternalAccessOpen Boolean     @default(false) @map("is_external_access_open")
+  isVipOnly            Boolean     @default(false) @map("is_vip_only")
+  isActive             Boolean     @default(true) @map("is_active")
+  photos               Json        @default("[]")
+  features             Json        @default("[]")
+  rules                Json        @default("{}")
+  createdAt            DateTime    @default(now()) @map("created_at")
+  updatedAt            DateTime    @updatedAt @map("updated_at")
+
+  tenant       Tenant               @relation(fields: [tenantId], references: [id])
+  hotel        Hotel                @relation(fields: [hotelId], references: [id])
+  passPlans    AmenityPassPlan[]
+  schedules    AmenitySchedule[]
+  reservations AmenityReservation[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("amenity_assets")
+}
+
+model AmenityPassPlan {
+  id                 String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String     @map("tenant_id") @db.Uuid
+  amenityAssetId     String     @map("amenity_asset_id") @db.Uuid
+  code               String
+  name               String
+  accessUnit         AccessUnit @map("access_unit")
+  durationCount      Int        @default(1) @map("duration_count")
+  priceCents         Int        @map("price_cents")
+  currency           String     @default("USD") @db.VarChar(3)
+  totalVisits        Int?       @map("total_visits")
+  vipDiscountPercent Int?       @map("vip_discount_percent")
+  isActive           Boolean    @default(true) @map("is_active")
+  rules              Json       @default("{}")
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+
+  amenityAsset AmenityAsset         @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
+  reservations AmenityReservation[]
+
+  @@index([tenantId])
+  @@index([amenityAssetId])
+  @@map("amenity_pass_plans")
+}
+
+model AmenitySchedule {
+  id                  String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId            String  @map("tenant_id") @db.Uuid
+  amenityAssetId      String  @map("amenity_asset_id") @db.Uuid
+  dayOfWeek           Int     @map("day_of_week")
+  opensAt             String  @map("opens_at")
+  closesAt            String  @map("closes_at")
+  slotDurationMinutes Int?    @map("slot_duration_minutes")
+  capacityPerSlot     Int?    @map("capacity_per_slot")
+  externalAccessStart String? @map("external_access_start")
+  externalAccessEnd   String? @map("external_access_end")
+  isActive            Boolean @default(true) @map("is_active")
+
+  amenityAsset AmenityAsset @relation(fields: [amenityAssetId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([amenityAssetId])
+  @@map("amenity_schedules")
+}
+
+model AmenityReservation {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId          String    @map("tenant_id") @db.Uuid
+  hotelId           String    @map("hotel_id") @db.Uuid
+  amenityAssetId    String    @map("amenity_asset_id") @db.Uuid
+  amenityPassPlanId String?   @map("amenity_pass_plan_id") @db.Uuid
+  bookingId         String?   @map("booking_id") @db.Uuid
+  guestId           String    @map("guest_id") @db.Uuid
+  accessDate        DateTime  @map("access_date") @db.Date
+  startsAt          DateTime? @map("starts_at")
+  endsAt            DateTime? @map("ends_at")
+  partySize         Int       @default(1) @map("party_size")
+  subtotalCents     Int       @default(0) @map("subtotal_cents")
+  totalCents        Int       @default(0) @map("total_cents")
+  status            String    @default("CONFIRMED")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  tenant          Tenant           @relation(fields: [tenantId], references: [id])
+  hotel           Hotel            @relation(fields: [hotelId], references: [id])
+  amenityAsset    AmenityAsset     @relation(fields: [amenityAssetId], references: [id])
+  amenityPassPlan AmenityPassPlan? @relation(fields: [amenityPassPlanId], references: [id])
+  guest           User             @relation(fields: [guestId], references: [id])
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@index([guestId])
+  @@map("amenity_reservations")
+}
+
+// ─────────────────────────────────────────────
+// BUNDLE OFFERS
+// ─────────────────────────────────────────────
+
+model BundleOffer {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String    @map("tenant_id") @db.Uuid
+  hotelId       String?   @map("hotel_id") @db.Uuid
+  name          String
+  code          String
+  description   String?   @db.Text
+  bundleType    String    @default("CURATED") @map("bundle_type")
+  pricingMode   String    @default("FIXED") @map("pricing_mode")
+  totalCents    Int?      @map("total_cents")
+  subtotalCents Int?      @map("subtotal_cents")
+  currency      String    @default("USD") @db.VarChar(3)
+  startsAt      DateTime? @map("starts_at")
+  endsAt        DateTime? @map("ends_at")
+  isActive      Boolean   @default(true) @map("is_active")
+  isVipOnly     Boolean   @default(false) @map("is_vip_only")
+  rules         Json      @default("{}")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  tenant Tenant       @relation(fields: [tenantId], references: [id])
+  hotel  Hotel?       @relation(fields: [hotelId], references: [id])
+  items  BundleItem[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("bundle_offers")
+}
+
+model BundleItem {
+  id            String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String  @map("tenant_id") @db.Uuid
+  bundleOfferId String  @map("bundle_offer_id") @db.Uuid
+  itemType      String  @map("item_type")
+  referenceId   String? @map("reference_id") @db.Uuid
+  quantity      Int     @default(1)
+  unitCents     Int?    @map("unit_cents")
+  sortOrder     Int     @default(0) @map("sort_order")
+  metadata      Json    @default("{}")
+
+  bundleOffer BundleOffer @relation(fields: [bundleOfferId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([bundleOfferId])
+  @@map("bundle_items")
+}
+
+// ─────────────────────────────────────────────
+// MOBILITY
+// ─────────────────────────────────────────────
+
+enum MobilityType {
+  AIRPORT_TRANSFER
+  RENTAL_CAR
+  CHAUFFEUR
+  CITY_TRANSFER
+  HOURLY_DRIVER
+}
+
+model MobilityProvider {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String       @map("tenant_id") @db.Uuid
+  name            String
+  mobilityType    MobilityType @map("mobility_type")
+  cities          Json         @default("[]")
+  serviceAreas    Json         @default("[]") @map("service_areas")
+  contactInfo     Json         @default("{}") @map("contact_info")
+  ratingAggregate Decimal?     @map("rating_aggregate") @db.Decimal(3, 2)
+  isActive        Boolean      @default(true) @map("is_active")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  tenant   Tenant            @relation(fields: [tenantId], references: [id])
+  products MobilityProduct[]
+
+  @@index([tenantId])
+  @@map("mobility_providers")
+}
+
+model MobilityProduct {
+  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String       @map("tenant_id") @db.Uuid
+  mobilityProviderId String       @map("mobility_provider_id") @db.Uuid
+  hotelId            String?      @map("hotel_id") @db.Uuid
+  name               String
+  code               String
+  mobilityType       MobilityType @map("mobility_type")
+  description        String?      @db.Text
+  vehicleClass       String?      @map("vehicle_class")
+  capacity           Int?
+  baggageCapacity    Int?         @map("baggage_capacity")
+  city               String?
+  currency           String       @default("USD") @db.VarChar(3)
+  pricingConfig      Json         @default("{}") @map("pricing_config")
+  priceCents         Int?         @map("price_cents")
+  durationMinutes    Int?         @map("duration_minutes")
+  isActive           Boolean      @default(true) @map("is_active")
+  createdAt          DateTime     @default(now()) @map("created_at")
+  updatedAt          DateTime     @updatedAt @map("updated_at")
+
+  tenant           Tenant                @relation(fields: [tenantId], references: [id])
+  mobilityProvider MobilityProvider      @relation(fields: [mobilityProviderId], references: [id])
+  hotel            Hotel?                @relation(fields: [hotelId], references: [id])
+  reservations     MobilityReservation[]
+
+  @@index([tenantId])
+  @@index([hotelId])
+  @@map("mobility_products")
+}
+
+model MobilityReservation {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String   @map("tenant_id") @db.Uuid
+  mobilityProviderId String   @map("mobility_provider_id") @db.Uuid
+  mobilityProductId  String   @map("mobility_product_id") @db.Uuid
+  hotelId            String?  @map("hotel_id") @db.Uuid
+  guestId            String   @map("guest_id") @db.Uuid
+  bookingId          String?  @map("booking_id") @db.Uuid
+  pickupAt           DateTime @map("pickup_at")
+  pickupLocation     Json     @map("pickup_location")
+  dropoffLocation    Json?    @map("dropoff_location")
+  passengerCount     Int      @default(1) @map("passenger_count")
+  notes              String?  @db.Text
+  status             String   @default("PENDING")
+  externalRef        String?  @map("external_ref")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  tenant          Tenant          @relation(fields: [tenantId], references: [id])
+  mobilityProduct MobilityProduct @relation(fields: [mobilityProductId], references: [id])
+  hotel           Hotel?          @relation(fields: [hotelId], references: [id])
+  guest           User            @relation(fields: [guestId], references: [id])
+
+  @@index([tenantId])
+  @@index([guestId])
+  @@map("mobility_reservations")
+}
+
+// ─────────────────────────────────────────────
+// CITY GUIDE & LOCAL EXPERIENCE
+// ─────────────────────────────────────────────
+
+enum ExperienceCategory {
+  FREE_WALK
+  CITY_INTRO
+  FOOD_TOUR
+  NIGHT_TOUR
+  BUSINESS_HELPER
+  CULTURAL
+  SHOPPING
+  FAMILY
+  OTHER
+}
+
+model CityGuide {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId      String   @map("tenant_id") @db.Uuid
+  cityCode      String   @map("city_code")
+  cityName      String   @map("city_name")
+  countryCode   String   @map("country_code")
+  languageCode  String   @default("en") @map("language_code")
+  summary       String?  @db.Text
+  safetyNotes   String?  @map("safety_notes") @db.Text
+  transportTips String?  @map("transport_tips") @db.Text
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  tenant      Tenant             @relation(fields: [tenantId], references: [id])
+  sections    CityGuideSection[]
+  experiences LocalExperience[]
+
+  @@index([tenantId])
+  @@index([cityCode])
+  @@map("city_guides")
+}
+
+model CityGuideSection {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId    String   @map("tenant_id") @db.Uuid
+  cityGuideId String   @map("city_guide_id") @db.Uuid
+  sectionKey  String   @map("section_key")
+  title       String
+  body        String   @db.Text
+  persona     String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  cityGuide CityGuide @relation(fields: [cityGuideId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([cityGuideId])
+  @@map("city_guide_sections")
+}
+
+model LocalExperience {
+  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId        String             @map("tenant_id") @db.Uuid
+  cityGuideId     String?            @map("city_guide_id") @db.Uuid
+  hotelId         String?            @map("hotel_id") @db.Uuid
+  slug            String
+  name            String
+  category        ExperienceCategory
+  description     String?            @db.Text
+  durationMinutes Int?               @map("duration_minutes")
+  city            String?
+  maxGuests       Int?               @map("max_guests")
+  priceCents      Int?               @map("price_cents")
+  currency        String             @default("USD") @db.VarChar(3)
+  meetingPoint    Json?              @map("meeting_point")
+  languages       Json               @default("[]")
+  tags            Json               @default("[]")
+  isFree          Boolean            @default(false) @map("is_free")
+  isVipExclusive  Boolean            @default(false) @map("is_vip_exclusive")
+  isActive        Boolean            @default(true) @map("is_active")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  tenant       Tenant                       @relation(fields: [tenantId], references: [id])
+  cityGuide    CityGuide?                   @relation(fields: [cityGuideId], references: [id])
+  hotel        Hotel?                       @relation(fields: [hotelId], references: [id])
+  slots        LocalExperienceSlot[]
+  reservations LocalExperienceReservation[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@map("local_experiences")
+}
+
+model LocalExperienceSlot {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId           String    @map("tenant_id") @db.Uuid
+  localExperienceId  String    @map("local_experience_id") @db.Uuid
+  startsAt           DateTime  @map("starts_at")
+  endsAt             DateTime? @map("ends_at")
+  capacity           Int?
+  availableCount     Int?      @map("available_count")
+  priceOverrideCents Int?      @map("price_override_cents")
+  isActive           Boolean   @default(true) @map("is_active")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  localExperience LocalExperience              @relation(fields: [localExperienceId], references: [id], onDelete: Cascade)
+  reservations    LocalExperienceReservation[]
+
+  @@index([tenantId])
+  @@index([localExperienceId])
+  @@map("local_experience_slots")
+}
+
+model LocalExperienceReservation {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId              String   @map("tenant_id") @db.Uuid
+  guestId               String   @map("guest_id") @db.Uuid
+  localExperienceId     String   @map("local_experience_id") @db.Uuid
+  localExperienceSlotId String?  @map("local_experience_slot_id") @db.Uuid
+  bookingId             String?  @map("booking_id") @db.Uuid
+  partySize             Int      @default(1) @map("party_size")
+  notes                 String?  @db.Text
+  subtotalCents         Int      @default(0) @map("subtotal_cents")
+  totalCents            Int      @default(0) @map("total_cents")
+  status                String   @default("CONFIRMED")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  tenant              Tenant               @relation(fields: [tenantId], references: [id])
+  guest               User                 @relation(fields: [guestId], references: [id])
+  localExperience     LocalExperience      @relation(fields: [localExperienceId], references: [id])
+  localExperienceSlot LocalExperienceSlot? @relation(fields: [localExperienceSlotId], references: [id])
+
+  @@index([tenantId])
+  @@index([guestId])
+  @@map("local_experience_reservations")
 }

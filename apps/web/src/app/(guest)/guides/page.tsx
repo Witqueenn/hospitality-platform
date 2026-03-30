@@ -168,9 +168,9 @@ const CATEGORIES = [
 
 export default function GuidesPage() {
   return (
-    <div className="min-h-screen bg-[#09090b]">
+    <div className="bg-nv-bg min-h-screen">
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-white/5 bg-[#0e0e10] px-6 py-20">
+      <div className="border-nv-border/5 bg-nv-surface relative overflow-hidden border-b px-6 py-20">
         <div className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full bg-[#f97316]/10 blur-[100px]" />
         <div className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full bg-[#7c3aed]/10 blur-[100px]" />
         <div className="relative mx-auto max-w-4xl text-center">
@@ -179,15 +179,15 @@ export default function GuidesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-slate-400">
+            <div className="border-nv-border/10 bg-nv-border/5 text-nv-muted mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm">
               <BookOpen className="h-3.5 w-3.5 text-[#f97316]" />
               Destinasyon Rehberleri
             </div>
-            <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
+            <h1 className="text-nv-text mb-4 text-4xl font-bold md:text-6xl">
               Nereye gidersen git,{" "}
               <span className="text-gradient">hazırlıklı git.</span>
             </h1>
-            <p className="mx-auto max-w-xl text-lg text-slate-400">
+            <p className="text-nv-muted mx-auto max-w-xl text-lg">
               Yerel lezzetler, gizli köşeler, en doğru zaman — her şehir için
               bir rehber hazırladık.
             </p>
@@ -203,17 +203,17 @@ export default function GuidesPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-14"
         >
-          <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-slate-600">
+          <p className="text-nv-dim mb-5 text-xs font-semibold uppercase tracking-widest">
             Kategoriye göre keşfet
           </p>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
             {CATEGORIES.map((cat) => (
               <div
                 key={cat.label}
-                className={`flex cursor-pointer flex-col items-center gap-2 rounded-2xl border border-white/5 ${cat.bg} p-4 transition hover:border-white/10`}
+                className={`border-nv-border/5 flex cursor-pointer flex-col items-center gap-2 rounded-2xl border ${cat.bg} hover:border-nv-border/10 p-4 transition`}
               >
                 <cat.icon className={`h-5 w-5 ${cat.color}`} />
-                <span className="text-center text-xs font-medium text-slate-300">
+                <span className="text-nv-muted text-center text-xs font-medium">
                   {cat.label}
                 </span>
               </div>
@@ -223,10 +223,10 @@ export default function GuidesPage() {
 
         {/* Guide Cards */}
         <div className="mb-6 flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-600">
+          <p className="text-nv-dim text-xs font-semibold uppercase tracking-widest">
             Tüm Rehberler
           </p>
-          <span className="text-xs text-slate-600">
+          <span className="text-nv-dim text-xs">
             {GUIDES.length} destinasyon
           </span>
         </div>
@@ -245,24 +245,22 @@ export default function GuidesPage() {
               >
                 <div className="mb-4 flex items-start justify-between">
                   <span className="text-3xl">{guide.emoji}</span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-400">
+                  <span className="border-nv-border/10 bg-nv-border/5 text-nv-muted rounded-full border px-2.5 py-1 text-xs">
                     {guide.readTime} okuma
                   </span>
                 </div>
 
                 <div className="mb-1 flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-slate-500" />
-                  <span className="text-xs text-slate-500">
-                    {guide.country}
-                  </span>
+                  <MapPin className="text-nv-dim h-3.5 w-3.5" />
+                  <span className="text-nv-dim text-xs">{guide.country}</span>
                 </div>
-                <h3 className="mb-1 text-xl font-bold text-white">
+                <h3 className="text-nv-text mb-1 text-xl font-bold">
                   {guide.name}
                 </h3>
                 <p className={`mb-3 text-sm font-medium ${guide.accentColor}`}>
                   {guide.tagline}
                 </p>
-                <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-slate-400">
+                <p className="text-nv-muted mb-4 line-clamp-2 text-sm leading-relaxed">
                   {guide.description}
                 </p>
 
@@ -271,7 +269,7 @@ export default function GuidesPage() {
                   {guide.highlights.slice(0, 3).map((h) => (
                     <span
                       key={h}
-                      className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs text-slate-400"
+                      className="border-nv-border/10 bg-nv-border/5 text-nv-muted rounded-full border px-2 py-0.5 text-xs"
                     >
                       {h}
                     </span>
@@ -294,13 +292,13 @@ export default function GuidesPage() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-14 rounded-3xl border border-white/10 bg-[#0e0e10] p-10 text-center"
+          className="border-nv-border/10 bg-nv-surface mt-14 rounded-3xl border p-10 text-center"
         >
           <Compass className="mx-auto mb-4 h-8 w-8 text-[#f97316]" />
-          <h3 className="mb-2 text-xl font-bold text-white">
+          <h3 className="text-nv-text mb-2 text-xl font-bold">
             Rehberler güncelleniyor
           </h3>
-          <p className="mb-6 text-sm text-slate-400">
+          <p className="text-nv-muted mb-6 text-sm">
             Yakında daha fazla şehir, daha fazla gizli cevher. <br />
             Şimdilik keşfetmeye başla.
           </p>
