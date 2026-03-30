@@ -2,37 +2,60 @@
 
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Compass, Clock, Users, MapPin, Calendar } from "lucide-react";
+import { motion } from "framer-motion";
+import { Compass, Clock, Users, Calendar } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
-  CULTURE: "Culture",
-  FOOD: "Food & Drink",
-  NIGHTLIFE: "Nightlife",
-  ADVENTURE: "Adventure",
-  WELLNESS: "Wellness",
-  SHOPPING: "Shopping",
-  FAMILY: "Family",
-  SPORTS: "Sports",
-  NATURE: "Nature",
-  ART: "Art",
+  FREE_WALK: "Ücretsiz Tur",
+  CITY_INTRO: "Şehir Turu",
+  FOOD_TOUR: "Gastronomi",
+  NIGHT_TOUR: "Gece Turu",
+  BUSINESS_HELPER: "İş Desteği",
+  CULTURAL: "Kültürel",
+  SHOPPING: "Alışveriş",
+  FAMILY: "Aile",
+  OTHER: "Diğer",
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  CULTURE: "bg-purple-100 text-purple-700",
-  FOOD: "bg-orange-100 text-orange-700",
-  NIGHTLIFE: "bg-indigo-100 text-indigo-700",
-  ADVENTURE: "bg-green-100 text-green-700",
-  WELLNESS: "bg-teal-100 text-teal-700",
-  SHOPPING: "bg-pink-100 text-pink-700",
-  FAMILY: "bg-blue-100 text-blue-700",
-  SPORTS: "bg-yellow-100 text-yellow-700",
-  NATURE: "bg-emerald-100 text-emerald-700",
-  ART: "bg-rose-100 text-rose-700",
+const CATEGORY_BADGE_STYLES: Record<
+  string,
+  { background: string; color: string }
+> = {
+  FREE_WALK: { background: "rgba(16,185,129,0.2)", color: "#34d399" },
+  CITY_INTRO: { background: "rgba(59,130,246,0.2)", color: "#60a5fa" },
+  FOOD_TOUR: { background: "rgba(249,115,22,0.2)", color: "#fb923c" },
+  NIGHT_TOUR: { background: "rgba(99,102,241,0.2)", color: "#a5b4fc" },
+  BUSINESS_HELPER: { background: "rgba(100,116,139,0.2)", color: "#94a3b8" },
+  CULTURAL: { background: "rgba(168,85,247,0.2)", color: "#c084fc" },
+  SHOPPING: { background: "rgba(236,72,153,0.2)", color: "#f472b6" },
+  FAMILY: { background: "rgba(6,182,212,0.2)", color: "#22d3ee" },
+  OTHER: {
+    background: "rgba(var(--nv-border) / 0.10)",
+    color: "rgb(var(--nv-muted))",
+  },
+};
+
+const CATEGORY_HEADER_GRADIENTS: Record<string, string> = {
+  FREE_WALK:
+    "linear-gradient(135deg, rgba(16,185,129,0.18), rgba(6,182,212,0.10))",
+  CITY_INTRO:
+    "linear-gradient(135deg, rgba(59,130,246,0.18), rgba(99,102,241,0.10))",
+  FOOD_TOUR:
+    "linear-gradient(135deg, rgba(249,115,22,0.18), rgba(245,158,11,0.10))",
+  NIGHT_TOUR:
+    "linear-gradient(135deg, rgba(99,102,241,0.20), rgba(168,85,247,0.10))",
+  BUSINESS_HELPER:
+    "linear-gradient(135deg, rgba(100,116,139,0.18), rgba(71,85,105,0.10))",
+  CULTURAL:
+    "linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.10))",
+  SHOPPING:
+    "linear-gradient(135deg, rgba(236,72,153,0.18), rgba(249,115,22,0.10))",
+  FAMILY:
+    "linear-gradient(135deg, rgba(6,182,212,0.18), rgba(16,185,129,0.10))",
+  OTHER:
+    "linear-gradient(135deg, rgba(var(--nv-border) / 0.10), rgba(var(--nv-border) / 0.05))",
 };
 
 export default function ExperiencesPage() {
@@ -56,7 +79,9 @@ export default function ExperiencesPage() {
   const bookMutation = (trpc.localExperience.bookExperience as any).useMutation(
     {
       onSuccess: () => {
-        toast.success("Experience booked! Check your profile for details.");
+        toast.success(
+          "Deneyim rezerve edildi! Profil sayfanızdan kontrol edin.",
+        );
         setBookingSlot(null);
         void refetch();
       },
@@ -65,145 +90,245 @@ export default function ExperiencesPage() {
   );
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Local Experiences</h1>
-        <p className="mt-1 text-gray-500">
-          Curated by our city guides — discover culture, cuisine, and hidden
-          gems
-        </p>
-      </div>
-
-      {/* Category filters */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setCategory(undefined)}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-            !category
-              ? "bg-[#1a1a2e] text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
-        >
-          All
-        </button>
-        {Object.entries(CATEGORY_LABELS).map(([val, label]) => (
-          <button
-            key={val}
-            onClick={() => setCategory(category === val ? undefined : val)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-              category === val
-                ? "bg-[#1a1a2e] text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "rgb(var(--nv-bg))" }}
+    >
+      {/* Hero */}
+      <div className="nv-hero dot-grid relative overflow-hidden px-6 py-20">
+        <div
+          className="pointer-events-none absolute left-1/4 top-0 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(124 58 237 / 0.10)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ backgroundColor: "rgb(249 115 22 / 0.08)" }}
+        />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            {label}
-          </button>
-        ))}
+            <div className="nv-badge mb-6 inline-flex">
+              <Compass className="h-3.5 w-3.5" style={{ color: "#f97316" }} />
+              Yerel Deneyimler
+            </div>
+            <h1
+              className="mb-4 text-4xl font-bold md:text-6xl"
+              style={{ color: "rgb(var(--nv-text))" }}
+            >
+              Yerel <span className="text-gradient">Deneyimler</span>
+            </h1>
+            <p
+              className="mx-auto max-w-xl text-lg"
+              style={{ color: "rgb(var(--nv-muted))" }}
+            >
+              Şehir rehberlerimizin özenle seçtiği kültürel, gastronomi ve
+              macera deneyimleri
+            </p>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Results */}
-      {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} className="h-72 rounded-2xl" />
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        {/* Category filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="mb-8 flex flex-wrap gap-2"
+        >
+          <button
+            onClick={() => setCategory(undefined)}
+            className="nv-pill"
+            style={
+              !category
+                ? {
+                    backgroundColor: "#f97316",
+                    borderColor: "transparent",
+                    color: "white",
+                  }
+                : {}
+            }
+          >
+            Tümü
+          </button>
+          {Object.entries(CATEGORY_LABELS).map(([val, label]) => (
+            <button
+              key={val}
+              onClick={() => setCategory(category === val ? undefined : val)}
+              className="nv-pill"
+              style={
+                category === val
+                  ? {
+                      backgroundColor: "#f97316",
+                      borderColor: "transparent",
+                      color: "white",
+                    }
+                  : {}
+              }
+            >
+              {label}
+            </button>
           ))}
-        </div>
-      ) : !experiences || experiences.length === 0 ? (
-        <div className="py-20 text-center">
-          <Compass className="mx-auto mb-4 h-12 w-12 text-gray-200" />
-          <p className="text-gray-500">
-            No experiences found in this category.
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {experiences.map((exp) => {
-            const slots = exp.slots ?? [];
-            const nextSlot = slots[0] as any;
+        </motion.div>
 
-            return (
+        {/* Results */}
+        {isLoading ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
-                key={exp.id}
-                className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md"
-              >
-                {/* Cover */}
-                <div className="relative h-44 bg-gradient-to-br from-[#1a1a2e] to-[#16213e]">
-                  <div className="absolute left-3 top-3">
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${CATEGORY_COLORS[exp.category] ?? "bg-gray-100 text-gray-600"}`}
-                    >
-                      {CATEGORY_LABELS[exp.category] ?? exp.category}
-                    </span>
-                  </div>
-                </div>
+                key={i}
+                className="h-72 animate-pulse rounded-2xl"
+                style={{ backgroundColor: "rgb(var(--nv-surface))" }}
+              />
+            ))}
+          </div>
+        ) : !experiences || experiences.length === 0 ? (
+          <div className="py-20 text-center">
+            <div
+              className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
+              style={{
+                border: "1px solid rgb(var(--nv-border) / 0.12)",
+                backgroundColor: "rgb(var(--nv-border) / 0.05)",
+              }}
+            >
+              <Compass
+                className="h-8 w-8"
+                style={{ color: "rgb(var(--nv-dim))" }}
+              />
+            </div>
+            <p style={{ color: "rgb(var(--nv-muted))" }}>Deneyim bulunamadı</p>
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {experiences.map((exp, i) => {
+              const slots = exp.slots ?? [];
+              const nextSlot = slots[0] as any;
+              const badgeStyle = (CATEGORY_BADGE_STYLES[exp.category] ??
+                CATEGORY_BADGE_STYLES["OTHER"])!;
+              const headerGradient =
+                CATEGORY_HEADER_GRADIENTS[exp.category] ??
+                CATEGORY_HEADER_GRADIENTS.OTHER;
 
-                <div className="space-y-3 p-4">
-                  <h3 className="font-semibold text-gray-900">{exp.name}</h3>
-
-                  <div className="flex flex-wrap gap-3 text-xs text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" /> {exp.durationMinutes} min
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="h-3 w-3" /> Max {exp.maxGuests}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-[#1a1a2e]">
-                      {exp.priceCents != null
-                        ? `$${(exp.priceCents / 100).toFixed(0)}`
-                        : "Free"}
-                      <span className="text-xs font-normal text-gray-400">
-                        {" "}
-                        / person
+              return (
+                <motion.div
+                  key={exp.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.06 }}
+                  className="nv-card overflow-hidden"
+                >
+                  {/* Colored category header */}
+                  <div
+                    className="relative h-44"
+                    style={{ background: headerGradient }}
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Compass
+                        className="h-12 w-12 opacity-20"
+                        style={{ color: "rgb(var(--nv-text))" }}
+                      />
+                    </div>
+                    <div className="absolute left-3 top-3">
+                      <span
+                        className="rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-sm"
+                        style={{
+                          backgroundColor: badgeStyle.background,
+                          color: badgeStyle.color,
+                          border: `1px solid ${badgeStyle.color}30`,
+                        }}
+                      >
+                        {CATEGORY_LABELS[exp.category] ?? exp.category}
                       </span>
-                    </span>
+                    </div>
                     {nextSlot && (
-                      <span className="flex items-center gap-1 text-xs text-emerald-600">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(nextSlot.date).toLocaleDateString([], {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </span>
+                      <div className="absolute right-3 top-3">
+                        <span className="flex items-center gap-1 rounded-full bg-black/30 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(nextSlot.date).toLocaleDateString("tr", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
                     )}
                   </div>
 
-                  <div className="flex gap-2">
-                    <Link href={`/experiences/${exp.id}`} className="flex-1">
-                      <Button
-                        variant="outline"
-                        className="w-full text-sm"
-                        size="sm"
-                      >
-                        Details
-                      </Button>
-                    </Link>
-                    <Button
-                      className="flex-1 bg-[#1a1a2e] text-sm hover:bg-[#16213e]"
-                      size="sm"
-                      disabled={!nextSlot || bookMutation.isPending}
-                      onClick={() => {
-                        if (nextSlot) {
-                          bookMutation.mutate({
-                            localExperienceId: exp.id,
-                            localExperienceSlotId: nextSlot.id,
-                            partySize: 1,
-                          });
-                        }
-                      }}
+                  <div className="space-y-3 p-4">
+                    <h3
+                      className="font-semibold"
+                      style={{ color: "rgb(var(--nv-text))" }}
                     >
-                      {nextSlot ? "Book Now" : "No Slots"}
-                    </Button>
+                      {exp.name}
+                    </h3>
+
+                    <div
+                      className="flex flex-wrap gap-3 text-xs"
+                      style={{ color: "rgb(var(--nv-dim))" }}
+                    >
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" /> {exp.durationMinutes} dk
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="h-3 w-3" /> Maks {exp.maxGuests} kişi
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span
+                        className="text-xl font-bold"
+                        style={{ color: "#f97316" }}
+                      >
+                        {exp.priceCents != null
+                          ? `$${(exp.priceCents / 100).toFixed(0)}`
+                          : "Ücretsiz"}
+                        <span
+                          className="text-xs font-normal"
+                          style={{ color: "rgb(var(--nv-dim))" }}
+                        >
+                          {" "}
+                          kişi başı
+                        </span>
+                      </span>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link
+                        href={`/experiences/${exp.id}`}
+                        className="flex-1 rounded-lg py-1.5 text-center text-sm font-medium transition"
+                        style={{
+                          border: "1px solid rgb(var(--nv-border) / 0.12)",
+                          color: "rgb(var(--nv-muted))",
+                        }}
+                      >
+                        Detaylar
+                      </Link>
+                      <button
+                        className="flex-1 rounded-lg py-1.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                        style={{ backgroundColor: "#f97316" }}
+                        disabled={!nextSlot || bookMutation.isPending}
+                        onClick={() => {
+                          if (nextSlot) {
+                            bookMutation.mutate({
+                              localExperienceId: exp.id,
+                              localExperienceSlotId: nextSlot.id,
+                              partySize: 1,
+                            });
+                          }
+                        }}
+                      >
+                        {nextSlot ? "Rezervasyon Yap" : "Slot yok"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
