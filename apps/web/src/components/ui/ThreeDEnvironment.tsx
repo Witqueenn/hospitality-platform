@@ -626,8 +626,8 @@ function FluidAura({ phaseOverride }: { phaseOverride: number | null }) {
       uMoonVisible: { value: 1 },
       uMoonPos: { value: new THREE.Vector2(0.5, 0.82) },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }),
+    // uniforms are mutated in-place by useFrame — empty deps is intentional
     [],
   );
 
