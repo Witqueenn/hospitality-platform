@@ -39,10 +39,24 @@ export function Sidebar({
   return (
     <aside className="flex min-h-screen w-64 flex-col bg-[#1a1a2e] text-white">
       <div className="border-b border-white/10 px-6 py-5">
-        <h1 className="text-lg font-bold" style={{ color: accentColor }}>
-          Nuvoya
-        </h1>
-        <p className="mt-0.5 text-xs text-gray-400">{title}</p>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f97316] shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+            <img
+              src="/logo.png"
+              alt="Arctic Tern Logo"
+              className="h-7 w-7 object-contain brightness-0 invert"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-white">
+            Nuvoya
+          </h1>
+        </div>
+        <p className="mt-2 text-xs font-medium uppercase tracking-widest text-gray-400">
+          {title}
+        </p>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
